@@ -1,0 +1,7 @@
+/* table tr > * {
+  display: block;
+}
+table tr {
+  display: table-cell;
+  vertical-align: top;
+} */
