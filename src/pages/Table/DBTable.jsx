@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import Header from "../../components/Header";
 import "./DBTable.css";
 import EditingWindow from "../DatabasePage/EditingWindow"; // 使用自己調整位置
 import FieldInput from "./FieldInput";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const DBTable = () => {
@@ -16,21 +16,21 @@ const DBTable = () => {
   const [fields, setFields] = React.useState([]);
   const [expandedCollectionId, setExpandedCollectionId] = React.useState(null);
   const [expandedDocumentId, setExpandedDocumentId] = React.useState(null);
+  const [selectedFieldId, setSelectedFieldId] = React.useState("");
   const [collectionEditing, setCollectionEditing] = React.useState("");
   const [documentEditing, setDocumentEditing] = React.useState("");
   const [fieldEditing, setFieldEditing] = React.useState("");
   const [collectionInputValue, setCollectionInputValue] = React.useState("");
   const [documentInputValue, setDocumentInputValue] = React.useState("");
-  // const [fieldInputValue, setFieldInputValue] = React.useState("");
-  const [refreshCollction, setRefreshCollection] = React.useState("");
-  const [refreshDocument, setRefreshDocument] = React.useState("");
-  const [refreshField, setRefreshField] = React.useState("");
-  const [fieldName, setFieldName] = React.useState("");
-  const [fieldType, setFieldType] = React.useState("String");
-  // const [fieldValue, setFieldValue] = React.useState("");
-  const [fieldMapName, setFieldMapName] = React.useState("");
-  const [fieldSubType, setFieldSubType] = React.useState("");
-  const [fieldValue, setFieldValue] = React.useState("");
+  const [reloadCollction, setReloadCollection] = React.useState("");
+  const [reloadDocument, setReloadDocument] = React.useState("");
+  const [reloadField, setReloadField] = React.useState("");
+  const [fieldName, setFieldName] = React.useState(null);
+  const [fieldType, setFieldType] = React.useState(null);
+  const [fieldMapName, setFieldMapName] = React.useState(null);
+  const [fieldSubType, setFieldSubType] = React.useState(null);
+  // const [fieldValue, setFieldValue] = React.useState(null);
+  const [fieldValue, setFieldValue] = React.useState([]);
 
   const [editingShow, setEditingShow] = useState(false);
 
@@ -40,13 +40,13 @@ const DBTable = () => {
         setCollections(json.data);
       });
     }
-  }, [refreshCollction]);
+  }, [reloadCollction]);
 
   React.useEffect(() => {
     api.getDocuments(projectId, expandedCollectionId, apiKey).then((json) => {
       setDocuments({ ...documents, [expandedCollectionId]: json.data });
     });
-  }, [refreshDocument]);
+  }, [reloadDocument]);
 
   React.useEffect(() => {
     api
@@ -54,17 +54,18 @@ const DBTable = () => {
       .then((json) => {
         setFields({ ...fields, [expandedDocumentId]: json.data });
       });
-  }, [refreshField]);
+  }, [reloadField]);
 
   const handleCollectionClick = (collectionId) => {
-    // if (expandedCollectionId === collectionId) {
-    //   setExpandedCollectionId(null); // 如果點擊的集合已展開，則關閉它
-    // } else {
-    setExpandedCollectionId(collectionId); // 否則展開點擊的集合
-    setExpandedDocumentId("");
-    api.getDocuments(projectId, collectionId, apiKey).then((json) => {
-      setDocuments({ ...documents, [collectionId]: json.data });
-    });
+    if (expandedCollectionId === collectionId) {
+      setExpandedCollectionId(null);
+    } else {
+      setExpandedCollectionId(collectionId);
+      setExpandedDocumentId("");
+      api.getDocuments(projectId, collectionId, apiKey).then((json) => {
+        setDocuments({ ...documents, [collectionId]: json.data });
+      });
+    }
   };
 
   const handleDocumentClick = (collectionId, documentId) => {
@@ -78,6 +79,10 @@ const DBTable = () => {
           setFields({ ...fields, [documentId]: json.data });
         });
     }
+  };
+
+  const handleFieldClick = (collectionId, documentId, fieldId) => {
+    setSelectedFieldId(fieldId);
   };
 
   const renderFieldValue = (field) => {
@@ -117,7 +122,7 @@ const DBTable = () => {
     await api.addNewCollection(projectId, apiKey, data).then((status) => {
       if (status == 201) {
         setCollectionInputValue("");
-        setRefreshCollection(!refreshCollction);
+        setReloadCollection(!reloadCollction);
       }
     });
   };
@@ -136,7 +141,7 @@ const DBTable = () => {
       .then((status) => {
         if (status == 201) {
           setDocumentInputValue("");
-          setRefreshDocument(!refreshDocument);
+          setReloadDocument(!reloadDocument);
         }
       });
   };
@@ -152,23 +157,37 @@ const DBTable = () => {
     console.log("fieldSubType: " + fieldSubType);
     console.log("fieldValue: " + fieldValue);
 
-    // const data = {
-    //   name: name.fieldInputValue,
-    // };
-    // api
-    //   .addNewDocument(
-    //     projectId,
-    //     expandedCollectionId,
-    //     expandedDocumentId,
-    //     apiKey,
-    //     data
-    //   )
-    //   .then((status) => {
-    //     if (status == 201) {
-    //       setFieldInputValue("");
-    //       setRefreshField(!refreshField);
-    //     }
-    //   });
+    const data = {
+      type: fieldType,
+      key: fieldName,
+      valueInfo: [
+        {
+          key: fieldMapName,
+          value: fieldValue,
+          type: fieldSubType,
+        },
+      ],
+    };
+
+    api
+      .addNewField(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        apiKey,
+        data
+      )
+      .then((status) => {
+        if (status == 201) {
+          setReloadField(!reloadField);
+        }
+      });
+
+    setFieldName("");
+    setFieldType("none");
+    setFieldMapName("");
+    setFieldSubType("none");
+    setFieldValue("");
   };
 
   const deleteCollection = () => {
@@ -176,7 +195,7 @@ const DBTable = () => {
       .deleteCollection(projectId, expandedCollectionId, apiKey)
       .then((status) => {
         if (status == 204) {
-          setRefreshCollection(!refreshCollction);
+          setReloadCollection(!reloadCollction);
         }
       });
   };
@@ -190,13 +209,35 @@ const DBTable = () => {
       )
       .then((status) => {
         if (status == 204) {
-          setRefreshDocument(!refreshDocument);
+          setReloadDocument(!reloadDocument);
         }
       });
   };
 
+  const handleFieldNameChange = (e) => {
+    const { value } = e.target;
+    setFieldName(value);
+  };
+  const handleFieldTypeChange = (type) => {
+    // const { value } = e.target;
+    setFieldType(type);
+  };
+  const handleFieldMapNameChange = (e) => {
+    const { value } = e.target;
+    setFieldMapName(value);
+  };
+  const handleFieldSubTypeChange = (e) => {
+    const { value } = e.target;
+    setFieldSubType(value);
+  };
+  const handleFieldValueChange = (data) => {
+    // const { value } = e.target;
+    setFieldValue(data);
+  };
+
   return (
     <>
+      <Header />
       <h1>In Table page</h1>
       <div className="container">
         <div className="row">
@@ -206,8 +247,8 @@ const DBTable = () => {
               <span>
                 {expandedCollectionId}
                 {expandedDocumentId && (
-                  <span>/documents/{expandedDocumentId}</span>
-                )}
+                    <span>/documents/{expandedDocumentId}</span>
+                  ) && <span>/fields/{selectedFieldId}</span>}
               </span>
             )}
           </span>
@@ -321,11 +362,16 @@ const DBTable = () => {
               <div style={{ display: fieldEditing ? "block" : "none" }}>
                 {/* <Form onSubmit={addNewField}> */}
                 <FieldInput
-                  setFieldName={setFieldName}
-                  setFieldType={setFieldType}
-                  setFieldMapName={setFieldMapName}
-                  setFieldSubType={setFieldSubType}
-                  setFieldValue={setFieldValue}
+                  fieldName={fieldName}
+                  handleFieldNameChange={handleFieldNameChange}
+                  fieldType={fieldType}
+                  handleFieldTypeChange={handleFieldTypeChange}
+                  fieldMapName={fieldMapName}
+                  handleFieldMapNameChange={handleFieldMapNameChange}
+                  fieldSubType={fieldSubType}
+                  handleFieldSubTypeChange={handleFieldSubTypeChange}
+                  fieldValue={fieldValue}
+                  handleFieldValueChange={handleFieldValueChange}
                 />
                 <Button variant="primary" onClick={addNewField}>
                   Submit

@@ -16,7 +16,7 @@ const navbar = () => {
           <a
             className="navbar__project"
             key={project.id}
-            href={`./database.html?id=${project.id}&apikey=${project.apiKey}`}
+            href={`./table.html?id=${project.id}&apikey=${project.apiKey}`}
           >
             {project.name}
           </a>

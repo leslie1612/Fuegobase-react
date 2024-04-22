@@ -8,21 +8,23 @@ const Root = () => {
   }, []);
 
   return (
-    <div className="navbar">
-      <a className="navbar__logo" href="./index.html"></a>
-      <div className="navbar__title">PROJECTS</div>
-      <div className="navbar__projects">
-        {projects.map((project, index) => (
-          <a
-            className="navbar__project"
-            key={project.id}
-            href={`./database?id=${project.id}&apikey=${project.apikey}`}
-          >
-            {project.name}
-          </a>
-        ))}
+    <>
+      <div className="navbarrr">
+        <a className="navbar__logo" href="./index.html"></a>
+        <div className="navbar__title">PROJECTS</div>
+        <div className="navbar__projects">
+          {projects.map((project, index) => (
+            <a
+              className="navbar__project"
+              key={project.id}
+              href={`./table?id=${project.id}&apikey=${project.apikey}`}
+            >
+              <div>{project.name}</div>
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -64,6 +64,19 @@ const api = {
       }
     ).then((response) => response.status);
   },
+  addNewField(id, collectionId, documentId, apikey, data) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields`,
+      {
+        body: JSON.stringify(data),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+        method: "POST",
+      }
+    ).then((response) => response.status);
+  },
   deleteCollection(id, collectionId, apikey) {
     return fetch(
       `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}`,
@@ -100,5 +113,25 @@ const api = {
         method: "PATCH",
       }
     ).then((response) => response.status);
+  },
+  getReadWriteData(id) {
+    return fetch(
+      `http://localhost:8080/api/v1/dashboard/count/readwrite/${id}`
+    ).then((response) => response.json());
+  },
+  getStorgae(id) {
+    return fetch(`http://localhost:8080/api/v1/dashboard/storage/${id}`).then(
+      (response) => response.json()
+    );
+  },
+  getCollectionCount(id) {
+    return fetch(
+      `http://localhost:8080/api/v1/dashboard/collections/${id}`
+    ).then((response) => response.json());
+  },
+  getDocumentCount(id) {
+    return fetch(`http://localhost:8080/api/v1/dashboard/documents/${id}`).then(
+      (response) => response.json()
+    );
   },
 };
