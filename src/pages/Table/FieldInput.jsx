@@ -7,63 +7,84 @@ const FieldInput = ({
   handleFieldNameChange,
   fieldType,
   handleFieldTypeChange,
-  fieldMapName,
-  handleFieldMapNameChange,
-  fieldSubType,
-  handleFieldSubTypeChange,
-  fieldValue,
-  handleFieldValueChange,
+  valueInfoArray,
+  handleValueInfoChange,
+  addNewValue,
+  setInitialValueInfo,
 }) => {
-  const [selectedType, setSelectedType] = React.useState("");
-  const [selectedSubType, setSelectedSubType] = React.useState("");
   const [isBoolean, setIsBoolean] = React.useState(false);
-  const [isSubTypeBoolean, setIsSubTypeBoolean] = React.useState(false);
   const [isArray, setIsArray] = React.useState(false);
   const [isMap, setIsMap] = React.useState(false);
 
   const [arrayValues, setArrayValues] = React.useState([]);
   const [mapValues, setMapValues] = React.useState([]);
 
-  React.useEffect(() => {
-    console.log("******* in Effect for isArray", isArray);
-    if (isArray) {
-      setArrayValues([{ type: "String", value: "" }]);
-    }
-  }, [isArray]);
+  // -----------------change here
+
+  // React.useEffect(() => {
+  //   console.log("******* in Effect for isArray", isArray);
+  //   // if field type is array, set a empty array for array input
+  //   if (isArray) {
+  //     setArrayValues([{ type: "String", value: "" }]);
+  //   }
+  // }, [isArray]);
+
+  // React.useEffect(() => {
+  //   console.log("******* in Effect for isMap", isMap);
+  //   // if field type is map, set a empty array for map input
+  //   if (isMap) {
+  //     setMapValues([{ key: "", type: "String", value: "" }]);
+  //   }
+  // }, [isMap]);
 
   React.useEffect(() => {
-    console.log("******* in Effect for isMap", isMap);
-    if (isMap) {
-      setMapValues([{ key: "", type: "String", value: "" }]);
-    }
-  }, [isMap]);
+    console.log("*** in new Effect");
+    setInitialValueInfo();
+  }, []);
+
+  // ----------------------------
 
   const handleTypeChange = (event) => {
+    setInitialValueInfo();
+    // when field type change
     let type = event.target.value;
-    // setSelectedType(type);
     setIsBoolean(type === "Boolean");
-    console.log("******** Before", isArray); // false
+    // console.log("******** Before", isArray); // false
     setIsArray(type === "Array");
-    console.log("******** After", isArray); // false
+    // console.log("******** After", isArray); // false
 
     setIsMap(type === "Map");
 
     handleFieldTypeChange(type);
   };
 
-  const handleArrayValueChange = (event, index, field) => {
-    // field: type, value
-    arrayValues[index][field] = event.target.value;
-    setArrayValues([...arrayValues]);
-  };
+  // -----------------change here
 
-  const handleMapValueChange = (event, index, field) => {
-    // field: key, type, value
-    mapValues[index][field] = event.target.value;
-    setMapValues([...mapValues]);
-  };
+  // const handleArrayValueChange = (event, index, field) => {
+  //   // when value.type or value.value change, call this function and set input data into array
+  //   console.log("in handleArrayValueChange ", event.target.value);
 
-  const [queryParams, setQueryParams] = useState([]);
+  //   // field: type, value
+  //   arrayValues[index][field] = event.target.value; // change value
+  //   setArrayValues([...arrayValues]); // set the change value into array
+  // };
+
+  // const handleMapValueChange = (event, index, field) => {
+  //   // field: key, type, value
+  //   mapValues[index][field] = event.target.value;
+  //   setMapValues([...mapValues]);
+  // };
+
+  // const handleValueInfoChange = (event, index, field) => {
+  //   // when value.type or value.value change, call this function and set input data into array
+  //   console.log("in handleValueChange ", event.target.value);
+
+  //   // field: type, value
+  //   valueInfoArray[index][field] = event.target.value; // change value
+  //   setValueInfoArray([...valueInfoArray]); // set the change value into array
+  // };
+
+  // -----------------------------------
 
   return (
     <>
@@ -96,21 +117,23 @@ const FieldInput = ({
         <Form.Label>Value</Form.Label>
         {isBoolean ? (
           <Form.Select
-            value={fieldValue}
-            onChange={(e) => handleFieldValueChange(e)}
+            value={valueInfoArray[0].value || "none"}
+            onChange={(e) => handleValueInfoChange(e, 0, "value")}
           >
+            <option value="none" disabled>
+              --select--
+            </option>
             <option value="TRUE">TRUE</option>
             <option value="FALSE">FALSE</option>
           </Form.Select>
         ) : isArray ? (
           <>
-            {arrayValues.map((value, index) => (
+            {valueInfoArray.map((value, index) => (
               <div key={index}>
                 <Form.Label>Type</Form.Label>
-                {/* <Form.Select onChange={(e) => setFieldSubType(e.target.value)}> */}
                 <Form.Select
                   value={value.type}
-                  onChange={(e) => handleArrayValueChange(e, index, "type")}
+                  onChange={(e) => handleValueInfoChange(e, index, "type")}
                 >
                   <option value="none" disabled>
                     --select--
@@ -123,36 +146,71 @@ const FieldInput = ({
                   <Form.Label>Value</Form.Label>
                   <Form.Control
                     value={value.value}
-                    onChange={(e) => handleArrayValueChange(e, index, "value")}
+                    onChange={(e) => handleValueInfoChange(e, index, "value")}
                   />
                 </Form.Group>
               </div>
             ))}
             <button
               onClick={() => {
-                console.log("&&&&&&&&&", arrayValues);
-                setArrayValues([...arrayValues, { type: "String", value: "" }]);
+                console.log("&&&&&&&&& on click", valueInfoArray);
+                // when click add btn, set a new object for new input
+                addNewValue();
               }}
             >
               +
             </button>
           </>
-        ) : isMap ? (
+        ) : // <>
+        //   {arrayValues.map((value, index) => (
+        //     <div key={index}>
+        //       <Form.Label>Type</Form.Label>
+        //       <Form.Select
+        //         value={value.type}
+        //         onChange={(e) => handleArrayValueChange(e, index, "type")}
+        //       >
+        //         <option value="none" disabled>
+        //           --select--
+        //         </option>
+        //         <option value="String">String</option>
+        //         <option value="Number">Number</option>
+        //         {/* <option value="Boolean">Boolean</option> */}
+        //       </Form.Select>
+        //       <Form.Group as={Col} controlId="formGridValue">
+        //         <Form.Label>Value</Form.Label>
+        //         <Form.Control
+        //           value={value.value}
+        //           onChange={(e) => handleArrayValueChange(e, index, "value")}
+        //         />
+        //       </Form.Group>
+        //     </div>
+        //   ))}
+        //   <button
+        //     onClick={() => {
+        //       console.log("&&&&&&&&& on click", arrayValues);
+        //       // when click add btn, set a new object for new input
+        //       setArrayValues([...arrayValues, { type: "String", value: "" }]);
+        //     }}
+        //   >
+        //     +
+        //   </button>
+        // </>
+        isMap ? (
           <>
-            {mapValues.map((value, index) => (
+            {valueInfoArray.map((value, index) => (
               <div key={index}>
                 <Form.Group as={Col} controlId="formGridValue">
                   <Form.Label>Key</Form.Label>
                   <Form.Control
                     value={value.key}
-                    onChange={(e) => handleMapValueChange(e, index, "key")}
+                    onChange={(e) => handleValueInfoChange(e, index, "key")}
                   />
                 </Form.Group>
                 <Form.Label>Type</Form.Label>
                 {/* <Form.Select onChange={(e) => setFieldSubType(e.target.value)}> */}
                 <Form.Select
                   value={value.type}
-                  onChange={(e) => handleMapValueChange(e, index, "type")}
+                  onChange={(e) => handleValueInfoChange(e, index, "type")}
                 >
                   <option value="none" disabled>
                     --select--
@@ -165,18 +223,15 @@ const FieldInput = ({
                   <Form.Label>Value</Form.Label>
                   <Form.Control
                     value={value.value}
-                    onChange={(e) => handleMapValueChange(e, index, "value")}
+                    onChange={(e) => handleValueInfoChange(e, index, "value")}
                   />
                 </Form.Group>
               </div>
             ))}
             <button
               onClick={() => {
-                console.log("&&&&&&&&&", mapValues);
-                setMapValues([
-                  ...mapValues,
-                  { key: "", type: "String", value: "" },
-                ]);
+                console.log("&&&&&&&&&", valueInfoArray);
+                addNewValue();
               }}
             >
               +
@@ -184,8 +239,7 @@ const FieldInput = ({
           </>
         ) : (
           <Form.Control
-            value={fieldValue}
-            onChange={(e) => handleFieldValueChange(e)}
+            onChange={(e) => handleValueInfoChange(e, 0, "value")}
           />
         )}
       </Form.Group>

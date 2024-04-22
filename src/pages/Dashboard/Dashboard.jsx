@@ -1,6 +1,8 @@
 import React from "react";
 import Plot from "react-plotly.js";
 import { useLocation } from "react-router-dom";
+import Header from "../../components/Header";
+import MyNavbar from "../../components/MyNavbar";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -48,6 +50,8 @@ const Dashboard = () => {
 
   return (
     <>
+      <MyNavbar />
+      <Header />
       <h1>This is Dashboard</h1>
       <h2>Total Storage : {storage} MB</h2>
       <h2>Total Collections : {collectionCount} </h2>

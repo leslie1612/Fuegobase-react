@@ -1,7 +1,11 @@
 import React from "react";
+import Header from "../../components/Header";
+import MyNavbar from "../../components/MyNavbar";
 const SettingPage = () => {
   return (
     <>
+      <MyNavbar />
+      <Header />
       <h1>This is Setting page</h1>
     </>
   );

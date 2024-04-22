@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/Header";
+import MyNavbar from "../../components/MyNavbar";
 import "./DBTable.css";
 import EditingWindow from "../DatabasePage/EditingWindow"; // 使用自己調整位置
 import FieldInput from "./FieldInput";
@@ -11,26 +12,23 @@ const DBTable = () => {
   const searchParams = new URLSearchParams(location.search);
   const projectId = searchParams.get("id");
   const apiKey = searchParams.get("apikey");
-  const [collections, setCollections] = React.useState([]);
-  const [documents, setDocuments] = React.useState([]);
-  const [fields, setFields] = React.useState([]);
-  const [expandedCollectionId, setExpandedCollectionId] = React.useState(null);
-  const [expandedDocumentId, setExpandedDocumentId] = React.useState(null);
-  const [selectedFieldId, setSelectedFieldId] = React.useState("");
-  const [collectionEditing, setCollectionEditing] = React.useState("");
-  const [documentEditing, setDocumentEditing] = React.useState("");
-  const [fieldEditing, setFieldEditing] = React.useState("");
-  const [collectionInputValue, setCollectionInputValue] = React.useState("");
-  const [documentInputValue, setDocumentInputValue] = React.useState("");
-  const [reloadCollction, setReloadCollection] = React.useState("");
-  const [reloadDocument, setReloadDocument] = React.useState("");
-  const [reloadField, setReloadField] = React.useState("");
-  const [fieldName, setFieldName] = React.useState(null);
-  const [fieldType, setFieldType] = React.useState(null);
-  const [fieldMapName, setFieldMapName] = React.useState(null);
-  const [fieldSubType, setFieldSubType] = React.useState(null);
-  // const [fieldValue, setFieldValue] = React.useState(null);
-  const [fieldValue, setFieldValue] = React.useState([]);
+  const [collections, setCollections] = useState([]);
+  const [documents, setDocuments] = useState([]);
+  const [fields, setFields] = useState([]);
+  const [expandedCollectionId, setExpandedCollectionId] = useState(null);
+  const [expandedDocumentId, setExpandedDocumentId] = useState(null);
+  const [selectedFieldId, setSelectedFieldId] = useState("");
+  const [collectionEditing, setCollectionEditing] = useState("");
+  const [documentEditing, setDocumentEditing] = useState("");
+  const [fieldEditing, setFieldEditing] = useState("");
+  const [collectionInputValue, setCollectionInputValue] = useState("");
+  const [documentInputValue, setDocumentInputValue] = useState("");
+  const [reloadCollction, setReloadCollection] = useState("");
+  const [reloadDocument, setReloadDocument] = useState("");
+  const [reloadField, setReloadField] = useState("");
+  const [fieldName, setFieldName] = useState(null);
+  const [fieldType, setFieldType] = useState(null);
+  const [valueInfoArray, setValueInfoArray] = useState([]);
 
   const [editingShow, setEditingShow] = useState(false);
 
@@ -113,11 +111,11 @@ const DBTable = () => {
     setCollectionEditing(!collectionEditing);
   };
 
-  const addNewCollection = async (name) => {
+  const addNewCollection = async (myData) => {
     setCollectionEditing(!collectionEditing);
 
     const data = {
-      name: name.collectionInputValue,
+      name: myData.collectionInputValue,
     };
     await api.addNewCollection(projectId, apiKey, data).then((status) => {
       if (status == 201) {
@@ -151,22 +149,11 @@ const DBTable = () => {
   };
   const addNewField = () => {
     setFieldEditing(!fieldEditing);
-    console.log("fieldName: " + fieldName);
-    console.log("fieldType: " + fieldType);
-    console.log("fieldMapName: " + fieldMapName);
-    console.log("fieldSubType: " + fieldSubType);
-    console.log("fieldValue: " + fieldValue);
 
     const data = {
       type: fieldType,
       key: fieldName,
-      valueInfo: [
-        {
-          key: fieldMapName,
-          value: fieldValue,
-          type: fieldSubType,
-        },
-      ],
+      valueInfo: valueInfoArray,
     };
 
     api
@@ -185,9 +172,7 @@ const DBTable = () => {
 
     setFieldName("");
     setFieldType("none");
-    setFieldMapName("");
-    setFieldSubType("none");
-    setFieldValue("");
+    setValueInfoArray([{ key: "", type: "String", value: "" }]);
   };
 
   const deleteCollection = () => {
@@ -219,25 +204,32 @@ const DBTable = () => {
     setFieldName(value);
   };
   const handleFieldTypeChange = (type) => {
-    // const { value } = e.target;
     setFieldType(type);
   };
-  const handleFieldMapNameChange = (e) => {
-    const { value } = e.target;
-    setFieldMapName(value);
+
+  const handleValueInfoChange = (event, index, field) => {
+    // field: type, value
+    valueInfoArray[index][field] = event.target.value; // change value
+    setValueInfoArray([...valueInfoArray]); // set the change value into array
   };
-  const handleFieldSubTypeChange = (e) => {
-    const { value } = e.target;
-    setFieldSubType(value);
+
+  const addNewValue = () => {
+    setValueInfoArray([
+      ...valueInfoArray,
+      { key: "", type: "String", value: "" },
+    ]);
   };
-  const handleFieldValueChange = (data) => {
-    // const { value } = e.target;
-    setFieldValue(data);
+
+  const setInitialValueInfo = () => {
+    console.log("set inital");
+    setValueInfoArray([{ key: "", type: "String", value: "" }]);
   };
 
   return (
     <>
+      <MyNavbar />
       <Header />
+
       <h1>In Table page</h1>
       <div className="container">
         <div className="row">
@@ -366,12 +358,10 @@ const DBTable = () => {
                   handleFieldNameChange={handleFieldNameChange}
                   fieldType={fieldType}
                   handleFieldTypeChange={handleFieldTypeChange}
-                  fieldMapName={fieldMapName}
-                  handleFieldMapNameChange={handleFieldMapNameChange}
-                  fieldSubType={fieldSubType}
-                  handleFieldSubTypeChange={handleFieldSubTypeChange}
-                  fieldValue={fieldValue}
-                  handleFieldValueChange={handleFieldValueChange}
+                  valueInfoArray={valueInfoArray}
+                  handleValueInfoChange={handleValueInfoChange}
+                  addNewValue={addNewValue}
+                  setInitialValueInfo={setInitialValueInfo}
                 />
                 <Button variant="primary" onClick={addNewField}>
                   Submit
