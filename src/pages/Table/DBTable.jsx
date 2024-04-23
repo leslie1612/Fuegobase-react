@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import Header from "../../components/Header";
 import MyNavbar from "../../components/MyNavbar";
 import "./DBTable.css";
-import EditingWindow from "../DatabasePage/EditingWindow"; // 使用自己調整位置
 import FieldInput from "./FieldInput";
 import Button from "react-bootstrap/Button";
 
@@ -328,13 +327,10 @@ const DBTable = () => {
 
   return (
     <>
-      <MyNavbar />
       <Header />
-
-      <h1>In Table page</h1>
       <div className="container">
         <div className="row">
-          <span>
+          <div>
             Path : http://localhost:8080/api/v1/databases/projects/{projectId}
             /collections/
             <span>
@@ -346,7 +342,7 @@ const DBTable = () => {
                 </span>
               )}
             </span>
-          </span>
+          </div>
         </div>
         <div className="row">
           <div className="col">
@@ -520,16 +516,18 @@ const DBTable = () => {
                         }
                       >
                         <div>
-                          {field.name} <span>({field.type}) : </span>
-                          <div className="field_buttons">
-                            <button
+                          <div>
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
                               onClick={() => {
                                 deleteFieldKey(field.id);
                               }}
                             >
-                              delete
-                            </button>
+                              X
+                            </Button>
                           </div>
+                          {field.name} <span>({field.type}) : </span>
                           {renderFieldValue(field)}
                         </div>
                       </div>

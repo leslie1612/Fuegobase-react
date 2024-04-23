@@ -1,4 +1,7 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
+import "./root.css";
+
 const Root = () => {
   const [projects, setProjects] = React.useState([]);
   React.useEffect(() => {
@@ -8,23 +11,22 @@ const Root = () => {
   }, []);
 
   return (
-    <>
-      <div className="navbarrr">
-        <a className="navbar__logo" href="./index.html"></a>
-        <div className="navbar__title">PROJECTS</div>
-        <div className="navbar__projects">
-          {projects.map((project, index) => (
-            <a
-              className="navbar__project"
-              key={project.id}
+    <div className="container">
+      {projects.map((project, index) => (
+        <Card>
+          <Card.Body>
+            <Card.Title className="navbar__title" key={project.id}>
+              {project.name}
+            </Card.Title>
+            <Card.Link
               href={`./table?id=${project.id}&apikey=${project.apikey}`}
             >
-              <div>{project.name}</div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </>
+              Go to project
+            </Card.Link>
+          </Card.Body>
+        </Card>
+      ))}
+    </div>
   );
 };
 

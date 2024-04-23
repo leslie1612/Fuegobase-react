@@ -179,4 +179,24 @@ const api = {
       (response) => response.json()
     );
   },
+  getDomainWhiteList(id) {
+    return fetch(`http://localhost:8080/api/v1/databases/whitelist/${id}`).then(
+      (response) => response.json()
+    );
+  },
+  addNewDomain(id, data) {
+    return fetch(`http://localhost:8080/api/v1/databases/whitelist/${id}`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    }).then((response) => response.status);
+  },
+  deleteDomain(id, domainId) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/whitelist/${id}/domain/${domainId}`,
+      { method: "DELETE" }
+    ).then((response) => response.status);
+  },
 };

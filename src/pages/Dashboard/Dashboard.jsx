@@ -2,7 +2,8 @@ import React from "react";
 import Plot from "react-plotly.js";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/Header";
-import MyNavbar from "../../components/MyNavbar";
+import SettingPage from "../SettingPage/SettingPage";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -50,20 +51,29 @@ const Dashboard = () => {
 
   return (
     <>
-      <MyNavbar />
-      <h1>This is Dashboard</h1>
-      <h2>Total Storage : {storage} MB</h2>
-      <h2>Total Collections : {collectionCount} </h2>
-      <h2>Total Documents : {documentCount}</h2>
-      <div
-        className="App"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
+      <Header />
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="dashboardCard card-1">
+              <h3>Total Storage : {storage} MB</h3>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="dashboardCard card-2">
+              <h3>Total Collections: {collectionCount} </h3>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="dashboardCard card-3">
+              <h3>Total Documents: {documentCount}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="dashboard">
         <Plot
           data={[
             {
