@@ -21,6 +21,10 @@ const DBTable = () => {
   const [collectionEditing, setCollectionEditing] = useState("");
   const [documentEditing, setDocumentEditing] = useState("");
   const [fieldEditing, setFieldEditing] = useState("");
+  const [fieldValueEditing, setFieldValueEditing] = useState(false);
+  const [editingFieldValue, setEditingFieldValue] = useState("");
+  const [editingFieldId, setEditingFieldId] = useState("");
+  const [editingFieldValueId, setEditingFieldValueId] = useState("");
   const [collectionInputValue, setCollectionInputValue] = useState("");
   const [documentInputValue, setDocumentInputValue] = useState("");
   const [reloadCollction, setReloadCollection] = useState("");
@@ -83,19 +87,23 @@ const DBTable = () => {
     }
   };
 
-  const handleFieldClick = (collectionId, documentId, fieldId) => {
-    setSelectedFieldId(fieldId);
+  const handleFieldClick = (collectionId, documentId, fieldId, fiedlType) => {
+    if (selectedFieldId === fieldId) {
+      setSelectedFieldId(null);
+    } else {
+      setSelectedFieldId(fieldId);
+    }
   };
 
   const renderFieldValue = (field) => {
     return field.valueInfo.map((info) => (
-      <li className="field_value_info_container" key={info.valueId}>
+      <div className="field_value_info_container" key={info.valueId}>
         {fieldInfo(field, info)}
         <div className="field_value_info_buttons">
           <button
             className="edit_button"
             onClick={() => {
-              editValue(info.valueId);
+              editFieldValue(field.id, info);
             }}
           >
             edit
@@ -109,26 +117,61 @@ const DBTable = () => {
             delete
           </button>
         </div>
-      </li>
+      </div>
     ));
   };
 
   const fieldInfo = (field, info) => {
     if (field.type === "Map") {
       return (
-        <span className="field_value_info">
+        <li className="field_value_info">
           {info.key}: {info.value} ({info.type})
-        </span>
+        </li>
       );
     } else if (field.type === "Array") {
       return (
-        <span className="field_value_info">
+        <li className="field_value_info">
           {info.value} ({info.type})
-        </span>
+        </li>
       );
     } else {
-      return <>{info.value}</>;
+      return <span>{info.value}</span>;
     }
+  };
+
+  const editFieldValue = (fieldId, info) => {
+    setFieldValueEditing(!fieldValueEditing);
+    setEditingFieldValue(info.value);
+    setEditingFieldId(fieldId);
+    setEditingFieldValueId(info.valueId);
+  };
+
+  const handleEditingFieldValueChange = (e) => {
+    setEditingFieldValue(e.target.value);
+  };
+
+  const updateFieldValue = () => {
+    setFieldValueEditing(!fieldValueEditing);
+    const data = {
+      value: editingFieldValue,
+    };
+
+    api
+      .updateFieldValue(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        editingFieldId,
+        editingFieldValueId,
+        apiKey,
+        data
+      )
+      .then((status) => {
+        if (status == 200) {
+          console.log("update success");
+          setReloadField(!reloadField);
+        }
+      });
   };
 
   const addCollection = () => {
@@ -222,14 +265,31 @@ const DBTable = () => {
         }
       });
   };
-  const deleteFieldValue = (filedId, valueId) => {
+  const deleteFieldValue = (fieldId, valueId) => {
     api
       .deleteFieldValue(
         projectId,
         expandedCollectionId,
         expandedDocumentId,
-        filedId,
+        fieldId,
         valueId,
+        apiKey
+      )
+      .then((status) => {
+        if (status == 204) {
+          console.log("success");
+          setReloadField(!reloadField);
+        }
+      });
+  };
+
+  const deleteFieldKey = (fieldId) => {
+    api
+      .deleteFieldKey(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        fieldId,
         apiKey
       )
       .then((status) => {
@@ -275,7 +335,8 @@ const DBTable = () => {
       <div className="container">
         <div className="row">
           <span>
-            Path : http://localhost:8080/projects/{projectId}/collections/
+            Path : http://localhost:8080/api/v1/databases/projects/{projectId}
+            /collections/
             <span>
               {expandedCollectionId && (
                 <span>
@@ -393,6 +454,16 @@ const DBTable = () => {
             <h2>Fields</h2>
             <div className="database__add">
               <span onClick={() => addField()}>+ add</span>
+              <div style={{ display: fieldValueEditing ? "block" : "none" }}>
+                <input
+                  type="text"
+                  value={editingFieldValue}
+                  onChange={(e) => handleEditingFieldValueChange(e)}
+                />
+                <button onClick={() => updateFieldValue({ editingFieldValue })}>
+                  submit
+                </button>
+              </div>
               <div style={{ display: fieldEditing ? "block" : "none" }}>
                 {/* <Form onSubmit={addNewField}> */}
                 <FieldInput
@@ -440,11 +511,25 @@ const DBTable = () => {
                         className="database__field"
                         key={field.id}
                         onClick={() =>
-                          handleFieldClick(collection.id, document.id, field.id)
+                          handleFieldClick(
+                            collection.id,
+                            document.id,
+                            field.id,
+                            field.type
+                          )
                         }
                       >
                         <div>
                           {field.name} <span>({field.type}) : </span>
+                          <div className="field_buttons">
+                            <button
+                              onClick={() => {
+                                deleteFieldKey(field.id);
+                              }}
+                            >
+                              delete
+                            </button>
+                          </div>
                           {renderFieldValue(field)}
                         </div>
                       </div>

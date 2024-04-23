@@ -113,9 +113,42 @@ const api = {
       }
     ).then((response) => response.status);
   },
+  deleteFieldKey(id, collectionId, documentId, fieldId, apikey) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+        method: "DELETE",
+      }
+    ).then((response) => response.status);
+  },
   renameCollection(id, collectionId, apikey, data) {
     return fetch(
       `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}`,
+      {
+        body: JSON.stringify(data),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+        method: "PATCH",
+      }
+    ).then((response) => response.status);
+  },
+  updateFieldValue(
+    id,
+    collectionId,
+    documentId,
+    fieldId,
+    valueId,
+    apikey,
+    data
+  ) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}/value/${valueId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
