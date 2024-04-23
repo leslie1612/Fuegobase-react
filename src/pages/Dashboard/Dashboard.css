@@ -1,7 +1,7 @@
 .field_value_info_buttons {
-  display: none;
+  visibility: hidden;
 }
 
 .field_value_info_container:hover .field_value_info_buttons {
-  display: block;
+  visibility: visible;
 }

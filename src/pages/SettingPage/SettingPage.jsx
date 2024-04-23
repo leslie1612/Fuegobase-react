@@ -5,7 +5,6 @@ const SettingPage = () => {
   return (
     <>
       <MyNavbar />
-      <Header />
       <h1>This is Setting page</h1>
     </>
   );

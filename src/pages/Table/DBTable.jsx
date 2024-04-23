@@ -30,6 +30,10 @@ const DBTable = () => {
   const [fieldType, setFieldType] = useState(null);
   const [valueInfoArray, setValueInfoArray] = useState([]);
 
+  const [editFieldId, setEditFieldId] = React.useState(null);
+  const [fieldValue, setFieldValue] = useState(null);
+  const [isSingleRow, setIsSingleRow] = useState(false);
+
   const [editingShow, setEditingShow] = useState(false);
 
   React.useEffect(() => {
@@ -84,27 +88,47 @@ const DBTable = () => {
   };
 
   const renderFieldValue = (field) => {
-    let result;
-    switch (field.type) {
-      case "String":
-      case "Boolean":
-      case "Number":
-        result = `${field.valueInfo.value} (${field.type})`;
-        break;
-      case "Array":
-        result = `[ ${field.valueInfo
-          .map((info) => `${info.value} (${info.type})`)
-          .join(", ")} ]`;
-        break;
-      case "Map":
-        result = `{ ${field.valueInfo
-          .map((info) => ` ${info.key} : ${info.value} (${info.type})`)
-          .join(",\n")} }`;
-        break;
-      default:
-        result = "";
+    return field.valueInfo.map((info) => (
+      <li className="field_value_info_container" key={info.valueId}>
+        {fieldInfo(field, info)}
+        <div className="field_value_info_buttons">
+          <button
+            className="edit_button"
+            onClick={() => {
+              editValue(info.valueId);
+            }}
+          >
+            edit
+          </button>
+          <button
+            className="delete_button"
+            onClick={() => {
+              deleteFieldValue(field.id, info.valueId);
+            }}
+          >
+            delete
+          </button>
+        </div>
+      </li>
+    ));
+  };
+
+  const fieldInfo = (field, info) => {
+    if (field.type === "Map") {
+      return (
+        <span className="field_value_info">
+          {info.key}: {info.value} ({info.type})
+        </span>
+      );
+    } else if (field.type === "Array") {
+      return (
+        <span className="field_value_info">
+          {info.value} ({info.type})
+        </span>
+      );
+    } else {
+      return <>{info.value}</>;
     }
-    return <div>{result}</div>;
   };
 
   const addCollection = () => {
@@ -198,6 +222,23 @@ const DBTable = () => {
         }
       });
   };
+  const deleteFieldValue = (filedId, valueId) => {
+    api
+      .deleteFieldValue(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        filedId,
+        valueId,
+        apiKey
+      )
+      .then((status) => {
+        if (status == 204) {
+          console.log("success");
+          setReloadField(!reloadField);
+        }
+      });
+  };
 
   const handleFieldNameChange = (e) => {
     const { value } = e.target;
@@ -235,14 +276,15 @@ const DBTable = () => {
         <div className="row">
           <span>
             Path : http://localhost:8080/projects/{projectId}/collections/
-            {expandedCollectionId && (
-              <span>
-                {expandedCollectionId}
-                {expandedDocumentId && (
-                    <span>/documents/{expandedDocumentId}</span>
-                  ) && <span>/fields/{selectedFieldId}</span>}
-              </span>
-            )}
+            <span>
+              {expandedCollectionId && (
+                <span>
+                  {expandedCollectionId}/documents
+                  {expandedDocumentId && `/${expandedDocumentId}/fields`}
+                  {selectedFieldId && `/${selectedFieldId}`}
+                </span>
+              )}
+            </span>
           </span>
         </div>
         <div className="row">
@@ -401,7 +443,10 @@ const DBTable = () => {
                           handleFieldClick(collection.id, document.id, field.id)
                         }
                       >
-                        {field.name} : {renderFieldValue(field)}
+                        <div>
+                          {field.name} <span>({field.type}) : </span>
+                          {renderFieldValue(field)}
+                        </div>
                       </div>
                     ))}
                   </div>

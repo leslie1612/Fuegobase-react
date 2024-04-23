@@ -51,7 +51,6 @@ const Dashboard = () => {
   return (
     <>
       <MyNavbar />
-      <Header />
       <h1>This is Dashboard</h1>
       <h2>Total Storage : {storage} MB</h2>
       <h2>Total Collections : {collectionCount} </h2>
