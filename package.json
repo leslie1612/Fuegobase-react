@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^7.8.1",
+    "@mantine/hooks": "^7.8.1",
     "@tanstack/react-table": "^8.16.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",

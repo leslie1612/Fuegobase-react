@@ -38,6 +38,15 @@ const api = {
       }
     ).then((response) => response.json());
   },
+  addNewProject(data) {
+    return fetch(`http://localhost:8080/api/v1/databases/projects`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    }).then((response) => response.status);
+  },
   addNewCollection(id, apikey, data) {
     return fetch(
       `http://localhost:8080/api/v1/databases/projects/${id}/collections`,
@@ -76,6 +85,15 @@ const api = {
         method: "POST",
       }
     ).then((response) => response.status);
+  },
+  deleteProject(id, apikey) {
+    return fetch(`http://localhost:8080/api/v1/databases/projects/${id}`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        "x-api-key": apikey,
+      }),
+      method: "DELETE",
+    }).then((response) => response.status);
   },
   deleteCollection(id, collectionId, apikey) {
     return fetch(
@@ -128,6 +146,19 @@ const api = {
   renameCollection(id, collectionId, apikey, data) {
     return fetch(
       `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}`,
+      {
+        body: JSON.stringify(data),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+        method: "PATCH",
+      }
+    ).then((response) => response.status);
+  },
+  renameDocument(id, collectionId, documentId, apikey, data) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -198,5 +229,16 @@ const api = {
       `http://localhost:8080/api/v1/databases/whitelist/${id}/domain/${domainId}`,
       { method: "DELETE" }
     ).then((response) => response.status);
+  },
+  getDataByFilter(id, collectionId, filter, value, type, apikey) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}?filter=${filter}&value=${value}&type=${type}`,
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+      }
+    ).then((response) => response.json());
   },
 };

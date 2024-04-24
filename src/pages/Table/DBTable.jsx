@@ -18,7 +18,12 @@ const DBTable = () => {
   const [expandedDocumentId, setExpandedDocumentId] = useState(null);
   const [selectedFieldId, setSelectedFieldId] = useState("");
   const [collectionEditing, setCollectionEditing] = useState("");
+  const [renameCollectionEditing, setRenameCollectionEditing] = useState(false);
+  const [renameCollectionInputValue, setRenameCollectionInputValue] =
+    useState("");
   const [documentEditing, setDocumentEditing] = useState("");
+  const [renameDocumentEditing, setRenameDocumentEditing] = useState(false);
+  const [renameDocumentInputValue, setRenameDocumentInputValue] = useState("");
   const [fieldEditing, setFieldEditing] = useState("");
   const [fieldValueEditing, setFieldValueEditing] = useState(false);
   const [editingFieldValue, setEditingFieldValue] = useState("");
@@ -241,14 +246,66 @@ const DBTable = () => {
     setValueInfoArray([{ key: "", type: "String", value: "" }]);
   };
 
-  const deleteCollection = () => {
+  const handleCollectionRename = (collection) => {
+    setRenameCollectionEditing(!renameCollectionEditing);
+    setRenameCollectionInputValue(collection.name);
+    console.log(expandedCollectionId);
+  };
+
+  const renameCollection = () => {
+    console.log(expandedCollectionId);
+    const data = {
+      name: renameCollectionInputValue,
+    };
     api
-      .deleteCollection(projectId, expandedCollectionId, apiKey)
+      .renameCollection(projectId, expandedCollectionId, apiKey, data)
       .then((status) => {
-        if (status == 204) {
+        if (status === 200) {
           setReloadCollection(!reloadCollction);
+          setRenameCollectionInputValue("");
+          setRenameCollectionEditing(false);
+          setExpandedCollectionId(null);
         }
       });
+  };
+
+  const handleDocumentRename = (document) => {
+    setRenameDocumentEditing(!renameDocumentEditing);
+    setRenameDocumentInputValue(document.name);
+  };
+
+  const renameDocument = () => {
+    const data = {
+      name: renameDocumentInputValue,
+    };
+    api
+      .renameDocument(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        apiKey,
+        data
+      )
+      .then((status) => {
+        if (status === 200) {
+          setReloadDocument(!reloadDocument);
+          setRenameDocumentInputValue("");
+          setRenameDocumentEditing(false);
+          setExpandedDocumentId(null);
+        }
+      });
+  };
+
+  const deleteCollection = (collection) => {
+    if (confirm(`Delete collection ${collection.name} ?`)) {
+      api
+        .deleteCollection(projectId, expandedCollectionId, apiKey)
+        .then((status) => {
+          if (status == 204) {
+            setReloadCollection(!reloadCollction);
+          }
+        });
+    }
   };
   const deleteDocument = () => {
     api
@@ -361,36 +418,53 @@ const DBTable = () => {
                   submit
                 </button>
               </div>
+              <div
+                style={{ display: renameCollectionEditing ? "block" : "none" }}
+              >
+                <input
+                  type="text"
+                  value={renameCollectionInputValue}
+                  onChange={(e) =>
+                    setRenameCollectionInputValue(e.target.value)
+                  }
+                />
+                <button onClick={() => renameCollection()}>submit</button>
+              </div>
             </div>
 
             {collections.map((collection, index) => (
-              <div
-                className="database__collection"
-                key={collection.id}
-                onClick={() => handleCollectionClick(collection.id)}
-              >
-                {collection.name}
-                {expandedCollectionId === collection.id && (
-                  <>
-                    {/* <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => handleCollectionRename()}
-                    >
-                      Rename
-                    </Button> */}
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => {
-                        deleteCollection();
-                      }}
-                    >
-                      X
-                    </Button>
-                  </>
-                )}
-              </div>
+              <>
+                <div
+                  className="database__collection"
+                  key={collection.id}
+                  onClick={() => handleCollectionClick(collection.id)}
+                >
+                  {collection.name}
+                </div>
+                <div>
+                  {expandedCollectionId === collection.id && (
+                    <>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => {
+                          deleteCollection(collection);
+                        }}
+                      >
+                        X
+                      </Button>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => {
+                          handleCollectionRename(collection);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </>
             ))}
           </div>
 
@@ -409,6 +483,16 @@ const DBTable = () => {
                   submit
                 </button>
               </div>
+              <div
+                style={{ display: renameDocumentEditing ? "block" : "none" }}
+              >
+                <input
+                  type="text"
+                  value={renameDocumentInputValue}
+                  onChange={(e) => setRenameDocumentInputValue(e.target.value)}
+                />
+                <button onClick={() => renameDocument()}>submit</button>
+              </div>
             </div>
 
             {collections.map((collection, index) => (
@@ -421,26 +505,40 @@ const DBTable = () => {
                 key={collection.id}
               >
                 {documents[collection.id]?.map((document) => (
-                  <div
-                    className="database__document"
-                    key={document.id}
-                    onClick={() =>
-                      handleDocumentClick(collection.id, document.id)
-                    }
-                  >
-                    {document.name}
-                    {expandedDocumentId === document.id && (
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => {
-                          deleteDocument();
-                        }}
-                      >
-                        X
-                      </Button>
-                    )}
-                  </div>
+                  <>
+                    <div
+                      className="database__document"
+                      key={document.id}
+                      onClick={() =>
+                        handleDocumentClick(collection.id, document.id)
+                      }
+                    >
+                      {document.name}
+                    </div>
+                    <div>
+                      {expandedDocumentId === document.id && (
+                        <>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => {
+                              deleteDocument(document);
+                            }}
+                          >
+                            X
+                          </Button>
+                          <Button
+                            variant="outline-primary"
+                            onClick={() => {
+                              handleDocumentRename(document);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </>
                 ))}
               </div>
             ))}
