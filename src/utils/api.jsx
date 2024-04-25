@@ -86,6 +86,19 @@ const api = {
       }
     ).then((response) => response.status);
   },
+  addNewFieldValue(id, collectionId, documentId, fieldId, data, apikey) {
+    return fetch(
+      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
+      {
+        body: JSON.stringify(data),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "x-api-key": apikey,
+        }),
+        method: "POST",
+      }
+    ).then((response) => response.status);
+  },
   deleteProject(id, apikey) {
     return fetch(`http://localhost:8080/api/v1/databases/projects/${id}`, {
       headers: new Headers({

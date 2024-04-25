@@ -37,8 +37,9 @@ const DBTable = () => {
   const [fieldName, setFieldName] = useState(null);
   const [fieldType, setFieldType] = useState(null);
   const [valueInfoArray, setValueInfoArray] = useState([]);
+  const [isUpdateField, setIsUpdateField] = useState(false);
 
-  const [editFieldId, setEditFieldId] = React.useState(null);
+  const [editFieldId, setEditFieldId] = useState(null);
   const [fieldValue, setFieldValue] = useState(null);
   const [isSingleRow, setIsSingleRow] = useState(false);
 
@@ -69,9 +70,11 @@ const DBTable = () => {
   const handleCollectionClick = (collectionId) => {
     if (expandedCollectionId === collectionId) {
       setExpandedCollectionId(null);
+      setExpandedDocumentId(null);
+      setSelectedFieldId(null);
     } else {
       setExpandedCollectionId(collectionId);
-      setExpandedDocumentId("");
+      setExpandedDocumentId(null);
       api.getDocuments(projectId, collectionId, apiKey).then((json) => {
         setDocuments({ ...documents, [collectionId]: json.data });
       });
@@ -81,6 +84,7 @@ const DBTable = () => {
   const handleDocumentClick = (collectionId, documentId) => {
     if (expandedDocumentId === documentId) {
       setExpandedDocumentId(null);
+      setSelectedFieldId(null);
     } else {
       setExpandedDocumentId(documentId);
       api
@@ -100,29 +104,59 @@ const DBTable = () => {
   };
 
   const renderFieldValue = (field) => {
-    return field.valueInfo.map((info) => (
-      <div className="field_value_info_container" key={info.valueId}>
-        {fieldInfo(field, info)}
-        <div className="field_value_info_buttons">
+    if (field.type === "Array" || field.type === "Map") {
+      return (
+        <>
+          {field.valueInfo.map((info) => (
+            <div className="field_value_info_container" key={info.valueId}>
+              {fieldInfo(field, info)}
+              <div className="field_value_info_buttons">
+                <button
+                  className="edit_button"
+                  onClick={() => {
+                    editFieldValue(field.id, info);
+                  }}
+                >
+                  edit
+                </button>
+                <button
+                  className="delete_button"
+                  onClick={() => {
+                    deleteFieldValue(field.id, info.valueId);
+                  }}
+                >
+                  delete
+                </button>
+              </div>
+            </div>
+          ))}
           <button
-            className="edit_button"
+            className="add_button"
             onClick={() => {
-              editFieldValue(field.id, info);
+              addFieldValue(field);
             }}
           >
-            edit
+            Add New
           </button>
-          <button
-            className="delete_button"
-            onClick={() => {
-              deleteFieldValue(field.id, info.valueId);
-            }}
-          >
-            delete
-          </button>
+        </>
+      );
+    } else {
+      return field.valueInfo.map((info) => (
+        <div className="field_value_info_container" key={info.valueId}>
+          {fieldInfo(field, info)}
+          <div className="field_value_info_buttons">
+            <button
+              className="edit_button"
+              onClick={() => {
+                editFieldValue(field.id, info);
+              }}
+            >
+              edit
+            </button>
+          </div>
         </div>
-      </div>
-    ));
+      ));
+    }
   };
 
   const fieldInfo = (field, info) => {
@@ -217,33 +251,72 @@ const DBTable = () => {
 
   const addField = () => {
     setFieldEditing(!fieldEditing);
+    setIsUpdateField(false);
   };
+
+  const cancelFieldEditing = () => {
+    setFieldEditing(!fieldEditing);
+    setFieldName("");
+    setFieldType("none");
+    setValueInfoArray([{ key: "", type: "none", value: "" }]);
+  };
+  const addFieldValue = (field) => {
+    setFieldEditing(!fieldEditing);
+    setFieldName(field.name);
+    setFieldType(field.type);
+    setIsUpdateField(true);
+    setEditingFieldId(field.id);
+  };
+
   const addNewField = () => {
     setFieldEditing(!fieldEditing);
 
-    const data = {
-      type: fieldType,
-      key: fieldName,
-      valueInfo: valueInfoArray,
-    };
+    if (isUpdateField) {
+      const data = {
+        key: valueInfoArray[0].key,
+        value: valueInfoArray[0].value,
+        type: valueInfoArray[0].type,
+      };
 
-    api
-      .addNewField(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        apiKey,
-        data
-      )
-      .then((status) => {
-        if (status == 201) {
-          setReloadField(!reloadField);
-        }
-      });
+      api
+        .addNewFieldValue(
+          projectId,
+          expandedCollectionId,
+          expandedDocumentId,
+          editingFieldId,
+          data,
+          apiKey
+        )
+        .then((status) => {
+          if (status == 200) {
+            setReloadField(!reloadField);
+          }
+        });
+    } else {
+      const data = {
+        type: fieldType,
+        key: fieldName,
+        valueInfo: valueInfoArray,
+      };
+
+      api
+        .addNewField(
+          projectId,
+          expandedCollectionId,
+          expandedDocumentId,
+          apiKey,
+          data
+        )
+        .then((status) => {
+          if (status == 201) {
+            setReloadField(!reloadField);
+          }
+        });
+    }
 
     setFieldName("");
     setFieldType("none");
-    setValueInfoArray([{ key: "", type: "String", value: "" }]);
+    setValueInfoArray([{ key: "", type: "none", value: "" }]);
   };
 
   const handleCollectionRename = (collection) => {
@@ -559,7 +632,6 @@ const DBTable = () => {
                 </button>
               </div>
               <div style={{ display: fieldEditing ? "block" : "none" }}>
-                {/* <Form onSubmit={addNewField}> */}
                 <FieldInput
                   fieldName={fieldName}
                   handleFieldNameChange={handleFieldNameChange}
@@ -569,13 +641,14 @@ const DBTable = () => {
                   handleValueInfoChange={handleValueInfoChange}
                   addNewValue={addNewValue}
                   setInitialValueInfo={setInitialValueInfo}
+                  isUpdateField={isUpdateField}
                 />
                 <Button variant="primary" onClick={addNewField}>
                   Submit
                 </Button>
                 <Button
                   variant="secondary"
-                  onClick={() => setFieldEditing(!fieldEditing)}
+                  onClick={() => cancelFieldEditing()}
                 >
                   Cancel
                 </Button>
