@@ -7,12 +7,23 @@ import SettingPage from "./pages/SettingPage/SettingPage";
 // import MyNavbar from "./components/MyNavbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import QueryIndex from "./pages/Query/Query";
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./pages/Login/Login";
+import Registration from "./pages/Registration/Registration";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
+    },
+    {
+      path: "/signup",
+      element: <Registration />,
+    },
+    {
+      path: "/signin",
+      element: <Login />,
     },
     {
       path: "/table",
@@ -33,9 +44,9 @@ function App() {
   ]);
   return (
     <>
-      {/* <MyNavbar /> */}
-      <Sidebar />
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   );
 }

@@ -1,9 +1,30 @@
 const api = {
   //   hostname: "/api/v1",
-  getProjects() {
-    return fetch(`http://localhost:8080/api/v1/databases/projects`).then(
-      (response) => response.json()
-    );
+  signin(data) {
+    return fetch(`http://localhost:8080/api/v1/user/signin`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    });
+  },
+  signup(data) {
+    return fetch(`http://localhost:8080/api/v1/user/signup`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    });
+  },
+  getProjects(jwtToken) {
+    return fetch(`http://localhost:8080/api/v1/databases/projects`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    }).then((response) => response.json());
   },
   getCollections(id, apikey) {
     return fetch(

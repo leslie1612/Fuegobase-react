@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "./root.css";
 
 const Root = () => {
+  const { token, loading } = useContext(AuthContext);
   const [opened, setOpened] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [reloadProjects, setReloadProjects] = useState(false);
 
   React.useEffect(() => {
-    api.getProjects().then((json) => {
+    api.getProjects(token).then((json) => {
       setProjects(json.data);
     });
   }, [reloadProjects]);
