@@ -12,11 +12,8 @@ const FieldInput = ({
   addNewValue,
   setInitialValueInfo,
   isUpdateField,
+  isInfoValueNumber,
 }) => {
-  // const [isBoolean, setIsBoolean] = React.useState(false);
-  // const [isArray, setIsArray] = React.useState(false);
-  // const [isMap, setIsMap] = React.useState(false);
-
   React.useEffect(() => {
     setInitialValueInfo();
   }, []);
@@ -70,28 +67,30 @@ const FieldInput = ({
           </Form.Select>
         ) : fieldType === "Array" ? (
           <>
-            {valueInfoArray.map((value, index) => (
-              <div key={index}>
-                <Form.Label>Type</Form.Label>
-                <Form.Select
-                  value={value.type}
-                  onChange={(e) => handleValueInfoChange(e, index, "type")}
-                >
-                  <option value="none" disabled>
-                    --select--
-                  </option>
-                  <option value="String">String</option>
-                  <option value="Number">Number</option>
-                </Form.Select>
-                <Form.Group as={Col} controlId="formGridValue">
-                  <Form.Label>Value</Form.Label>
-                  <Form.Control
-                    value={value.value}
-                    onChange={(e) => handleValueInfoChange(e, index, "value")}
-                  />
-                </Form.Group>
-              </div>
-            ))}
+            {valueInfoArray &&
+              valueInfoArray.map((value, index) => (
+                <div key={index}>
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select
+                    value={value.type}
+                    onChange={(e) => handleValueInfoChange(e, index, "type")}
+                  >
+                    <option value="none" disabled>
+                      --select--
+                    </option>
+                    <option value="String">String</option>
+                    <option value="Number">Number</option>
+                  </Form.Select>
+                  <Form.Group as={Col} controlId="formGridValue">
+                    <Form.Label>Value</Form.Label>
+                    <Form.Control
+                      type={isInfoValueNumber ? "number" : "text"}
+                      value={value.value}
+                      onChange={(e) => handleValueInfoChange(e, index, "value")}
+                    />
+                  </Form.Group>
+                </div>
+              ))}
             <button
               style={{ display: isUpdateField ? "none" : "block" }}
               onClick={() => {
@@ -103,35 +102,38 @@ const FieldInput = ({
           </>
         ) : fieldType === "Map" ? (
           <>
-            {valueInfoArray.map((value, index) => (
-              <div key={index}>
-                <Form.Group as={Col} controlId="formGridValue">
-                  <Form.Label>Key</Form.Label>
-                  <Form.Control
-                    value={value.key}
-                    onChange={(e) => handleValueInfoChange(e, index, "key")}
-                  />
-                </Form.Group>
-                <Form.Label>Type</Form.Label>
-                <Form.Select
-                  value={value.type}
-                  onChange={(e) => handleValueInfoChange(e, index, "type")}
-                >
-                  <option value="none" disabled>
-                    --select--
-                  </option>
-                  <option value="String">String</option>
-                  <option value="Number">Number</option>
-                </Form.Select>
-                <Form.Group as={Col} controlId="formGridValue">
-                  <Form.Label>Value</Form.Label>
-                  <Form.Control
-                    value={value.value}
-                    onChange={(e) => handleValueInfoChange(e, index, "value")}
-                  />
-                </Form.Group>
-              </div>
-            ))}
+            {valueInfoArray &&
+              valueInfoArray.map((value, index) => (
+                <div key={index}>
+                  <Form.Group as={Col} controlId="formGridValue">
+                    <Form.Label>Key</Form.Label>
+                    <Form.Control
+                      value={value.key}
+                      onChange={(e) => handleValueInfoChange(e, index, "key")}
+                    />
+                  </Form.Group>
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select
+                    value={value.type}
+                    onChange={(e) => handleValueInfoChange(e, index, "type")}
+                  >
+                    <option value="none" disabled>
+                      --select--
+                    </option>
+                    <option value="String">String</option>
+                    <option value="Number">Number</option>
+                  </Form.Select>
+                  <Form.Group as={Col} controlId="formGridValue">
+                    <Form.Label>Value</Form.Label>
+                    <Form.Control
+                      type={isInfoValueNumber ? "number" : "text"}
+                      value={value.value}
+                      onChange={(e) => handleValueInfoChange(e, index, "value")}
+                    />
+                  </Form.Group>
+                  <h1>{isInfoValueNumber}</h1>
+                </div>
+              ))}
             <button
               style={{ display: isUpdateField ? "none" : "block" }}
               onClick={() => {
@@ -141,6 +143,12 @@ const FieldInput = ({
               +
             </button>
           </>
+        ) : fieldType === "Number" ? (
+          <Form.Control
+            type="number"
+            value={(valueInfoArray[0] && valueInfoArray[0].value) || ""}
+            onChange={(e) => handleValueInfoChange(e, 0, "value")}
+          />
         ) : (
           <Form.Control
             value={(valueInfoArray[0] && valueInfoArray[0].value) || ""}

@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Layout from "../../components/Layout";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-
-import Header from "../../components/Header";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./query.css";
-import FieldInput from "../Table/FieldInput";
 
 const QueryIndex = () => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const projectId = searchParams.get("id");
-  const apiKey = searchParams.get("apikey");
+  const { token } = useContext(AuthContext);
+  const { projectId } = useParams();
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState("");
   const [fieldKeyInputValue, setFieldKeyInputValue] = useState("");
@@ -29,7 +23,7 @@ const QueryIndex = () => {
 
   React.useEffect(() => {
     if (projectId) {
-      api.getCollections(projectId, apiKey).then((json) => {
+      api.getCollections(projectId, token).then((json) => {
         setCollections(json.data);
       });
     }
@@ -75,7 +69,7 @@ const QueryIndex = () => {
           fieldKeyInputValue,
           valueInputValue,
           fieldType,
-          apiKey
+          token
         )
         .then((json) => {
           if (json.data.length > 0) {
@@ -113,138 +107,141 @@ const QueryIndex = () => {
 
   return (
     <>
-      <Header />
-      <Container>
-        {opened && (
+      <Layout>
+        <Container>
+          {opened && (
+            <Row>
+              <Col>Query Path : </Col>
+              <Col>{queryPath}</Col>
+            </Row>
+          )}
+
           <Row>
-            <Col>Query Path : </Col>
-            <Col>{queryPath}</Col>
-          </Row>
-        )}
-
-        <Row>
-          <Col>Collection: </Col>
-          <Col>
-            <Form.Select
-              aria-label="Select number"
-              value={selectedCollection || "none"}
-              onChange={(e) => {
-                handleCollectionChange(e.target.value);
-              }}
-            >
-              <option value="none" disabled defaultValue>
-                choose a collection name
-              </option>
-              {collections.map((collection) => (
-                <option key={collection.id} value={collection.id}>
-                  {collection.name}
+            <Col>Collection: </Col>
+            <Col>
+              <Form.Select
+                aria-label="Select number"
+                value={selectedCollection || "none"}
+                onChange={(e) => {
+                  handleCollectionChange(e.target.value);
+                }}
+              >
+                <option value="none" disabled defaultValue>
+                  choose a collection name
                 </option>
-              ))}
-            </Form.Select>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm></Col>
-          <Col sm>Field key : </Col>
-          <Col sm></Col>
-          <Col sm>Value</Col>
-          <Col sm>Type</Col>
-        </Row>
-        <Row>
-          <Col sm>WHERE</Col>
-          <Col sm>
-            <input
-              type="text"
-              value={fieldKeyInputValue}
-              onChange={(e) => {
-                handleFieldKeyChange(e.target.value);
-              }}
-            />
-          </Col>
-          <Col sm>==</Col>
-          <Col sm>
-            <input
-              type="text"
-              value={valueInputValue}
-              onChange={(e) => {
-                handleValueInputChange(e.target.value);
-              }}
-            />
-          </Col>
-          <Col sm>
-            <Form.Select
-              value={fieldType || "none"}
-              onChange={(e) => handleTypeChange(e.target.value)}
-            >
-              <option value="none" disabled>
-                --select--
-              </option>
-              <option value="String">String</option>
-              <option value="Number">Number</option>
-            </Form.Select>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={5}></Col>
-          <Col sm={4}></Col>
-          <Col sm={1}>
-            <Button
-              variant="outline-secondary"
-              onClick={() => {
-                clearInput();
-              }}
-            >
-              Clear
-            </Button>
-          </Col>
-          <Col sm={1}>
-            <Button
-              variant="outline-primary"
-              onClick={() => {
-                queryData();
-              }}
-            >
-              Submit
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+                {collections &&
+                  collections.map((collection) => (
+                    <option key={collection.id} value={collection.id}>
+                      {collection.name}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm></Col>
+            <Col sm>Field key : </Col>
+            <Col sm></Col>
+            <Col sm>Value</Col>
+            <Col sm>Type</Col>
+          </Row>
+          <Row>
+            <Col sm>WHERE</Col>
+            <Col sm>
+              <input
+                type="text"
+                value={fieldKeyInputValue}
+                onChange={(e) => {
+                  handleFieldKeyChange(e.target.value);
+                }}
+              />
+            </Col>
+            <Col sm>==</Col>
+            <Col sm>
+              <input
+                type="text"
+                value={valueInputValue}
+                onChange={(e) => {
+                  handleValueInputChange(e.target.value);
+                }}
+              />
+            </Col>
+            <Col sm>
+              <Form.Select
+                value={fieldType || "none"}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <option value="none" disabled>
+                  --select--
+                </option>
+                <option value="String">String</option>
+                <option value="Number">Number</option>
+              </Form.Select>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={5}></Col>
+            <Col sm={4}></Col>
+            <Col sm={1}>
+              <Button
+                variant="outline-secondary"
+                onClick={() => {
+                  clearInput();
+                }}
+              >
+                Clear
+              </Button>
+            </Col>
+            <Col sm={1}>
+              <Button
+                variant="outline-primary"
+                onClick={() => {
+                  queryData();
+                }}
+              >
+                Submit
+              </Button>
+            </Col>
+          </Row>
+        </Container>
 
-      <div>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Document ID </th>
-              <th scope="col">Document Name</th>
-              <th scope="col">Field Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {documentData[0] === -1 ? (
+        <div>
+          <table className="table">
+            <thead className="thead-light">
               <tr>
-                <td colSpan="3">No data</td>
+                <th scope="col">Document ID </th>
+                <th scope="col">Document Name</th>
+                <th scope="col">Field Value</th>
               </tr>
-            ) : (
-              documentData.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    {item.fields.map((field) => (
-                      <div key={field.id}>
-                        <span>
-                          <strong>{field.name}: </strong>
-                          <span>{handleFieldValue(field)}</span>
-                        </span>
-                      </div>
-                    ))}
-                  </td>
+            </thead>
+            <tbody>
+              {documentData[0] === -1 ? (
+                <tr>
+                  <td colSpan="3">No data</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                documentData &&
+                documentData.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      {item.fields.map((field) => (
+                        <div key={field.id}>
+                          <span>
+                            <strong>{field.name}: </strong>
+                            <span>{handleFieldValue(field)}</span>
+                          </span>
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Layout>
     </>
   );
 };

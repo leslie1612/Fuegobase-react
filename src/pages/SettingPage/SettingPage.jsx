@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import MyNavbar from "../../components/MyNavbar";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import Header from "../../components/Header";
+import Layout from "../../components/Layout";
 
 const SettingPage = () => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const projectId = searchParams.get("id");
-  const apiKey = searchParams.get("apikey");
+  const [apiKey, setApiKey] = useState("");
+  const { projectId } = useParams();
   const [domainName, setDomainName] = useState([]);
   const [domainNameInputValue, setDomainNameInputValue] = useState("");
   const [reloadPage, setReloadPage] = useState(false);
@@ -17,7 +14,8 @@ const SettingPage = () => {
   useEffect(() => {
     if (projectId) {
       api.getDomainWhiteList(projectId).then((json) => {
-        setDomainName(json.data);
+        setDomainName(json.data.domain);
+        setApiKey(json.data.apiKey);
       });
     }
   }, [projectId, reloadPage]);
@@ -48,67 +46,69 @@ const SettingPage = () => {
 
   return (
     <>
-      <Header />
-      <div className="container setting-page">
-        <Table striped className="table-container">
-          <thead>
-            <tr>
-              <th>Project API Key : {apiKey}</th>
-              <th></th>
-            </tr>
-          </thead>
-        </Table>
+      <Layout>
+        <div className="container setting-page">
+          <Table striped className="table-container">
+            <thead>
+              <tr>
+                <th>Project API Key : {apiKey}</th>
+                <th></th>
+              </tr>
+            </thead>
+          </Table>
 
-        <Table striped className="table-container">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Authorized domain</th>
-              <th>Operations</th>
-            </tr>
-          </thead>
-          <tbody>
-            {domainName.map((domain, index) => (
-              <tr key={domain.id}>
-                <td>{index + 1}</td>
-                <td>{domain.domainName}</td>
+          <Table striped className="table-container">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Authorized domain</th>
+                <th>Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+              {domainName &&
+                domainName.map((domain, index) => (
+                  <tr key={domain.id}>
+                    <td>{index + 1}</td>
+                    <td>{domain.domainName}</td>
+                    <td>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => {
+                          deletetDomain(domain.id);
+                        }}
+                      >
+                        X
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              <tr>
+                <td></td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="Enter new domain"
+                    value={domainNameInputValue}
+                    onChange={(e) => {
+                      handleDomainNameChange(e);
+                    }}
+                  />
+                </td>
                 <td>
                   <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => {
-                      deletetDomain(domain.id);
-                    }}
+                    variant="outline-primary"
+                    onClick={() => addNewDomain()}
                   >
-                    X
+                    add new domain
                   </Button>
                 </td>
               </tr>
-            ))}
-            <tr>
-              <td></td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Enter new domain"
-                  value={domainNameInputValue}
-                  onChange={(e) => {
-                    handleDomainNameChange(e);
-                  }}
-                />
-              </td>
-              <td>
-                <Button
-                  variant="outline-primary"
-                  onClick={() => addNewDomain()}
-                >
-                  add new domain
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
+            </tbody>
+          </Table>
+        </div>
+      </Layout>
     </>
   );
 };
