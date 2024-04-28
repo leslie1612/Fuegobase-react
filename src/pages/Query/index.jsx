@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
+import API from "../../utils/api";
 import "./query.css";
 
 const QueryIndex = () => {
@@ -23,7 +24,7 @@ const QueryIndex = () => {
 
   React.useEffect(() => {
     if (projectId) {
-      api.getCollections(projectId, token).then((json) => {
+      API.getCollections(projectId, token).then((json) => {
         setCollections(json.data);
       });
     }
@@ -62,27 +63,25 @@ const QueryIndex = () => {
     ) {
       alert("Every field must be required.");
     } else {
-      api
-        .getDataByFilter(
-          projectId,
-          selectedCollection,
-          fieldKeyInputValue,
-          valueInputValue,
-          fieldType,
-          token
-        )
-        .then((json) => {
-          if (json.data.length > 0) {
-            console.log(JSON.stringify(json.data));
-            setDocumentData(json.data);
-            setOpened(true);
-            setQueryPath(
-              `http://localhost:8080/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
-            );
-          } else {
-            setDocumentData([-1]);
-          }
-        });
+      API.getDataByFilter(
+        projectId,
+        selectedCollection,
+        fieldKeyInputValue,
+        valueInputValue,
+        fieldType,
+        token
+      ).then((json) => {
+        if (json.data.length > 0) {
+          console.log(JSON.stringify(json.data));
+          setDocumentData(json.data);
+          setOpened(true);
+          setQueryPath(
+            `${host.name}/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
+          );
+        } else {
+          setDocumentData([-1]);
+        }
+      });
     }
     clearInput();
   };

@@ -1,14 +1,9 @@
-import Header from "../Header";
-import Sidebar from "../Siderbar";
-import "./layout.css";
-
-const Layout = ({ children, className }) => {
+const Landing = ({ children, className }) => {
   return (
     <>
       <div className={["layout_wrapper", className].join(" ")}>
-        <Sidebar />
+        <h1>This is landing page</h1>
         <div className="main">
-          <Header />
           <div className="content">{children}</div>
         </div>
       </div>
@@ -16,4 +11,4 @@ const Layout = ({ children, className }) => {
   );
 };
 
-export default Layout;
+export default Landing;

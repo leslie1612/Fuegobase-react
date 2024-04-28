@@ -1,9 +1,8 @@
 import React from "react";
 import Plot from "react-plotly.js";
 import { useParams } from "react-router-dom";
-import Header from "../../components/Header";
-// import SettingPage from "../SettingPage/SettingPage";
 import Layout from "../../components/Layout";
+import API from "../../utils/api";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -20,7 +19,7 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     async function fetchReadWritwData() {
-      const response = await api.getReadWriteData(projectId);
+      const response = await API.getReadWriteData(projectId);
       console.log(response);
       let jsonData = response.data;
       setDate(jsonData.map((i) => i.date.join(".")));
@@ -29,17 +28,17 @@ const Dashboard = () => {
     }
 
     async function fetchStorageData() {
-      const response = await api.getStorgae(projectId);
+      const response = await API.getStorgae(projectId);
       setStorage(response.data);
     }
 
     async function fetchCollectionData() {
-      const response = await api.getCollectionCount(projectId);
+      const response = await API.getCollectionCount(projectId);
       setCollectionCount(response.data);
     }
 
     async function fetchDocumentData() {
-      const response = await api.getDocumentCount(projectId);
+      const response = await API.getDocumentCount(projectId);
       setDocumentCount(response.data);
     }
 

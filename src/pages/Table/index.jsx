@@ -2,9 +2,10 @@ import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Layout from "../../components/Layout";
-import "./DBTable.css";
 import FieldInput from "./FieldInput";
 import Button from "react-bootstrap/Button";
+import API from "../../utils/api";
+import "./DBTable.css";
 
 const DBTable = () => {
   const { token } = useContext(AuthContext);
@@ -42,24 +43,27 @@ const DBTable = () => {
   React.useEffect(() => {
     console.log(token);
     if (projectId) {
-      api.getCollections(projectId, token).then((json) => {
+      API.getCollections(projectId, token).then((json) => {
         setCollections(json.data);
       });
     }
   }, [reloadCollction, projectId]);
 
   React.useEffect(() => {
-    api.getDocuments(projectId, expandedCollectionId, token).then((json) => {
+    API.getDocuments(projectId, expandedCollectionId, token).then((json) => {
       setDocuments({ ...documents, [expandedCollectionId]: json.data });
     });
   }, [reloadDocument]);
 
   React.useEffect(() => {
-    api
-      .getFields(projectId, expandedCollectionId, expandedDocumentId, token)
-      .then((json) => {
-        setFields({ ...fields, [expandedDocumentId]: json.data });
-      });
+    API.getFields(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      token
+    ).then((json) => {
+      setFields({ ...fields, [expandedDocumentId]: json.data });
+    });
   }, [reloadField]);
 
   const handleCollectionClick = (collectionId) => {
@@ -70,7 +74,7 @@ const DBTable = () => {
     } else {
       setExpandedCollectionId(collectionId);
       setExpandedDocumentId(null);
-      api.getDocuments(projectId, collectionId, token).then((json) => {
+      API.getDocuments(projectId, collectionId, token).then((json) => {
         setDocuments({ ...documents, [collectionId]: json.data });
       });
     }
@@ -82,7 +86,7 @@ const DBTable = () => {
       setSelectedFieldId(null);
     } else {
       setExpandedDocumentId(documentId);
-      api.getFields(projectId, collectionId, documentId, token).then((json) => {
+      API.getFields(projectId, collectionId, documentId, token).then((json) => {
         setFields({ ...fields, [documentId]: json.data });
       });
     }
@@ -193,22 +197,20 @@ const DBTable = () => {
       value: editingFieldValue,
     };
 
-    api
-      .updateFieldValue(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        editingFieldId,
-        editingFieldValueId,
-        token,
-        data
-      )
-      .then((status) => {
-        if (status == 200) {
-          console.log("update success");
-          setReloadField(!reloadField);
-        }
-      });
+    API.updateFieldValue(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      editingFieldId,
+      editingFieldValueId,
+      token,
+      data
+    ).then((status) => {
+      if (status == 200) {
+        console.log("update success");
+        setReloadField(!reloadField);
+      }
+    });
   };
 
   const addFieldValue = (field) => {
@@ -229,20 +231,18 @@ const DBTable = () => {
         type: valueInfoArray[0].type,
       };
 
-      api
-        .addNewFieldValue(
-          projectId,
-          expandedCollectionId,
-          expandedDocumentId,
-          editingFieldId,
-          data,
-          token
-        )
-        .then((status) => {
-          if (status == 200) {
-            setReloadField(!reloadField);
-          }
-        });
+      API.addNewFieldValue(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        editingFieldId,
+        data,
+        token
+      ).then((status) => {
+        if (status == 200) {
+          setReloadField(!reloadField);
+        }
+      });
     } else {
       const data = {
         type: fieldType,
@@ -250,19 +250,17 @@ const DBTable = () => {
         valueInfo: valueInfoArray,
       };
 
-      api
-        .addNewField(
-          projectId,
-          expandedCollectionId,
-          expandedDocumentId,
-          token,
-          data
-        )
-        .then((status) => {
-          if (status == 201) {
-            setReloadField(!reloadField);
-          }
-        });
+      API.addNewField(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        token,
+        data
+      ).then((status) => {
+        if (status == 201) {
+          setReloadField(!reloadField);
+        }
+      });
     }
 
     setFieldName("");
@@ -280,7 +278,7 @@ const DBTable = () => {
     const data = {
       name: myData.collectionInputValue,
     };
-    await api.addNewCollection(projectId, token, data).then((status) => {
+    await API.addNewCollection(projectId, token, data).then((status) => {
       if (status == 201) {
         setCollectionInputValue("");
         setReloadCollection(!reloadCollction);
@@ -298,14 +296,14 @@ const DBTable = () => {
     const data = {
       name: name.documentInputValue,
     };
-    await api
-      .addNewDocument(projectId, expandedCollectionId, token, data)
-      .then((status) => {
+    await API.addNewDocument(projectId, expandedCollectionId, token, data).then(
+      (status) => {
         if (status == 201) {
           setDocumentInputValue("");
           setReloadDocument(!reloadDocument);
         }
-      });
+      }
+    );
   };
 
   const addField = () => {
@@ -331,16 +329,16 @@ const DBTable = () => {
     const data = {
       name: renameCollectionInputValue,
     };
-    api
-      .renameCollection(projectId, expandedCollectionId, token, data)
-      .then((status) => {
+    API.renameCollection(projectId, expandedCollectionId, token, data).then(
+      (status) => {
         if (status === 200) {
           setReloadCollection(!reloadCollction);
           setRenameCollectionInputValue("");
           setRenameCollectionEditing(false);
           setExpandedCollectionId(null);
         }
-      });
+      }
+    );
   };
 
   const handleDocumentRename = (document) => {
@@ -352,82 +350,74 @@ const DBTable = () => {
     const data = {
       name: renameDocumentInputValue,
     };
-    api
-      .renameDocument(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        token,
-        data
-      )
-      .then((status) => {
-        if (status === 200) {
-          setReloadDocument(!reloadDocument);
-          setRenameDocumentInputValue("");
-          setRenameDocumentEditing(false);
-          setExpandedDocumentId(null);
-        }
-      });
+    API.renameDocument(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      token,
+      data
+    ).then((status) => {
+      if (status === 200) {
+        setReloadDocument(!reloadDocument);
+        setRenameDocumentInputValue("");
+        setRenameDocumentEditing(false);
+        setExpandedDocumentId(null);
+      }
+    });
   };
 
   const deleteCollection = (collection) => {
     if (confirm(`Delete collection ${collection.name} ?`)) {
-      api
-        .deleteCollection(projectId, expandedCollectionId, token)
-        .then((status) => {
+      API.deleteCollection(projectId, expandedCollectionId, token).then(
+        (status) => {
           if (status == 204) {
             setReloadCollection(!reloadCollction);
           }
-        });
+        }
+      );
     }
   };
   const deleteDocument = () => {
-    api
-      .deleteDocument(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        token
-      )
-      .then((status) => {
-        if (status == 204) {
-          setReloadDocument(!reloadDocument);
-        }
-      });
+    API.deleteDocument(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      token
+    ).then((status) => {
+      if (status == 204) {
+        setReloadDocument(!reloadDocument);
+      }
+    });
   };
   const deleteFieldValue = (fieldId, valueId) => {
-    api
-      .deleteFieldValue(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        fieldId,
-        valueId,
-        token
-      )
-      .then((status) => {
-        if (status == 204) {
-          console.log("success");
-          setReloadField(!reloadField);
-        }
-      });
+    API.deleteFieldValue(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      fieldId,
+      valueId,
+      token
+    ).then((status) => {
+      if (status == 204) {
+        console.log("success");
+        setReloadField(!reloadField);
+      }
+    });
   };
 
   const deleteFieldKey = (fieldId) => {
-    api
-      .deleteFieldKey(
-        projectId,
-        expandedCollectionId,
-        expandedDocumentId,
-        fieldId,
-        token
-      )
-      .then((status) => {
-        if (status == 204) {
-          console.log("success");
-          setReloadField(!reloadField);
-        }
-      });
+    API.deleteFieldKey(
+      projectId,
+      expandedCollectionId,
+      expandedDocumentId,
+      fieldId,
+      token
+    ).then((status) => {
+      if (status == 204) {
+        console.log("success");
+        setReloadField(!reloadField);
+      }
+    });
   };
 
   const handleFieldNameChange = (e) => {
@@ -470,7 +460,8 @@ const DBTable = () => {
         <div className="container">
           <div className="row">
             <div>
-              Path : http://localhost:8080/api/v1/databases/projects/{projectId}
+              Path : https://fuegobase.store/api/v1/databases/projects/
+              {projectId}
               /collections/
               <span>
                 {expandedCollectionId && (

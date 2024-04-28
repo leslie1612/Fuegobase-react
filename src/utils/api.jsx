@@ -1,7 +1,9 @@
-const api = {
-  //   hostname: "/api/v1",
+const API = {
+  // hostname: "/api/v1",
+  hostname: "https://fuegobase.store/api/v1",
+  // hostname: "http://localhost:8080/api/v1",
   signin(data) {
-    return fetch(`http://localhost:8080/api/v1/user/signin`, {
+    return fetch(`${this.hostname}/user/signin`, {
       body: JSON.stringify(data),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -10,7 +12,7 @@ const api = {
     });
   },
   signup(data) {
-    return fetch(`http://localhost:8080/api/v1/user/signup`, {
+    return fetch(`${this.hostname}/user/signup`, {
       body: JSON.stringify(data),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -19,7 +21,7 @@ const api = {
     });
   },
   getProjects(jwtToken) {
-    return fetch(`http://localhost:8080/api/v1/databases/projects`, {
+    return fetch(`${this.hostname}/databases/projects`, {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken}`,
@@ -27,19 +29,16 @@ const api = {
     }).then((response) => response.json());
   },
   getCollections(id, jwtToken) {
-    return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections`,
-      {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        }),
-      }
-    ).then((response) => response.json());
+    return fetch(`${this.hostname}/databases/projects/${id}/collections`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    }).then((response) => response.json());
   },
   getDocuments(projectId, collectionId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${projectId}/collections/${collectionId}/documents`,
+      `${this.hostname}/databases/projects/${projectId}/collections/${collectionId}/documents`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -50,7 +49,7 @@ const api = {
   },
   getFields(projectId, collectionId, documentId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${projectId}/collections/${collectionId}/documents/${documentId}/fields`,
+      `${this.hostname}/databases/projects/${projectId}/collections/${collectionId}/documents/${documentId}/fields`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -60,7 +59,7 @@ const api = {
     ).then((response) => response.json());
   },
   addNewProject(data, jwtToken) {
-    return fetch(`http://localhost:8080/api/v1/databases/projects`, {
+    return fetch(`${this.hostname}/databases/projects`, {
       body: JSON.stringify(data),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -70,21 +69,18 @@ const api = {
     }).then((response) => response.status);
   },
   addNewCollection(id, jwtToken, data) {
-    return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections`,
-      {
-        body: JSON.stringify(data),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        }),
-        method: "POST",
-      }
-    ).then((response) => response.status);
+    return fetch(`${this.hostname}/databases/projects/${id}/collections`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+      method: "POST",
+    }).then((response) => response.status);
   },
   addNewDocument(id, collectionId, jwtToken, data) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -97,7 +93,7 @@ const api = {
   },
   addNewField(id, collectionId, documentId, jwtToken, data) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -110,7 +106,7 @@ const api = {
   },
   addNewFieldValue(id, collectionId, documentId, fieldId, data, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -122,7 +118,7 @@ const api = {
     ).then((response) => response.status);
   },
   deleteProject(id, jwtToken) {
-    return fetch(`http://localhost:8080/api/v1/databases/projects/${id}`, {
+    return fetch(`${this.hostname}/databases/projects/${id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken}`,
@@ -132,7 +128,7 @@ const api = {
   },
   deleteCollection(id, collectionId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -144,7 +140,7 @@ const api = {
   },
   deleteDocument(id, collectionId, documentId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -156,7 +152,7 @@ const api = {
   },
   deleteFieldValue(id, collectionId, documentId, fieldId, valueId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}?valueId=${valueId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}?valueId=${valueId}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -168,7 +164,7 @@ const api = {
   },
   deleteFieldKey(id, collectionId, documentId, fieldId, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -180,7 +176,7 @@ const api = {
   },
   renameCollection(id, collectionId, jwtToken, data) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -193,7 +189,7 @@ const api = {
   },
   renameDocument(id, collectionId, documentId, jwtToken, data) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -214,7 +210,7 @@ const api = {
     data
   ) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}/value/${valueId}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}/documents/${documentId}/fields/${fieldId}/value/${valueId}`,
       {
         body: JSON.stringify(data),
         headers: new Headers({
@@ -226,32 +222,32 @@ const api = {
     ).then((response) => response.status);
   },
   getReadWriteData(id) {
-    return fetch(
-      `http://localhost:8080/api/v1/dashboard/count/readwrite/${id}`
-    ).then((response) => response.json());
-  },
-  getStorgae(id) {
-    return fetch(`http://localhost:8080/api/v1/dashboard/storage/${id}`).then(
+    return fetch(`${this.hostname}/dashboard/count/readwrite/${id}`).then(
       (response) => response.json()
     );
   },
+  getStorgae(id) {
+    return fetch(`${this.hostname}/dashboard/storage/${id}`).then((response) =>
+      response.json()
+    );
+  },
   getCollectionCount(id) {
-    return fetch(
-      `http://localhost:8080/api/v1/dashboard/collections/${id}`
-    ).then((response) => response.json());
+    return fetch(`${this.hostname}/dashboard/collections/${id}`).then(
+      (response) => response.json()
+    );
   },
   getDocumentCount(id) {
-    return fetch(`http://localhost:8080/api/v1/dashboard/documents/${id}`).then(
+    return fetch(`${this.hostname}/dashboard/documents/${id}`).then(
       (response) => response.json()
     );
   },
   getDomainWhiteList(id) {
-    return fetch(`http://localhost:8080/api/v1/databases/whitelist/${id}`).then(
+    return fetch(`${this.hostname}/databases/whitelist/${id}`).then(
       (response) => response.json()
     );
   },
   addNewDomain(id, data) {
-    return fetch(`http://localhost:8080/api/v1/databases/whitelist/${id}`, {
+    return fetch(`${this.hostname}/databases/whitelist/${id}`, {
       body: JSON.stringify(data),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -261,13 +257,13 @@ const api = {
   },
   deleteDomain(id, domainId) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/whitelist/${id}/domain/${domainId}`,
+      `${this.hostname}/databases/whitelist/${id}/domain/${domainId}`,
       { method: "DELETE" }
     ).then((response) => response.status);
   },
   getDataByFilter(id, collectionId, filter, value, type, jwtToken) {
     return fetch(
-      `http://localhost:8080/api/v1/databases/projects/${id}/collections/${collectionId}?filter=${filter}&value=${value}&type=${type}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}?filter=${filter}&value=${value}&type=${type}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",
@@ -277,3 +273,4 @@ const api = {
     ).then((response) => response.json());
   },
 };
+export default API;

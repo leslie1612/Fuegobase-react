@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Layout from "../../components/Layout";
+import API from "../../utils/api";
 
 const SettingPage = () => {
   const [apiKey, setApiKey] = useState("");
@@ -13,7 +14,7 @@ const SettingPage = () => {
 
   useEffect(() => {
     if (projectId) {
-      api.getDomainWhiteList(projectId).then((json) => {
+      API.getDomainWhiteList(projectId).then((json) => {
         setDomainName(json.data.domain);
         setApiKey(json.data.apiKey);
       });
@@ -28,7 +29,7 @@ const SettingPage = () => {
     const data = {
       domainName: domainNameInputValue,
     };
-    api.addNewDomain(projectId, data).then((status) => {
+    API.addNewDomain(projectId, data).then((status) => {
       if (status === 201) {
         setDomainNameInputValue("");
         setReloadPage(!reloadPage);
@@ -37,7 +38,7 @@ const SettingPage = () => {
   };
 
   const deletetDomain = (domainId) => {
-    api.deleteDomain(projectId, domainId).then((status) => {
+    API.deleteDomain(projectId, domainId).then((status) => {
       if (status === 204) {
         setReloadPage(!reloadPage);
       }

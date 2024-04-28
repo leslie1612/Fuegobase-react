@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
-import "./sidebar.css";
 import { AuthContext } from "../../context/AuthContext";
+import API from "../../utils/api";
+import "./sidebar.css";
 
 const Sidebar = () => {
   const { token } = useContext(AuthContext);
   const [projects, setProjects] = React.useState([]);
   React.useEffect(() => {
-    api.getProjects(token).then((json) => {
+    API.getProjects(token).then((json) => {
       setProjects(json.data);
     });
   }, []);

@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import "./root.css";
+import API from "../../utils/api";
+import "./projects.css";
 
-const Root = () => {
+const Projects = () => {
   const { token } = useContext(AuthContext);
   const [opened, setOpened] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -13,7 +14,7 @@ const Root = () => {
   const [reloadProjects, setReloadProjects] = useState(false);
 
   React.useEffect(() => {
-    api.getProjects(token).then((json) => {
+    API.getProjects(token).then((json) => {
       setProjects(json.data);
     });
   }, [reloadProjects]);
@@ -26,7 +27,7 @@ const Root = () => {
     const data = {
       name: projectName,
     };
-    api.addNewProject(data, token).then((status) => {
+    API.addNewProject(data, token).then((status) => {
       if (status === 201) {
         setReloadProjects(!reloadProjects);
         setProjectName("");
@@ -44,7 +45,7 @@ const Root = () => {
 
   const deleteProject = (project) => {
     if (confirm(`Delete project ${project.name} ?`)) {
-      api.deleteProject(project.id, token).then((status) => {
+      API.deleteProject(project.id, token).then((status) => {
         if (status === 204) {
           setReloadProjects(!reloadProjects);
         }
@@ -76,7 +77,7 @@ const Root = () => {
           projects.map((project) => (
             <Card key={project.id}>
               <Card.Body>
-                <Link to={`./table/${project.id}`}>
+                <Link to={`/table/${project.id}`}>
                   <Card.Title>{project.name}</Card.Title>
                 </Link>
               </Card.Body>
@@ -93,4 +94,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default Projects;
