@@ -14,15 +14,21 @@ const Sidebar = () => {
   }, []);
   return (
     <div className="sidebar">
-      <a className="sidebar__logo" href="./index.html"></a>
-      <div className="sidebar__title">Database Table</div>
+      <div className="sidebar__title">Fuegobase</div>
+      <a href="/projects">
+        <div className="sidebar__logo"></div>
+      </a>
+      <div className="sidebar__project__title">Database Table</div>
       <div className="sidebar__projects">
         <ul className="sidebar__project-list">
           {projects &&
             projects.map((project) => (
               <li key={project.id}>
-                <Link to={`/table/${project.id}`} className="sidebar__project">
-                  {project.name}
+                <Link
+                  to={`/table/${project.id}`}
+                  className="sidebar__project__link"
+                >
+                  <div className="sidebar__project"> {project.name}</div>
                 </Link>
               </li>
             ))}

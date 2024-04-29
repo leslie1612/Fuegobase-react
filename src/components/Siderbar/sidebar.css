@@ -1,42 +1,175 @@
-/* .sidebar {
-  width: 250px;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+ol,
+ul {
+  list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+}
+blockquote,
+q {
+  quotes: "" "";
+}
+a,
+li,
+ul,
+ol {
+  text-decoration: none;
+}
+
+.sidebar {
+  width: 300px;
   height: 100vh;
-  background-color: #333;
-  color: white;
+  background-color: #ccc5b9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
-} */
+}
 
-/* .sidebar__logo {
-  width: 100px;
-  height: 100px;
-  background-color: #ccc; /* Placeholder color 
+.sidebar__logo {
+  width: 6rem;
+  height: 6rem;
+  /* Placeholder color */
   margin-bottom: 20px;
-} */
+  background-image: url("/dalmatian.png");
+  background-size: cover;
+  /* margin: 0 auto; */
+}
 
-/* .sidebar__title {
-  font-size: 20px;
-  margin-bottom: 10px;
-} */
-
-/* .sidebar__projects {
+.sidebar__title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 1rem;
+  color: #eb5e28;
+  background-color: rgba(255, 252, 242, 0.6);
   width: 100%;
-} */
+  height: 4rem;
+  margin-top: 0;
+  text-align: center;
+  line-height: 1.2;
+}
 
-/* .sidebar__project-list {
+.sidebar__projects {
+  width: 100%;
+}
+
+.sidebar__project__title {
+  font-size: 2rem;
+  align-self: start;
+  margin: 0.5rem 1.5rem;
+  color: #403d39;
+  font-weight: 500;
+  /* border-bottom: 5px solid #403d39; */
+}
+.sidebar__project-list {
   list-style-type: none;
   padding: 0;
 }
 
 .sidebar__project {
-  color: white;
+  color: #403d39;
   text-decoration: none;
   display: block;
-  padding: 10px;
+  padding: 10px 0;
+  margin: 0 1.5rem;
+  font-size: 1.5em;
+}
+.sidebar__project__link:hover {
+  text-decoration: none;
 }
 
 .sidebar__project:hover {
-  background-color: #555;
-} */
+  /* background-color: #eb5e28; */
+  text-decoration: none;
+  color: #fffcf2;
+}

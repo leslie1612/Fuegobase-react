@@ -1,12 +1,252 @@
-/* .container {
-  display: flex;
-  flex-wrap: wrap;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+ol,
+ul {
+  list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+}
+blockquote,
+q {
+  quotes: "" "";
 }
 
-.card {
-  width: calc(50% - 20px);
-  margin: 10px;
-  text-align: center;
-  border: 1px solid #ccc;
-  padding: 20px;
+/* layout css */
+.project__layout {
+  margin-left: 50px;
+  margin-top: 100px;
+  width: 70rem;
+}
+.project_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.project_delete_btn {
+  margin-left: auto;
+}
+.project_component_container {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  top: 1rem;
+}
+
+.project_input_container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  margin: 0 15px 30px;
+  align-items: center;
+}
+.project_add_btn {
+  margin: 0 0.3rem;
+  align-self: center;
+  padding: 14px;
+}
+.project_submit {
+  background-color: #eb5e28;
+  border: #eb5e28;
+}
+.project_submit:hover {
+  background-color: #ff6f00;
+  border: #eb5e28;
+}
+.project_cancel {
+  background-color: #ccc5b9;
+  border: #ccc5b9;
+}
+.project_cancel:hover {
+  background-color: #403d39;
+  border: #ccc5b9;
+}
+
+/* delete btn */
+.project_delete_btn {
+  border-radius: 50%;
+  position: absolute;
+  z-index: 2;
+  background-color: #eb5e28;
+}
+.project_delete_btn:hover {
+  background-color: #ff6f00;
+}
+
+/* card css */
+.ag-courses_item {
+  -ms-flex-preferred-size: calc(33.33333% - 30px);
+  flex-basis: calc(33.33333% - 30px);
+  margin: 0 20px 30px;
+  overflow: hidden;
+  border-radius: 28px;
+  width: 15rem;
+  background-color: #403d39;
+}
+
+.ag-courses-item_link {
+  display: block;
+  padding: 30px 20px;
+  background-color: #403d39;
+  overflow: hidden;
+  position: relative;
+}
+.ag-courses-item_link:hover,
+.ag-courses-item_link:hover .ag-courses-item_date {
+  text-decoration: none;
+  color: #fff;
+}
+.ag-courses-item_link:hover .ag-courses-item_bg {
+  -webkit-transform: scale(10);
+  -ms-transform: scale(10);
+  transform: scale(10);
+}
+.ag-courses-item_title {
+  min-height: 87px;
+  margin: 0 0 25px;
+
+  overflow: hidden;
+
+  font-weight: bold;
+  font-size: 30px;
+  color: #fff;
+
+  z-index: 2;
+  position: relative;
+}
+.ag-courses-item_date-box {
+  font-size: 18px;
+  color: #fff;
+
+  z-index: 2;
+  position: relative;
+}
+.ag-courses-item_date {
+  font-weight: bold;
+  color: #ccc5b9;
+
+  -webkit-transition: color 0.5s ease;
+  -o-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+.ag-courses-item_bg {
+  height: 128px;
+  width: 128px;
+  background-color: #ccc5b9;
+
+  z-index: 1;
+  position: absolute;
+  top: -75px;
+  right: -75px;
+
+  border-radius: 50%;
+
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+/* .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+  background-color: #3ecd5e;
+}
+.ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+  background-color: #e44002;
+}
+.ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+  background-color: #952aff;
+}
+.ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+  background-color: #cd3e94;
+}
+.ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+  background-color: #4c49ea;
 } */
