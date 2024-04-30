@@ -1,0 +1,11 @@
+.header__container {
+  background-color: #403d39;
+  height: 4rem;
+}
+.header__item {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+.header__link {
+  color: #fffcf2;
+}

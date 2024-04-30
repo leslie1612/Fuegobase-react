@@ -15,20 +15,24 @@ li {
   display: block;
 }
 
-/* DBTable.css */
-
+/* layout */
 .container {
-  margin-top: 20px;
-  display: block;
-  background-color: rgb(255, 255, 255);
+  margin-top: 10rem;
+  background-color: #5b5751;
+  font-size: 1.2rem;
 }
-
-.row {
+/* .row {
   margin-bottom: 20px;
+} */
+.col {
+  padding: 10px 20px;
+  border: 0.5px rgb(255, 255, 255) solid;
 }
 
-.col {
-  padding: 0 15px;
+/* title */
+.table__path {
+  font-size: 1.5rem;
+  padding: 1rem;
 }
 
 .database__add {
@@ -36,46 +40,115 @@ li {
 }
 
 .database__collection,
-.database__document,
-.database__field {
-  width: 80%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 5px;
+.database__document {
+  padding: 8px;
   cursor: pointer;
 }
 
-.field_buttons {
-  margin-top: 5px;
+.database__table__item {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  /* background-color: #fffcf2; */
 }
 
-.field_value_info_container {
-  margin-top: 5px;
-}
-
-.field_value_info_buttons button {
-  margin-right: 5px;
-}
-
-.edit_button {
-  background-color: #007bff;
+/* db button */
+.database__delete__btn {
+  background-color: #ccc5b9;
+  border: #ccc5b9;
   color: white;
   border: none;
-  padding: 3px 8px;
-  margin-right: 5px;
+  cursor: pointer;
+  margin: 0 0 0 5px;
+}
+.database__delete__btn:hover {
+  background-color: #403d39;
+  border: #ccc5b9;
+}
+.database__edit__btn {
+  background-color: #eb5e28;
+  border: #eb5e28;
+  color: white;
+  border: none;
+  margin: 0 0 0 5px;
   cursor: pointer;
 }
-
-.edit_button:hover {
-  background-color: #0056b3;
+.database__edit__btn:hover {
+  background-color: #ff6f00;
+  border: #eb5e28;
 }
 
-.btn {
-  text-align: end;
+.database__add__title {
+  padding: 8px;
+}
+.database__submit__btn {
+  background-color: #eb5e28;
+  border: #eb5e28;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+/* collection */
+.database__collection,
+.database__document {
+  width: 70%;
+}
+.db__collection__selected {
+  background-color: #fffcf2;
+}
+
+/* add area */
+.database__add__group {
+  padding: 20px 0 0 0;
+}
+.database__add__input {
+  background-color: #fffcf2;
+  width: 70%;
+  padding: 5px;
+}
+.database__submit__btn {
+  background-color: #eb5e28;
+  border: #eb5e28;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+/* field column */
+.database__field {
+  border: 2px white solid;
+  width: 100%;
+  cursor: pointer;
+}
+.database__field__key {
+  display: flex;
+  align-items: center;
+  height: 36px;
+}
+.database__field__name {
+  padding: 8px;
+}
+.database__field__type {
+  margin-left: auto;
+}
+
+/* field value info */
+.field_value_info_container {
+  display: flex;
+  align-items: center;
+  height: 36px;
+}
+.field__value__info__name {
+  text-indent: 1.5em;
+}
+.field_value_info_buttons {
+  margin-left: auto;
 }
 
 /* FieldInput.css */
-
 .form-group {
   margin-bottom: 10px;
 }
@@ -97,7 +170,7 @@ li {
   margin-right: 5px;
 }
 
-.delete_button,
+/* .delete_button,
 .field_buttons {
   background-color: #ff0000;
   color: white;
@@ -105,4 +178,4 @@ li {
   padding: 3px 8px;
   margin-right: 5px;
   cursor: pointer;
-}
+} */

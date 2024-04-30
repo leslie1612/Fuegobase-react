@@ -107,35 +107,29 @@ const DBTable = () => {
           {field.valueInfo &&
             field.valueInfo.map((info) => (
               <div className="field_value_info_container" key={info.valueId}>
-                {fieldInfo(field, info)}
+                <div className="field__value__info__name">
+                  {fieldInfo(field, info)}
+                </div>
                 <div className="field_value_info_buttons">
-                  <button
-                    className="edit_button"
+                  <Button
+                    className="database__edit__btn"
                     onClick={() => {
                       editFieldValue(field.id, info);
                     }}
                   >
                     edit
-                  </button>
-                  <button
-                    className="delete_button"
+                  </Button>
+                  <Button
+                    className="database__delete__btn"
                     onClick={() => {
                       deleteFieldValue(field.id, info.valueId);
                     }}
                   >
-                    delete
-                  </button>
+                    X
+                  </Button>
                 </div>
               </div>
             ))}
-          <button
-            className="add_button"
-            onClick={() => {
-              addFieldValue(field);
-            }}
-          >
-            Add New
-          </button>
         </>
       );
     } else {
@@ -143,16 +137,18 @@ const DBTable = () => {
         field.valueInfo &&
         field.valueInfo.map((info) => (
           <div className="field_value_info_container" key={info.valueId}>
-            {fieldInfo(field, info)}
+            <div className="field__value__info__name">
+              {fieldInfo(field, info)}
+            </div>
             <div className="field_value_info_buttons">
-              <button
-                className="edit_button"
+              <Button
+                className="database__edit__btn"
                 onClick={() => {
                   editFieldValue(field.id, info);
                 }}
               >
                 edit
-              </button>
+              </Button>
             </div>
           </div>
         ))
@@ -164,7 +160,7 @@ const DBTable = () => {
     if (field.type === "Map") {
       return (
         <li className="field_value_info">
-          {info.key}: {info.value} ({info.type})
+          {info.key} : {info.value} ({info.type})
         </li>
       );
     } else if (field.type === "Array") {
@@ -459,7 +455,7 @@ const DBTable = () => {
       <Layout>
         <div className="container">
           <div className="row">
-            <div>
+            <div className="table__path">
               Path : https://fuegobase.store/api/v1/databases/projects/
               {projectId}
               /collections/
@@ -478,18 +474,28 @@ const DBTable = () => {
             <div className="col">
               <h2>Collections</h2>
               <div className="database__add">
-                <span onClick={() => addCollection()}>+ add</span>
-                <div style={{ display: collectionEditing ? "block" : "none" }}>
+                <span
+                  className="database__add__title"
+                  onClick={() => addCollection()}
+                >
+                  + add
+                </span>
+                <div
+                  className="database__add__group"
+                  style={{ display: collectionEditing ? "block" : "none" }}
+                >
                   <input
+                    className="database__add__input"
                     type="text"
                     value={collectionInputValue}
                     onChange={(e) => setCollectionInputValue(e.target.value)}
                   />
-                  <button
+                  <Button
+                    className="database__submit__btn"
                     onClick={() => addNewCollection({ collectionInputValue })}
                   >
-                    submit
-                  </button>
+                    Submit
+                  </Button>
                 </div>
                 <div
                   style={{
@@ -510,32 +516,36 @@ const DBTable = () => {
               {collections &&
                 collections.map((collection, index) => (
                   <>
-                    <div
-                      className="database__collection"
-                      key={collection.id}
-                      onClick={() => handleCollectionClick(collection.id)}
-                    >
-                      {collection.name}
-                    </div>
-                    <div>
+                    <div className="database__table__item">
+                      <div
+                        className={`database__collection ${
+                          expandedCollectionId === collection.id
+                            ? "db__collection__selected"
+                            : ""
+                        }`}
+                        key={collection.id}
+                        onClick={() => handleCollectionClick(collection.id)}
+                      >
+                        {collection.name}
+                      </div>
+
                       {expandedCollectionId === collection.id && (
                         <>
                           <Button
-                            variant="outline-danger"
-                            size="sm"
+                            className="database__edit__btn"
+                            onClick={() => {
+                              handleCollectionRename(collection);
+                            }}
+                          >
+                            edit
+                          </Button>
+                          <Button
+                            className="database__delete__btn"
                             onClick={() => {
                               deleteCollection(collection);
                             }}
                           >
                             X
-                          </Button>
-                          <Button
-                            variant="outline-primary"
-                            onClick={() => {
-                              handleCollectionRename(collection);
-                            }}
-                          >
-                            Edit
                           </Button>
                         </>
                       )}
@@ -546,20 +556,29 @@ const DBTable = () => {
 
             <div className="col">
               <h2>Documents</h2>
-
               <div className="database__add">
-                <span onClick={() => addDocument()}>+ add</span>
-                <div style={{ display: documentEditing ? "block" : "none" }}>
+                <span
+                  onClick={() => addDocument()}
+                  className="database__add__title"
+                >
+                  + add
+                </span>
+                <div
+                  className="database__add__group"
+                  style={{ display: documentEditing ? "block" : "none" }}
+                >
                   <input
+                    className="database__add__input"
                     type="text"
                     value={documentInputValue}
                     onChange={(e) => setDocumentInputValue(e.target.value)}
                   />
-                  <button
+                  <Button
+                    className="database__submit__btn"
                     onClick={() => addNewDocument({ documentInputValue })}
                   >
                     submit
-                  </button>
+                  </Button>
                 </div>
                 <div
                   style={{ display: renameDocumentEditing ? "block" : "none" }}
@@ -578,7 +597,6 @@ const DBTable = () => {
               {collections &&
                 collections.map((collection, index) => (
                   <div
-                    className="database__documents"
                     style={{
                       display:
                         expandedCollectionId === collection.id
@@ -589,34 +607,38 @@ const DBTable = () => {
                   >
                     {documents[collection.id]?.map((document) => (
                       <>
-                        <div
-                          className="database__document"
-                          key={document.id}
-                          onClick={() =>
-                            handleDocumentClick(collection.id, document.id)
-                          }
-                        >
-                          {document.name}
-                        </div>
-                        <div>
+                        <div className="database__table__item">
+                          <div
+                            className={`database__document ${
+                              expandedDocumentId === document.id
+                                ? "db__collection__selected"
+                                : ""
+                            }`}
+                            key={document.id}
+                            onClick={() =>
+                              handleDocumentClick(collection.id, document.id)
+                            }
+                          >
+                            {document.name}
+                          </div>
+
                           {expandedDocumentId === document.id && (
                             <>
                               <Button
-                                variant="outline-danger"
-                                size="sm"
+                                className="database__edit__btn"
+                                onClick={() => {
+                                  handleDocumentRename(document);
+                                }}
+                              >
+                                edit
+                              </Button>
+                              <Button
+                                className="database__delete__btn"
                                 onClick={() => {
                                   deleteDocument(document);
                                 }}
                               >
                                 X
-                              </Button>
-                              <Button
-                                variant="outline-primary"
-                                onClick={() => {
-                                  handleDocumentRename(document);
-                                }}
-                              >
-                                Edit
                               </Button>
                             </>
                           )}
@@ -630,8 +652,16 @@ const DBTable = () => {
             <div className="col">
               <h2>Fields</h2>
               <div className="database__add">
-                <span onClick={() => addField()}>+ add</span>
-                <div style={{ display: fieldValueEditing ? "block" : "none" }}>
+                <span
+                  onClick={() => addField()}
+                  className="database__add__title"
+                >
+                  + add
+                </span>
+                <div
+                  className="database__add__group"
+                  style={{ display: fieldValueEditing ? "block" : "none" }}
+                >
                   {infoType == "Boolean" ? (
                     <select
                       value={editingFieldValue}
@@ -710,32 +740,52 @@ const DBTable = () => {
                         key={document.id}
                       >
                         {fields[document.id]?.map((field) => (
-                          <div
-                            className="database__field"
-                            key={field.id}
-                            onClick={() =>
-                              handleFieldClick(
-                                collection.id,
-                                document.id,
-                                field.id,
-                                field.type
-                              )
-                            }
-                          >
-                            <div>
-                              <div>
-                                <Button
-                                  variant="outline-danger"
-                                  size="sm"
-                                  onClick={() => {
-                                    deleteFieldKey(field.id);
-                                  }}
-                                >
-                                  X
-                                </Button>
+                          <div className="database__table__item">
+                            <div
+                              className="database__field"
+                              key={field.id}
+                              onClick={() =>
+                                handleFieldClick(
+                                  collection.id,
+                                  document.id,
+                                  field.id,
+                                  field.type
+                                )
+                              }
+                            >
+                              <div className="database__table__item">
+                                <div className="database__field__name">
+                                  {field.name} :
+                                </div>
+                                <div className="database__field__type">
+                                  ({field.type})
+                                </div>
+
+                                {selectedFieldId === field.id && (
+                                  <>
+                                    {(field.type === "Array" ||
+                                      field.type === "Map") && (
+                                      <Button
+                                        className="database__submit__btn"
+                                        onClick={() => {
+                                          addFieldValue(field);
+                                        }}
+                                      >
+                                        +
+                                      </Button>
+                                    )}
+                                    <Button
+                                      className="database__delete__btn field__delete__btn"
+                                      onClick={() => {
+                                        deleteFieldKey(field.id);
+                                      }}
+                                    >
+                                      X
+                                    </Button>
+                                  </>
+                                )}
                               </div>
-                              {field.name} <span>({field.type}) : </span>
-                              {renderFieldValue(field)}
+                              <div>{renderFieldValue(field)}</div>
                             </div>
                           </div>
                         ))}
