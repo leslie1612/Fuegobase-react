@@ -442,25 +442,15 @@ const DBTable = () => {
   };
 
   const handleValueInfoChange = (event, index, field) => {
-    // if (field === "type" && event.target.value === "Number") {
-    //   setIsInfoValueNumber(true);
-    // }
-    // if (field === "type" && event.target.value === "String") {
-    //   setIsInfoValueNumber(false);
-    // }
-    // field: type, value
     valueInfoArray[index][field] = event.target.value; // change value
     setValueInfoArray([...valueInfoArray]); // set the change value into array
-    console.log(...valueInfoArray);
   };
 
-  const addNewValue = (e) => {
-    e.target.preventDefault;
+  const addNewValue = () => {
     setValueInfoArray([
       ...valueInfoArray,
       { key: "", type: "String", value: "" },
     ]);
-    console.log(...valueInfoArray);
   };
 
   const setInitialValueInfo = () => {
@@ -528,11 +518,19 @@ const DBTable = () => {
 
               <div className="database__add">
                 <div
-                  className="database__add__group"
+                  className={`database__add__group ${
+                    renameCollectionEditing ? "popup" : ""
+                  }`}
                   style={{
                     display: renameCollectionEditing ? "block" : "none",
                   }}
+
+                  // className="database__add__group"
+                  // style={{
+                  //   display: renameCollectionEditing ? "block" : "none",
+                  // }}
                 >
+                  <h3>Rename collection : </h3>
                   <input
                     className="database__add__input"
                     type="text"
@@ -635,11 +633,18 @@ const DBTable = () => {
               </div>
               <div className="database__add">
                 <div
-                  className="database__add__group"
+                  className={`database__add__group ${
+                    renameDocumentEditing ? "popup" : ""
+                  }`}
                   style={{
                     display: renameDocumentEditing ? "block" : "none",
                   }}
+                  // className="database__add__group"
+                  // style={{
+                  //   display: renameDocumentEditing ? "block" : "none",
+                  // }}
                 >
+                  <h3>Rename document : </h3>
                   <input
                     className="database__add__input"
                     type="text"
@@ -772,7 +777,7 @@ const DBTable = () => {
                   </Button>
                 </div>
                 <div
-                  className={`database__add__group ${
+                  className={`database__field__add__group ${
                     fieldEditing ? "popup" : ""
                   }`}
                   style={{ display: fieldEditing ? "block" : "none" }}
@@ -789,15 +794,22 @@ const DBTable = () => {
                     isUpdateField={isUpdateField}
                     isInfoValueNumber={isInfoValueNumber}
                   />
-                  <Button variant="primary" onClick={addNewField}>
-                    Submit
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() => cancelFieldEditing()}
-                  >
-                    Cancel
-                  </Button>
+                  <div className="field__value__btn__group">
+                    <Button
+                      className="project_submit value__add__btn"
+                      variant="primary"
+                      onClick={addNewField}
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      className="project_cancel value__add__btn"
+                      variant="secondary"
+                      onClick={() => cancelFieldEditing()}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 </div>
               </div>
               {collections &&

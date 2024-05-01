@@ -154,10 +154,23 @@ li {
 .database__field__add__group {
   width: 50rem;
 }
-/* .form-group {
-  margin-bottom: 10px;
+.field__value__btn__group {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1.5rem 0;
+}
+.value__add__btn {
+  margin-left: 1rem;
+}
+.form-label {
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+}
+.field__value__item {
+  margin: 0.5rem 0;
 }
 
+/* 
 .form-select {
   width: 100%;
 }
