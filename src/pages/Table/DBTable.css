@@ -101,7 +101,9 @@ li {
 
 /* add area */
 .database__add__group {
-  padding: 20px 0 0 0;
+  padding: 10px 0 0 0;
+  width: 40rem;
+  height: 10rem;
 }
 .database__add__input {
   background-color: #fffcf2;
@@ -149,7 +151,10 @@ li {
 }
 
 /* FieldInput.css */
-.form-group {
+.database__field__add__group {
+  width: 50rem;
+}
+/* .form-group {
   margin-bottom: 10px;
 }
 
@@ -168,14 +173,17 @@ li {
 
 .button-container button {
   margin-right: 5px;
-}
-
-/* .delete_button,
-.field_buttons {
-  background-color: #ff0000;
-  color: white;
-  border: none;
-  padding: 3px 8px;
-  margin-right: 5px;
-  cursor: pointer;
 } */
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-30%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 6;
+  display: none;
+}

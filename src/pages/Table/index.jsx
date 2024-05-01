@@ -209,6 +209,12 @@ const DBTable = () => {
     });
   };
 
+  const cancelUpdateFieldValue = () => {
+    setFieldValueEditing(!fieldValueEditing);
+    setInfoType("");
+    setEditingFieldValue("");
+  };
+
   const addFieldValue = (field) => {
     setFieldEditing(!fieldEditing);
     setFieldName(field.name);
@@ -337,6 +343,11 @@ const DBTable = () => {
     );
   };
 
+  const cancelRenameCollection = () => {
+    setRenameCollectionEditing(!renameCollectionEditing);
+    setRenameCollectionInputValue("");
+  };
+
   const handleDocumentRename = (document) => {
     setRenameDocumentEditing(!renameDocumentEditing);
     setRenameDocumentInputValue(document.name);
@@ -360,6 +371,11 @@ const DBTable = () => {
         setExpandedDocumentId(null);
       }
     });
+  };
+
+  const cancelRenameDocument = () => {
+    setRenameDocumentEditing(!renameDocumentEditing);
+    setRenameDocumentInputValue("");
   };
 
   const deleteCollection = (collection) => {
@@ -426,23 +442,25 @@ const DBTable = () => {
   };
 
   const handleValueInfoChange = (event, index, field) => {
-    if (field === "type" && event.target.value === "Number") {
-      console.log("in field info type is : number");
-      setIsInfoValueNumber(true);
-    }
-    if (field === "type" && event.target.value === "String") {
-      setIsInfoValueNumber(false);
-    }
+    // if (field === "type" && event.target.value === "Number") {
+    //   setIsInfoValueNumber(true);
+    // }
+    // if (field === "type" && event.target.value === "String") {
+    //   setIsInfoValueNumber(false);
+    // }
     // field: type, value
     valueInfoArray[index][field] = event.target.value; // change value
     setValueInfoArray([...valueInfoArray]); // set the change value into array
+    console.log(...valueInfoArray);
   };
 
-  const addNewValue = () => {
+  const addNewValue = (e) => {
+    e.target.preventDefault;
     setValueInfoArray([
       ...valueInfoArray,
       { key: "", type: "String", value: "" },
     ]);
+    console.log(...valueInfoArray);
   };
 
   const setInitialValueInfo = () => {
@@ -481,9 +499,12 @@ const DBTable = () => {
                   + add
                 </span>
                 <div
-                  className="database__add__group"
+                  className={`database__add__group ${
+                    collectionEditing ? "popup" : ""
+                  }`}
                   style={{ display: collectionEditing ? "block" : "none" }}
                 >
+                  <h3>New collection name : </h3>
                   <input
                     className="database__add__input"
                     type="text"
@@ -496,20 +517,42 @@ const DBTable = () => {
                   >
                     Submit
                   </Button>
+                  <Button
+                    className="database__delete__btn"
+                    onClick={() => addCollection()}
+                  >
+                    cancel
+                  </Button>
                 </div>
+              </div>
+
+              <div className="database__add">
                 <div
+                  className="database__add__group"
                   style={{
                     display: renameCollectionEditing ? "block" : "none",
                   }}
                 >
                   <input
+                    className="database__add__input"
                     type="text"
                     value={renameCollectionInputValue}
                     onChange={(e) =>
                       setRenameCollectionInputValue(e.target.value)
                     }
                   />
-                  <button onClick={() => renameCollection()}>submit</button>
+                  <Button
+                    className="database__submit__btn"
+                    onClick={() => renameCollection()}
+                  >
+                    submit
+                  </Button>
+                  <Button
+                    className="database__delete__btn"
+                    onClick={() => cancelRenameCollection()}
+                  >
+                    cancel
+                  </Button>
                 </div>
               </div>
 
@@ -564,9 +607,12 @@ const DBTable = () => {
                   + add
                 </span>
                 <div
-                  className="database__add__group"
+                  className={`database__add__group ${
+                    documentEditing ? "popup" : ""
+                  }`}
                   style={{ display: documentEditing ? "block" : "none" }}
                 >
+                  <h2>New Document Name : </h2>
                   <input
                     className="database__add__input"
                     type="text"
@@ -579,18 +625,41 @@ const DBTable = () => {
                   >
                     submit
                   </Button>
+                  <Button
+                    className="database__delete__btn"
+                    onClick={() => addDocument()}
+                  >
+                    cancel
+                  </Button>
                 </div>
+              </div>
+              <div className="database__add">
                 <div
-                  style={{ display: renameDocumentEditing ? "block" : "none" }}
+                  className="database__add__group"
+                  style={{
+                    display: renameDocumentEditing ? "block" : "none",
+                  }}
                 >
                   <input
+                    className="database__add__input"
                     type="text"
                     value={renameDocumentInputValue}
                     onChange={(e) =>
                       setRenameDocumentInputValue(e.target.value)
                     }
                   />
-                  <button onClick={() => renameDocument()}>submit</button>
+                  <Button
+                    className="database__submit__btn"
+                    onClick={() => renameDocument()}
+                  >
+                    submit
+                  </Button>
+                  <Button
+                    className="database__delete__btn"
+                    onClick={() => cancelRenameDocument()}
+                  >
+                    cancel
+                  </Button>
                 </div>
               </div>
 
@@ -658,8 +727,9 @@ const DBTable = () => {
                 >
                   + add
                 </span>
+
                 <div
-                  className="database__add__group"
+                  className="database__field__add__group"
                   style={{ display: fieldValueEditing ? "block" : "none" }}
                 >
                   {infoType == "Boolean" ? (
@@ -675,24 +745,38 @@ const DBTable = () => {
                     </select>
                   ) : infoType == "Number" ? (
                     <input
+                      className="database__add__input"
                       type="number"
                       value={editingFieldValue}
                       onChange={(e) => handleEditingFieldValueChange(e)}
                     />
                   ) : (
                     <input
+                      className="database__add__input"
                       type="text"
                       value={editingFieldValue}
                       onChange={(e) => handleEditingFieldValueChange(e)}
                     />
                   )}
-                  <button
+                  <Button
+                    className="database__submit__btn"
                     onClick={() => updateFieldValue({ editingFieldValue })}
                   >
                     submit
-                  </button>
+                  </Button>
+                  <Button
+                    className="database__delete__btn"
+                    onClick={() => cancelUpdateFieldValue()}
+                  >
+                    cancel
+                  </Button>
                 </div>
-                <div style={{ display: fieldEditing ? "block" : "none" }}>
+                <div
+                  className={`database__add__group ${
+                    fieldEditing ? "popup" : ""
+                  }`}
+                  style={{ display: fieldEditing ? "block" : "none" }}
+                >
                   <FieldInput
                     fieldName={fieldName}
                     handleFieldNameChange={handleFieldNameChange}

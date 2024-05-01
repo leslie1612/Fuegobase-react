@@ -18,7 +18,7 @@ const Sidebar = () => {
       <a href="/projects">
         <div className="sidebar__logo"></div>
       </a>
-      <div className="sidebar__project__title">Database Table</div>
+      <div className="sidebar__project__title">Projects</div>
       <div className="sidebar__projects">
         <ul className="sidebar__project-list">
           {projects &&
