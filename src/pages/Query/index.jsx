@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 import { useParams } from "react-router-dom";
 import API from "../../utils/api";
 import "./query.css";
@@ -76,8 +77,9 @@ const QueryIndex = () => {
           setDocumentData(json.data);
           setOpened(true);
           setQueryPath(
-            `${host.name}/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
+            `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
           );
+          console.log("success", queryPath);
         } else {
           setDocumentData([-1]);
         }
@@ -90,12 +92,11 @@ const QueryIndex = () => {
     let result;
     switch (field.type) {
       case "String":
+        return `"${field.valueInfo[0].value}"`;
       case "Number":
       case "Boolean":
-        console.log("single");
         return field.valueInfo[0].value;
       case "Array":
-        console.log("Array");
         result = field.valueInfo.map((value) => value.value);
         return `[ ${result.join(", ")} ]`;
       case "Map":
@@ -107,18 +108,25 @@ const QueryIndex = () => {
   return (
     <>
       <Layout>
-        <Container>
+        <Container className="query_container">
           {opened && (
-            <Row>
-              <Col>Query Path : </Col>
-              <Col>{queryPath}</Col>
+            <Row className="query_row">
+              <Form.Group as={Col} md={2} className="query_col">
+                Query Path :
+              </Form.Group>
+              <Form.Group as={Col} className="query_col">
+                {queryPath}
+              </Form.Group>
             </Row>
           )}
 
-          <Row>
-            <Col>Collection: </Col>
-            <Col>
-              <Form.Select
+          <Row className="query_row ">
+            <Form.Group as={Col} className="query_col statement">
+              Collection:
+            </Form.Group>
+            <Form.Group as={Col} className="query_col">
+              <Form.Control
+                as="select"
                 aria-label="Select number"
                 value={selectedCollection || "none"}
                 onChange={(e) => {
@@ -134,39 +142,50 @@ const QueryIndex = () => {
                       {collection.name}
                     </option>
                   ))}
-              </Form.Select>
-            </Col>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group as={Col} sm={1} className="query_col"></Form.Group>
+            <Form.Group as={Col} className="query_col"></Form.Group>
+            <Form.Group as={Col} className="query_col"></Form.Group>
           </Row>
-          <Row>
-            <Col sm></Col>
-            <Col sm>Field key : </Col>
-            <Col sm></Col>
-            <Col sm>Value</Col>
-            <Col sm>Type</Col>
-          </Row>
-          <Row>
-            <Col sm>WHERE</Col>
-            <Col sm>
-              <input
+
+          {/* <Row className="query_row">
+            <Form.Group as={Col} className="query_col">
+              <Form.Label></Form.Label>
+              <Form.Label>WHERE</Form.Label>
+            </Form.Group>
+
+            <Form.Group as={Col} className="query_col">
+              <Form.Label>Field key</Form.Label>
+              <Form.Control
                 type="text"
                 value={fieldKeyInputValue}
                 onChange={(e) => {
                   handleFieldKeyChange(e.target.value);
                 }}
               />
-            </Col>
-            <Col sm>==</Col>
-            <Col sm>
-              <input
+            </Form.Group>
+
+            <Form.Group as={Col} className="query_col">
+              <Form.Label></Form.Label>
+              <Form.Label>==</Form.Label>
+            </Form.Group>
+
+            <Form.Group as={Col} className="query_col">
+              <Form.Label> Value</Form.Label>
+              <Form.Control
                 type="text"
                 value={valueInputValue}
                 onChange={(e) => {
                   handleValueInputChange(e.target.value);
                 }}
               />
-            </Col>
-            <Col sm>
-              <Form.Select
+            </Form.Group>
+
+            <Form.Group as={Col} className="query_col">
+              <Form.Label>Type</Form.Label>
+              <Form.Control
+                as="select"
                 value={fieldType || "none"}
                 onChange={(e) => handleTypeChange(e.target.value)}
               >
@@ -175,15 +194,79 @@ const QueryIndex = () => {
                 </option>
                 <option value="String">String</option>
                 <option value="Number">Number</option>
-              </Form.Select>
+              </Form.Control>
+            </Form.Group>
+          </Row> */}
+
+          <Row className="query_row">
+            <Form.Group as={Col} className="query_col  statement"></Form.Group>
+            <Form.Group as={Col} className="query_col  statement">
+              Field key
+            </Form.Group>
+            <Form.Group
+              as={Col}
+              sm={1}
+              className="query_col  statement"
+            ></Form.Group>
+            <Form.Group as={Col} className="query_col  statement">
+              Value
+            </Form.Group>
+            <Form.Group as={Col} className="query_col  statement">
+              Type
+            </Form.Group>
+          </Row>
+
+          <Row className="query_row">
+            <Col className="query_col statement">WHERE</Col>
+            <Col className="query_col">
+              <Form.Control
+                type="text"
+                value={fieldKeyInputValue}
+                onChange={(e) => {
+                  handleFieldKeyChange(e.target.value);
+                }}
+              />
+            </Col>
+            <Col sm={1} className="query_col statement">
+              ==
+            </Col>
+            <Col className="query_col">
+              <Form.Control
+                type="text"
+                value={valueInputValue}
+                onChange={(e) => {
+                  handleValueInputChange(e.target.value);
+                }}
+              />
+            </Col>
+            <Col className="query_col">
+              <Form.Control
+                as="select"
+                value={fieldType || "none"}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <option value="none" disabled>
+                  --select--
+                </option>
+                <option value="String">String</option>
+                <option value="Number">Number</option>
+              </Form.Control>
             </Col>
           </Row>
-          <Row>
-            <Col sm={5}></Col>
-            <Col sm={4}></Col>
-            <Col sm={1}>
+
+          <Row className="query_row">
+            <Col className="query_col query_btn_group">
               <Button
-                variant="outline-secondary"
+                className="project_submit query_btn"
+                onClick={() => {
+                  queryData();
+                }}
+              >
+                Submit
+              </Button>
+
+              <Button
+                className="project_cancel query_btn"
                 onClick={() => {
                   clearInput();
                 }}
@@ -191,46 +274,40 @@ const QueryIndex = () => {
                 Clear
               </Button>
             </Col>
-            <Col sm={1}>
-              <Button
-                variant="outline-primary"
-                onClick={() => {
-                  queryData();
-                }}
-              >
-                Submit
-              </Button>
-            </Col>
           </Row>
-        </Container>
 
-        <div>
-          <table className="table">
+          <Table bordered hover className="table">
             <thead className="thead-light">
               <tr>
-                <th scope="col">Document ID </th>
-                <th scope="col">Document Name</th>
-                <th scope="col">Field Value</th>
+                <th className="query_table_head">Document ID </th>
+                <th className="query_table_head">Document Name</th>
+                <th className="query_table_head">Field Value</th>
               </tr>
             </thead>
             <tbody>
               {documentData[0] === -1 ? (
                 <tr>
-                  <td colSpan="3">No data</td>
+                  <td colSpan="3" className="query_no_data">
+                    No data
+                  </td>
                 </tr>
               ) : (
                 documentData &&
                 documentData.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
+                    <td>
+                      <div className="query_field_value_data"> {item.id}</div>
+                    </td>
+                    <td>
+                      <div className="query_field_value_data">{item.name}</div>
+                    </td>
                     <td>
                       {item.fields.map((field) => (
                         <div key={field.id}>
-                          <span>
-                            <strong>{field.name}: </strong>
+                          <div className="query_field_value_data">
+                            <span>{field.name} : </span>
                             <span>{handleFieldValue(field)}</span>
-                          </span>
+                          </div>
                         </div>
                       ))}
                     </td>
@@ -238,8 +315,8 @@ const QueryIndex = () => {
                 ))
               )}
             </tbody>
-          </table>
-        </div>
+          </Table>
+        </Container>
       </Layout>
     </>
   );
