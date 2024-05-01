@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Layout from "../../components/Layout";
 import FieldInput from "./FieldInput";
 import Button from "react-bootstrap/Button";
@@ -462,6 +463,7 @@ const DBTable = () => {
     <>
       <Layout>
         <div className="container">
+          <h1 className="database_title">Database</h1>
           <div className="row">
             <div className="table__path">
               Path : https://fuegobase.store/api/v1/databases/projects/
@@ -480,7 +482,7 @@ const DBTable = () => {
           </div>
           <div className="row">
             <div className="col">
-              <h2>Collections</h2>
+              <h2 className="database__table__title">Collections</h2>
               <div className="database__add">
                 <span
                   className="database__add__title"
@@ -490,7 +492,7 @@ const DBTable = () => {
                 </span>
                 <div
                   className={`database__add__group ${
-                    collectionEditing ? "popup" : ""
+                    collectionEditing ? "database__popup" : ""
                   }`}
                   style={{ display: collectionEditing ? "block" : "none" }}
                 >
@@ -519,7 +521,7 @@ const DBTable = () => {
               <div className="database__add">
                 <div
                   className={`database__add__group ${
-                    renameCollectionEditing ? "popup" : ""
+                    renameCollectionEditing ? "database__popup" : ""
                   }`}
                   style={{
                     display: renameCollectionEditing ? "block" : "none",
@@ -596,7 +598,7 @@ const DBTable = () => {
             </div>
 
             <div className="col">
-              <h2>Documents</h2>
+              <h2 className="database__table__title">Documents</h2>
               <div className="database__add">
                 <span
                   onClick={() => addDocument()}
@@ -606,7 +608,7 @@ const DBTable = () => {
                 </span>
                 <div
                   className={`database__add__group ${
-                    documentEditing ? "popup" : ""
+                    documentEditing ? "database__popup" : ""
                   }`}
                   style={{ display: documentEditing ? "block" : "none" }}
                 >
@@ -634,7 +636,7 @@ const DBTable = () => {
               <div className="database__add">
                 <div
                   className={`database__add__group ${
-                    renameDocumentEditing ? "popup" : ""
+                    renameDocumentEditing ? "database__popup" : ""
                   }`}
                   style={{
                     display: renameDocumentEditing ? "block" : "none",
@@ -724,7 +726,7 @@ const DBTable = () => {
             </div>
 
             <div className="col">
-              <h2>Fields</h2>
+              <h2 className="database__table__title">Fields</h2>
               <div className="database__add">
                 <span
                   onClick={() => addField()}
@@ -734,7 +736,9 @@ const DBTable = () => {
                 </span>
 
                 <div
-                  className="database__field__add__group"
+                  className={`database__field__add__group ${
+                    fieldValueEditing ? "database__popup" : ""
+                  }`}
                   style={{ display: fieldValueEditing ? "block" : "none" }}
                 >
                   {infoType == "Boolean" ? (
@@ -778,7 +782,7 @@ const DBTable = () => {
                 </div>
                 <div
                   className={`database__field__add__group ${
-                    fieldEditing ? "popup" : ""
+                    fieldEditing ? "database__popup" : ""
                   }`}
                   style={{ display: fieldEditing ? "block" : "none" }}
                 >

@@ -28,17 +28,23 @@ h2,
 h3 {
   margin-bottom: 20px;
 }
+.dashboard_title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-bottom: 3px black solid;
+}
 
-/* Dashboard specific styles */
-.dashboard {
+.plot-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 5rem;
 }
-/* body {
-  font-family: "Nunito", sans-serif;
-  padding: 50px;
-} */
+.dashboard__container {
+  margin-top: 5rem;
+}
+
 .dashboardCard {
   border-radius: 4px;
   background: #fff;
@@ -48,6 +54,11 @@ h3 {
     0.3s -webkit-transform cubic-bezier(0.155, 1.105, 0.295, 1.12);
   padding: 14px 80px 18px 36px;
   cursor: pointer;
+}
+.dashboard_info {
+  height: 6rem;
+  line-height: 7rem;
+  font-size: 1.7rem;
 }
 
 .dashboardCard:hover {

@@ -21,6 +21,11 @@ const Projects = () => {
       setProjects(json.data);
     });
   }, [reloadProjects]);
+  React.useEffect(() => {
+    API.getProjects(token).then((json) => {
+      setProjects(json.data);
+    });
+  }, []);
 
   const addNewProject = () => {
     console.log(projectName);

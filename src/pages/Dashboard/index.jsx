@@ -3,12 +3,10 @@ import Plot from "react-plotly.js";
 import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import API from "../../utils/api";
+import SettingPage from "../SettingPage";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  // const location = useLocation();
-  // const searchParams = new URLSearchParams(location.search);
-  // const projectId = searchParams.get("id");
   const { projectId } = useParams();
   const [date, setDate] = React.useState([]);
   const [read, setRead] = React.useState([]);
@@ -53,27 +51,33 @@ const Dashboard = () => {
   return (
     <>
       <Layout>
-        <div class="container">
+        <SettingPage />
+        <div class="container dashboard__container">
+          <h1 className="dashboard_title">Usage</h1>
           <div class="row">
             <div class="col-md-4">
               <div class="dashboardCard card-1">
-                <h3>Total Storage : {storage} MB</h3>
+                <h3 class="dashboard_info">Total Storage : {storage} MB</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="dashboardCard card-2">
-                <h3>Total Collections: {collectionCount} </h3>
+                <h3 class="dashboard_info">
+                  Total Collections : {collectionCount}{" "}
+                </h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="dashboardCard card-3">
-                <h3>Total Documents: {documentCount}</h3>
+                <h3 class="dashboard_info">
+                  Total Documents : {documentCount}
+                </h3>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="dashboard">
+        <div className="plot-container">
           <Plot
             data={[
               {

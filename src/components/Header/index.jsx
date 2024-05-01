@@ -13,7 +13,7 @@ const Header = () => {
           <Nav.Link as={Link} to={`/table/${projectId}`}>
             DB table
           </Nav.Link>
-        </Nav.Item> */}
+        </Nav.Item> 
         <Nav.Item className="header__item">
           <Nav.Link
             as={Link}
@@ -32,7 +32,7 @@ const Header = () => {
             Dashboard
           </Nav.Link>
         </Nav.Item>
-        <Nav.Item className="header__item">
+        {/* <Nav.Item className="header__item">
           <Nav.Link
             as={Link}
             to={`/setting/${projectId}`}
@@ -40,7 +40,7 @@ const Header = () => {
           >
             Setting Page
           </Nav.Link>
-        </Nav.Item>
+        </Nav.Item> */}
       </Nav>
     </>
   );

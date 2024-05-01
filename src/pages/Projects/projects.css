@@ -66,7 +66,7 @@ td {
   font-family: inherit;
   vertical-align: baseline;
 }
-/* remember to define focus styles! */
+
 :focus {
   outline: 0;
 }
@@ -105,12 +105,13 @@ q {
 .project__layout {
   margin-left: 50px;
   margin-top: 100px;
-  width: 70rem;
+  max-width: 1500px;
 }
 .project_container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  max-width: 1500px;
 }
 
 .project_delete_btn {

@@ -1,8 +1,10 @@
 .layout_wrapper {
   background-color: #fffcf2;
   display: flex;
+  height: 100vh;
   .main {
     flex: 1;
+    margin-left: 300px;
     /* height: 100vh; */
     /* .content { */
     /* font-size: 1.5rem;
@@ -13,4 +15,8 @@
     /* min-height: calc(100% - #{$header_height} - #{$header_footer}); */
     /* } */
   }
+}
+.content {
+  height: 100vh;
+  background-color: #fffcf2;
 }

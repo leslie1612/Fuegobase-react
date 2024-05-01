@@ -19,7 +19,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/table/:projectId" element={<DBTable />} />
           <Route path="/dashboard/:projectId" element={<Dashboard />} />
-          <Route path="/setting/:projectId" element={<SettingPage />} />
+          {/* <Route path="/setting/:projectId" element={<SettingPage />} /> */}
           <Route path="/query/:projectId" element={<QueryIndex />} />
         </Routes>
       </BrowserRouter>

@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { useParams } from "react-router-dom";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import API from "../../utils/api";
 import "./query.css";
 
@@ -105,10 +106,21 @@ const QueryIndex = () => {
     }
   };
 
+  const handleCopyClick = async (apiKey) => {
+    try {
+      await navigator.clipboard.writeText(apiKey);
+      alert("Copied to clipboard!");
+    } catch (err) {
+      console.error("Unable to copy to clipboard.", err);
+      alert("Copy to clipboard failed.");
+    }
+  };
+
   return (
     <>
       <Layout>
         <Container className="query_container">
+          <h2 className="query_builder_title">Query Builder</h2>
           {opened && (
             <Row className="query_row">
               <Form.Group as={Col} md={2} className="query_col">
@@ -116,6 +128,13 @@ const QueryIndex = () => {
               </Form.Group>
               <Form.Group as={Col} className="query_col">
                 {queryPath}
+              </Form.Group>
+              <Form.Group>
+                <ContentCopyIcon
+                  className="setting_copy_icon"
+                  sx={{ fontSize: 30 }}
+                  onClick={() => handleCopyClick(queryPath)}
+                />
               </Form.Group>
             </Row>
           )}
@@ -148,55 +167,6 @@ const QueryIndex = () => {
             <Form.Group as={Col} className="query_col"></Form.Group>
             <Form.Group as={Col} className="query_col"></Form.Group>
           </Row>
-
-          {/* <Row className="query_row">
-            <Form.Group as={Col} className="query_col">
-              <Form.Label></Form.Label>
-              <Form.Label>WHERE</Form.Label>
-            </Form.Group>
-
-            <Form.Group as={Col} className="query_col">
-              <Form.Label>Field key</Form.Label>
-              <Form.Control
-                type="text"
-                value={fieldKeyInputValue}
-                onChange={(e) => {
-                  handleFieldKeyChange(e.target.value);
-                }}
-              />
-            </Form.Group>
-
-            <Form.Group as={Col} className="query_col">
-              <Form.Label></Form.Label>
-              <Form.Label>==</Form.Label>
-            </Form.Group>
-
-            <Form.Group as={Col} className="query_col">
-              <Form.Label> Value</Form.Label>
-              <Form.Control
-                type="text"
-                value={valueInputValue}
-                onChange={(e) => {
-                  handleValueInputChange(e.target.value);
-                }}
-              />
-            </Form.Group>
-
-            <Form.Group as={Col} className="query_col">
-              <Form.Label>Type</Form.Label>
-              <Form.Control
-                as="select"
-                value={fieldType || "none"}
-                onChange={(e) => handleTypeChange(e.target.value)}
-              >
-                <option value="none" disabled>
-                  --select--
-                </option>
-                <option value="String">String</option>
-                <option value="Number">Number</option>
-              </Form.Control>
-            </Form.Group>
-          </Row> */}
 
           <Row className="query_row">
             <Form.Group as={Col} className="query_col  statement"></Form.Group>
@@ -275,8 +245,11 @@ const QueryIndex = () => {
               </Button>
             </Col>
           </Row>
+        </Container>
 
-          <Table bordered hover className="table">
+        <Container className="query_container">
+          <h2 className="query_builder_title">Query Result</h2>
+          <Table bordered hover className="query_table">
             <thead className="thead-light">
               <tr>
                 <th className="query_table_head">Document ID </th>

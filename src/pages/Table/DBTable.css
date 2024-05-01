@@ -17,24 +17,35 @@ li {
 
 /* layout */
 .container {
-  margin-top: 10rem;
-  background-color: #5b5751;
-  font-size: 1.2rem;
+  margin-top: 5rem;
+  /* background-color: #5b5751; */
+  font-size: 1.5rem;
+  max-width: 1500px;
+  /* border: 3px solid black; */
 }
 /* .row {
   margin-bottom: 20px;
 } */
 .col {
   padding: 10px 20px;
+  border: 1px solid black;
   /* border: 0.5px rgb(255, 255, 255) solid; */
 }
 
 /* title */
+.database_title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  padding: 1rem 1rem 1rem 0;
+}
 .table__path {
   font-size: 1.5rem;
   padding: 1rem;
 }
-
+.database__table__title {
+  font-size: 1.8rem;
+  background-color: #b5b4b3;
+}
 .database__add {
   margin-bottom: 10px;
 }
@@ -53,19 +64,23 @@ li {
 }
 
 /* db button */
-.database__delete__btn {
+.database__delete__btn,
+.database__edit__btn {
   background-color: #ccc5b9;
   border: #ccc5b9;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   cursor: pointer;
   margin: 0 0 0 5px;
+  font-weight: bolder;
 }
-.database__delete__btn:hover {
+.database__delete__btn:hover,
+.database__edit__btn:hover {
   background-color: #403d39;
   border: #ccc5b9;
 }
-.database__edit__btn {
+
+/* .database__edit__btn {
   background-color: #eb5e28;
   border: #eb5e28;
   color: white;
@@ -76,7 +91,7 @@ li {
 .database__edit__btn:hover {
   background-color: #ff6f00;
   border: #eb5e28;
-}
+} */
 
 .database__add__title {
   padding: 8px;
@@ -96,7 +111,9 @@ li {
   width: 70%;
 }
 .db__collection__selected {
-  background-color: #fffcf2;
+  background-color: rgba(235, 95, 40, 0.9);
+  color: white;
+  border-radius: 10px;
 }
 
 /* add area */
@@ -124,6 +141,7 @@ li {
   border: 2px white solid;
   width: 100%;
   cursor: pointer;
+  border-bottom: 3px solid #eb5e28;
 }
 .database__field__key {
   display: flex;
@@ -188,7 +206,7 @@ li {
   margin-right: 5px;
 } */
 
-.popup {
+.database__popup {
   position: fixed;
   top: 50%;
   left: 50%;
