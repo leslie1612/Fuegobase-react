@@ -50,13 +50,7 @@ const Registration = () => {
 
   return (
     <Landing action={"Sign Up"}>
-      {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-        <LockOutlinedIcon />
-      </Avatar> */}
-      {/* <Typography component="h1" variant="h5">
-        Sign Up
-      </Typography> */}
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         <TextField
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -93,11 +87,8 @@ const Registration = () => {
           id="password"
           autoComplete="current-password"
         />
-        {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
         <Button
+          style={{ backgroundColor: "#343A40" }}
           type="submit"
           fullWidth
           variant="contained"
@@ -106,54 +97,15 @@ const Registration = () => {
           Sign Up
         </Button>
         <Grid container>
-          {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
           <Grid item>
-            <Link to="/" variant="body2">
+            <Link to="/" style={{ color: "#6C757D" }} variant="body2">
               {"Already have an account? Sign In"}
             </Link>
           </Grid>
         </Grid>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Box>
     </Landing>
   );
 };
 
 export default Registration;
-
-{
-  /* <>
-      <Landing>
-        <div>
-          <h2>Register</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username"
-              required
-            />
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email"
-              required
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-            />
-            <button type="submit">Register</button>
-          </form>
-        </div>
-        <Link to="/">Sign in</Link>
-      </Landing>
-    </> */
-}

@@ -145,6 +145,7 @@ const QueryIndex = () => {
             </Form.Group>
             <Form.Group as={Col} className="query_col">
               <Form.Control
+                className="query__collection"
                 as="select"
                 aria-label="Select number"
                 value={selectedCollection || "none"}

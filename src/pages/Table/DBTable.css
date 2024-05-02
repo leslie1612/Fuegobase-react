@@ -111,7 +111,8 @@ li {
   width: 70%;
 }
 .db__collection__selected {
-  background-color: rgba(235, 95, 40, 0.9);
+  /* background-color: rgba(243, 99, 42, 0.9); */
+  background-color: #ccc5b9;
   color: white;
   border-radius: 10px;
 }

@@ -9,6 +9,7 @@ const Header = () => {
   return (
     <>
       <Nav variant="tabs" className="header__container">
+        <div className="header_name">Fuegobase</div>
         {/* <Nav.Item>
           <Nav.Link as={Link} to={`/table/${projectId}`}>
             DB table

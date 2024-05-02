@@ -468,11 +468,11 @@ const DBTable = () => {
             <div className="table__path">
               Path : https://fuegobase.store/api/v1/databases/projects/
               {projectId}
-              /collections/
+              /collections
               <span>
                 {expandedCollectionId && (
                   <span>
-                    {expandedCollectionId}/documents
+                    /{expandedCollectionId}/documents
                     {expandedDocumentId && `/${expandedDocumentId}/fields`}
                     {selectedFieldId && `/${selectedFieldId}`}
                   </span>
