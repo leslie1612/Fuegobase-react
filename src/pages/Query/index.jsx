@@ -23,6 +23,7 @@ const QueryIndex = () => {
   const [documentData, setDocumentData] = useState([]);
   const [opened, setOpened] = useState(false);
   const [queryPath, setQueryPath] = useState("");
+  const [operator, setOperator] = useState("EQUAL");
 
   React.useEffect(() => {
     if (projectId) {
@@ -42,6 +43,9 @@ const QueryIndex = () => {
     setFieldType("none");
     setSelectedCollection("");
     setDocumentData([]);
+    setOperator("EQUAL");
+    setOpened(false);
+    setQueryPath("");
   };
 
   const handleFieldKeyChange = (value) => {
@@ -56,12 +60,24 @@ const QueryIndex = () => {
     setFieldType(value);
   };
 
+  const handleOperatorChange = (value) => {
+    setOperator(value);
+  };
+
   const queryData = () => {
+    console.log(
+      selectedCollection,
+      fieldKeyInputValue,
+      valueInputValue,
+      fieldType,
+      operator
+    );
     if (
       selectedCollection == "" ||
       fieldKeyInputValue == "" ||
       valueInputValue == "" ||
-      fieldType == "none"
+      fieldType == "none" ||
+      operator == ""
     ) {
       alert("Every field must be required.");
     } else {
@@ -71,10 +87,10 @@ const QueryIndex = () => {
         fieldKeyInputValue,
         valueInputValue,
         fieldType,
+        operator,
         token
       ).then((json) => {
         if (json.data.length > 0) {
-          console.log(JSON.stringify(json.data));
           setDocumentData(json.data);
           setOpened(true);
           setQueryPath(
@@ -86,7 +102,6 @@ const QueryIndex = () => {
         }
       });
     }
-    clearInput();
   };
 
   const handleFieldValue = (field) => {
@@ -174,16 +189,14 @@ const QueryIndex = () => {
             <Form.Group as={Col} className="query_col  statement">
               Field key
             </Form.Group>
-            <Form.Group
-              as={Col}
-              sm={1}
-              className="query_col  statement"
-            ></Form.Group>
-            <Form.Group as={Col} className="query_col  statement">
-              Value
+            <Form.Group as={Col} sm={1} className="query_col  statement">
+              Operator
             </Form.Group>
             <Form.Group as={Col} className="query_col  statement">
-              Type
+              Value Type
+            </Form.Group>
+            <Form.Group as={Col} className="query_col  statement">
+              Value
             </Form.Group>
           </Row>
 
@@ -198,9 +211,35 @@ const QueryIndex = () => {
                 }}
               />
             </Col>
-            <Col sm={1} className="query_col statement">
-              ==
+
+            <Col sm={2} className="query_col statement">
+              <Form.Control
+                as="select"
+                value={operator || "EQUAL"}
+                onChange={(e) => handleOperatorChange(e.target.value)}
+              >
+                <option value="EQUAL"> == </option>
+                <option value="GREATER_THAN"> &gt; </option>
+                <option value="LESS_THAN"> &lt; </option>
+                <option value="GREATER_THAN_OR_EQUAL"> &gt;= </option>
+                <option value="LESS_THAN_OR_EQUAL"> &lt;= </option>
+                <option value="CONTAINS">array_contains</option>
+              </Form.Control>
             </Col>
+
+            <Col className="query_col">
+              <Form.Control
+                as="select"
+                value={fieldType || "none"}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <option value="none" disabled></option>
+                <option value="String">String</option>
+                <option value="Number">Number</option>
+                <option value="Boolean">Boolean</option>
+              </Form.Control>
+            </Col>
+
             <Col className="query_col">
               <Form.Control
                 type="text"
@@ -209,19 +248,6 @@ const QueryIndex = () => {
                   handleValueInputChange(e.target.value);
                 }}
               />
-            </Col>
-            <Col className="query_col">
-              <Form.Control
-                as="select"
-                value={fieldType || "none"}
-                onChange={(e) => handleTypeChange(e.target.value)}
-              >
-                <option value="none" disabled>
-                  --select--
-                </option>
-                <option value="String">String</option>
-                <option value="Number">Number</option>
-              </Form.Control>
             </Col>
           </Row>
 

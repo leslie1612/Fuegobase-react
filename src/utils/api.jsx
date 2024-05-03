@@ -1,7 +1,7 @@
 const API = {
   // hostname: "/api/v1",
-  hostname: "https://fuegobase.store/api/v1",
-  // hostname: "http://localhost:8080/api/v1",
+  // hostname: "https://fuegobase.store/api/v1",
+  hostname: "http://localhost:8080/api/v1",
   signin(data) {
     return fetch(`${this.hostname}/user/signin`, {
       body: JSON.stringify(data),
@@ -261,9 +261,9 @@ const API = {
       { method: "DELETE" }
     ).then((response) => response.status);
   },
-  getDataByFilter(id, collectionId, filter, value, type, jwtToken) {
+  getDataByFilter(id, collectionId, filter, value, type, operator, jwtToken) {
     return fetch(
-      `${this.hostname}/databases/projects/${id}/collections/${collectionId}?filter=${filter}&value=${value}&type=${type}`,
+      `${this.hostname}/databases/projects/${id}/collections/${collectionId}?filter=${filter}&value=${value}&type=${type}&operator=${operator}`,
       {
         headers: new Headers({
           "Content-Type": "application/json",

@@ -7,6 +7,7 @@ import FieldInput from "./FieldInput";
 import Button from "react-bootstrap/Button";
 import API from "../../utils/api";
 import "./DBTable.css";
+import { ElevatorSharp } from "@mui/icons-material";
 
 const DBTable = () => {
   const { token } = useContext(AuthContext);
@@ -262,13 +263,29 @@ const DBTable = () => {
       ).then((status) => {
         if (status == 201) {
           setReloadField(!reloadField);
+        } else if (status == 400) {
+          alert("name repeat!");
         }
       });
+
+      // const response = await API.addNewField(
+      //   projectId,
+      //   expandedCollectionId,
+      //   expandedDocumentId,
+      //   token,
+      //   data
+      // );
+      // const jsonData = await response.json();
+      // if (response.status == 201) {
+      //   setReloadField(!reloadField);
+      // } else {
+      //   alert(jsonData.error);
+      // }
     }
 
     setFieldName("");
     setFieldType("none");
-    setValueInfoArray([{ key: "", type: "none", value: "" }]);
+    setValueInfoArray([{ key: null, type: "none", value: "" }]);
   };
 
   const addCollection = () => {
@@ -318,7 +335,7 @@ const DBTable = () => {
     setFieldEditing(!fieldEditing);
     setFieldName("");
     setFieldType("none");
-    setValueInfoArray([{ key: "", type: "none", value: "" }]);
+    setValueInfoArray([{ key: null, type: "none", value: "" }]);
   };
 
   const handleCollectionRename = (collection) => {
@@ -450,13 +467,13 @@ const DBTable = () => {
   const addNewValue = () => {
     setValueInfoArray([
       ...valueInfoArray,
-      { key: "", type: "String", value: "" },
+      { key: null, type: "String", value: "" },
     ]);
   };
 
   const setInitialValueInfo = () => {
     console.log("set inital");
-    setValueInfoArray([{ key: "", type: "String", value: "" }]);
+    setValueInfoArray([{ key: null, type: "String", value: "" }]);
   };
 
   return (
