@@ -54,22 +54,26 @@ const Landing = ({ children, className, action }) => {
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
           <Grid
-            className="landing_content"
+            style={{ position: "relative" }}
             item
             xs={false}
             sm={4}
             md={7}
+            sx={{ marginTop: "4rem" }}
             // sx={{
-            //   backgroundImage: "url(/cloud.gif)",
+            //   backgroundImage: "url(/folder.jpeg)",
             //   backgroundRepeat: "no-repeat",
             //   // backgroundColor: (t) =>
             //   //   t.palette.mode === "light"
             //   //     ? t.palette.grey[50]
             //   //     : t.palette.grey[900],
             //   backgroundSize: "80vh",
-            //   backgroundPosition: "center",
+            //   backgroundPosition: "cover",
+            //   backgroundColor: "rgba(173, 181, 189,0.5)",
+            //   opacity: 0.5,
             // }}
           >
+            <img src="./folder.jpeg" alt="" className="landing_picture" />
             <h2 className="landing_subtitle">
               Empowering Data Management Through Visualization.
             </h2>
@@ -78,10 +82,10 @@ const Landing = ({ children, className, action }) => {
               through intuitive visual interfaces, making it easy for you to
               handle data.
             </h3>
-            <img src="./cloud.gif" alt="" className="landing_picture" />
+            {/* <img src="./folder.jpeg" alt="" className="landing_picture" /> */}
           </Grid>
           <Grid
-            className="landing_content"
+            style={{ marginTop: "4rem" }}
             item
             xs={12}
             sm={8}

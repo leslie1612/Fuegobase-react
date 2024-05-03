@@ -101,31 +101,38 @@ q {
   quotes: "" "";
 }
 
-.landing_content {
+/* .landing_content {
   margin-top: 4rem;
-}
+} */
 .landing_form {
   width: 80%;
 }
 .landing_subtitle {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bolder;
-  margin: 2rem 3rem;
+  margin: 2rem 2rem;
+  position: absolute;
+  top: 9rem;
+  color: #212529;
 }
 .landing_description {
   font-size: 1.3rem;
   font-weight: bold;
-  margin: 1.2rem 3rem;
+  margin: 1.2rem 2rem;
   padding: 0 1rem;
-  color: #6c757d;
+  color: #495057;
   width: 80%;
   border-left: 3px solid #343a40;
+  position: absolute;
+  top: 19rem;
 }
 
 .landing_picture {
-  width: 80%;
-  margin: -7rem 0 0 3rem;
+  width: 100%;
+  height: 100%;
+  /* padding: 0 3rem; */
   z-index: -1;
   position: relative;
-  background-size: contain;
+  background-size: cover;
+  opacity: 0.2;
 }
