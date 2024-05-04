@@ -1,20 +1,20 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import Layout from "../../components/Layout";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Sidebar from "../../components/Siderbar";
 import API from "../../utils/api";
+import AddIcon from "@mui/icons-material/Add";
 import "./projects.css";
 
 const Projects = () => {
   const { token } = useContext(AuthContext);
-  const [opened, setOpened] = useState(false);
+  const [isInputOpen, setIsInputOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [reloadProjects, setReloadProjects] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   React.useEffect(() => {
     API.getProjects(token).then((json) => {
@@ -26,6 +26,18 @@ const Projects = () => {
       setProjects(json.data);
     });
   }, []);
+
+  const openInput = () => {
+    setIsInputOpen(true);
+    setShowOverlay(true);
+    console.log(showOverlay);
+  };
+
+  const closeInput = () => {
+    setIsInputOpen(false);
+    setProjectName("");
+    setShowOverlay(false);
+  };
 
   const addNewProject = () => {
     console.log(projectName);
@@ -39,16 +51,11 @@ const Projects = () => {
       if (status === 201) {
         setReloadProjects(!reloadProjects);
         setProjectName("");
-        setOpened(false);
+        closeInput();
       } else if (status === 400) {
         alert("Project name is already used.");
       }
     });
-  };
-
-  const cancel = () => {
-    setOpened(false);
-    setProjectName("");
   };
 
   const deleteProject = (project) => {
@@ -63,94 +70,119 @@ const Projects = () => {
 
   return (
     <>
-      <Layout>
-        <div className="project__layout">
-          <div className="project_container">
-            <div className="project_add_area">
-              <div className="ag-courses_item ">
+      {showOverlay && (
+        <div className="overlay" onClick={() => closeInput()}></div>
+      )}
+      <div className="project__layout">
+        <div className="project__header__container">
+          <Link to="/projects" className="project_header_link">
+            {/* <img
+              className="project_logo"
+              src="/public/database256.png"
+              alt="database-logo"
+            /> */}
+            <div className="project_header_name">Fuegobase</div>
+          </Link>
+        </div>
+
+        <div className="project_title">Your Fuegobase projects </div>
+
+        <div className="project_container">
+          <div
+            className={`project_input_container ${
+              isInputOpen ? "project__popup" : ""
+            }`}
+            style={{ display: isInputOpen ? "block" : "none" }}
+          >
+            <h3 className="project_input_title">Start a new project</h3>
+            <Box
+              sx={{
+                width: 800,
+                maxWidth: "100%",
+              }}
+            >
+              <TextField
+                fullWidth
+                label="Enter your project name"
+                size="small"
+                id="fullWidth"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                inputProps={{
+                  style: {
+                    padding: "10px",
+                    fontSize: "20px",
+                  },
+                }}
+              />
+            </Box>
+            <Button
+              onClick={() => closeInput()}
+              variant="contained"
+              color="cancel"
+              sx={{ margin: "10px 0 0 570px" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => addNewProject()}
+              variant="contained"
+              sx={{ margin: "10px 0 0 10px" }}
+            >
+              Submit
+            </Button>
+          </div>
+
+          <div className="project_component_container">
+            <div className="ag-courses_item ">
+              <div className="ag-courses-item_link" onClick={() => openInput()}>
                 <div
-                  className="ag-courses-item_link"
-                  onClick={() => setOpened(!opened)}
-                >
-                  <div
-                    className="ag-courses-item_bg"
-                    style={{ backgroundColor: "#EB5E28" }}
-                  ></div>
-                  <div className="ag-courses-item_title">+ Add Project</div>
-                  <div className="ag-courses-item_date-box">
-                    <span className="ag-courses-item_date">
-                      <br />
-                    </span>
-                  </div>
+                  className="ag-courses-item_bg"
+                  style={{ backgroundColor: "#7d7d7d" }}
+                ></div>
+                <div className="ag-courses-item_title project_title_add">
+                  <AddIcon sx={{ fontSize: 50 }} />
+                  <span style={{ padding: "10px" }}>Add Project</span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  <span className="ag-courses-item_date">
+                    <br />
+                    <br />
+                  </span>
                 </div>
               </div>
             </div>
-
-            {opened && (
-              <div className="project_input_container">
-                <Box
-                  sx={{
-                    width: 600,
-                    maxWidth: "100%",
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    label="Project Name"
-                    id="fullWidth"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                  />
-                </Box>
-                <Button
-                  onClick={() => addNewProject()}
-                  className="project_add_btn project_submit"
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={() => cancel()}
-                  className="project_add_btn project_cancel"
-                >
-                  Cancel
-                </Button>
-              </div>
-            )}
           </div>
-          <div className="project_container">
-            {projects &&
-              projects.map((project) => (
-                <>
-                  <div className="project_componen_container">
-                    <Button
-                      className="project_delete_btn"
-                      variant="danger"
-                      onClick={() => deleteProject(project)}
+          {projects &&
+            projects.map((project) => (
+              <>
+                <div className="project_componen_container">
+                  {/* <Button
+                    className="project_delete_btn"
+                    variant="danger"
+                    onClick={() => deleteProject(project)}
+                  >
+                    X
+                  </Button> */}
+                  <div class="ag-courses_item">
+                    <Link
+                      to={`/database/${project.id}`}
+                      class="ag-courses-item_link"
                     >
-                      X
-                    </Button>
-                    <div class="ag-courses_item">
-                      <Link
-                        to={`/table/${project.id}`}
-                        class="ag-courses-item_link"
-                      >
-                        <div class="ag-courses-item_bg"></div>
-                        <div class="ag-courses-item_title">{project.name}</div>
-                        <div class="ag-courses-item_date-box">
-                          Project ID :
-                          <span class="ag-courses-item_date">
-                            {" "}
-                            {project.id}
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
+                      <div class="ag-courses-item_bg"></div>
+                      <div class="ag-courses-item_title">{project.name}</div>
+                      <div class="ag-courses-item_date-box">
+                        Project ID :
+                        <span class="ag-courses-item_date"> {project.id}</span>
+                      </div>
+                    </Link>
                   </div>
-                </>
-              ))}
-          </div>
+                </div>
+              </>
+            ))}
+          <img className="project_cloud" src="/public/cloud.gif" />
         </div>
-      </Layout>
+      </div>
     </>
   );
 };

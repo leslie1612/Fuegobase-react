@@ -6,9 +6,9 @@ const Layout = ({ children, className }) => {
   return (
     <>
       <div className={["layout_wrapper", className].join(" ")}>
+        <Header />
         <Sidebar />
         <div className="main">
-          <Header />
           <div className="content">{children}</div>
         </div>
       </div>

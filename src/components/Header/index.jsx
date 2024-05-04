@@ -8,8 +8,15 @@ const Header = () => {
 
   return (
     <>
-      <Nav variant="tabs" className="header__container">
-        <div className="header_name">Fuegobase</div>
+      <div className="header__container">
+        <Link to="/projects" className="header_link">
+          {/* <img
+            className="header_logo"
+            src="/public/database.png"
+            alt="database-logo"
+          /> */}
+          <div className="header_name">Fuegobase</div>
+        </Link>
         {/* <Nav.Item>
           <Nav.Link as={Link} to={`/table/${projectId}`}>
             DB table
@@ -42,7 +49,7 @@ const Header = () => {
             Setting Page
           </Nav.Link>
         </Nav.Item> */}
-      </Nav>
+      </div>
     </>
   );
 };

@@ -108,66 +108,66 @@ ol {
 }
 
 .sidebar {
-  width: 300px;
+  width: 250px;
   height: 100vh;
-  background-color: #ccc5b9;
+  background-color: #e9ecef;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
+  margin-top: 4rem;
 }
 
-.sidebar__logo {
-  width: 6rem;
-  height: 6rem;
-  /* Placeholder color */
-  margin-bottom: 20px;
-  background-image: url("/dalmatian.png");
-  background-size: cover;
-  /* margin: 0 auto; */
+.sidebar_logo {
+  width: 10rem;
+  height: 10rem;
+  margin: 20px;
+  /* background-image: url("/public/database256.png");
+  background-size: cover; */
 }
-
+/* 
 .sidebar__title {
   font-size: 3rem;
   font-weight: bold;
   margin: 1rem;
   color: #eb5e28;
-  /* background-color: rgb(255, 252, 242); */
   background-color: #403d39;
   width: 100%;
   height: 5rem;
   margin-top: 0;
   text-align: center;
   line-height: 5rem;
-}
+} */
 
+.sidebar__project__title {
+  font-size: 1.8rem;
+  /* align-self: start; */
+  margin: 5px;
+  color: #212529;
+  font-weight: 800;
+
+  /* border-bottom: 5px solid #403d39; */
+}
 .sidebar__projects {
   width: 100%;
 }
-.sidebar_project_selected {
-  background-color: #eb5e28;
-}
 
-.sidebar__project__title {
-  font-size: 2rem;
-  align-self: start;
-  margin: 0.5rem 1.5rem;
-  color: #403d39;
-  font-weight: 500;
-  /* border-bottom: 5px solid #403d39; */
-}
 .sidebar__project-list {
   list-style-type: none;
   padding: 0;
+  width: 100%;
 }
 
 .sidebar__project {
   color: #403d39;
   text-decoration: none;
   display: block;
-  padding: 10px 0;
-  margin: 0 1.5rem;
-  font-size: 1.5em;
+  font-size: 1.2rem;
+  max-width: 180px;
+  /* padding: 5px; */
+}
+.sidebar__project__link {
+  width: 100%;
 }
 .sidebar__project__link:hover {
   text-decoration: none;
@@ -176,14 +176,30 @@ ol {
 .sidebar__project:hover {
   /* background-color: #eb5e28; */
   text-decoration: none;
-  color: #fffcf2;
+  /* color: #fffcf2; */
+}
+
+.sidebar_divider {
+  border: 0;
+  height: 0;
+  border-top: 5px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 5px solid rgba(255, 255, 255, 0.3);
 }
 
 /* other pages */
 .header__item {
-  font-size: 1.5rem;
-  padding: 0.5rem;
+  margin: 5px;
+  font-size: 20px;
 }
 .header__link {
-  color: #fffcf2;
+  color: #495057;
+}
+.header__link:hover {
+  color: #212529;
+}
+
+.header_item_name {
+  line-height: 40px;
+  height: 40px;
+  margin-left: 15px;
 }
