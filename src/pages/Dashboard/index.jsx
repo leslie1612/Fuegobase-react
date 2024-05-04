@@ -3,7 +3,7 @@ import Plot from "react-plotly.js";
 import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import API from "../../utils/api";
-import SettingPage from "../SettingPage";
+// import SettingPage from "../SettingPage";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -51,7 +51,6 @@ const Dashboard = () => {
   return (
     <>
       <Layout>
-        <SettingPage />
         <div class="container dashboard__container">
           <h1 className="dashboard_title">Usage</h1>
           <div class="row">

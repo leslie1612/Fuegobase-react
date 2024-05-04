@@ -111,10 +111,11 @@ a:hover {
   height: 100vh;
   .main {
     flex: 1;
-    margin-left: 250px;
+    margin-left: 300px;
   }
 }
 .content {
   height: 100vh;
-  /* background-color: #fffcf2; */
+  /* margin: 150px 300px; */
+  padding: 10rem;
 }

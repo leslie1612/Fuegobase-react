@@ -157,13 +157,6 @@ const Projects = () => {
             projects.map((project) => (
               <>
                 <div className="project_componen_container">
-                  {/* <Button
-                    className="project_delete_btn"
-                    variant="danger"
-                    onClick={() => deleteProject(project)}
-                  >
-                    X
-                  </Button> */}
                   <div class="ag-courses_item">
                     <Link
                       to={`/database/${project.id}`}
@@ -180,7 +173,7 @@ const Projects = () => {
                 </div>
               </>
             ))}
-          <img className="project_cloud" src="/public/cloud.gif" />
+          <img className="project_cloud" src="/cloud.gif" />
         </div>
       </div>
     </>

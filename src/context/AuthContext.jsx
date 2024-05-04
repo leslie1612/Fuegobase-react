@@ -10,9 +10,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+
     // if (!token) {
-    //   navigate("/"); // 導航到登錄頁面
+    //   navigate("/login"); // 導航到登錄頁面
     // }
+
     setToken(storedToken);
     setLoading(false);
   }, []);

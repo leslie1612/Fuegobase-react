@@ -10,6 +10,7 @@ import Select from "@mui/material/Select";
 import StorageRoundedIcon from "@mui/icons-material/StorageRounded";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import InfoIcon from "@mui/icons-material/Info";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import "./sidebar.css";
 
 const Sidebar = () => {
@@ -37,13 +38,15 @@ const Sidebar = () => {
       <Link to="/projects">
         <img
           className="sidebar_logo"
-          src="/public/database256.png"
+          src="/database256.png"
           alt="database-logo"
         />
       </Link>
       <div className="sidebar__project__title">Projects</div>
       <div className="sidebar__projects">
-        <FormControl sx={{ minWidth: 200 }}>
+        <FormControl
+          sx={{ minWidth: 250, display: "flex", justifyContent: "center" }}
+        >
           <Select
             value={projectId}
             displayEmpty
@@ -92,6 +95,7 @@ const Sidebar = () => {
               <span className="header_item_name">Database</span>
             </Nav.Link>
           </Nav.Item>
+
           <Nav.Item className="header__item">
             <Nav.Link
               as={Link}
@@ -102,38 +106,29 @@ const Sidebar = () => {
               <span className="header_item_name">Query</span>
             </Nav.Link>
           </Nav.Item>
+
           <Nav.Item className="header__item">
             <Nav.Link
               as={Link}
-              to={`/dashboard/${projectId}`}
+              to={`/details/${projectId}`}
               className="header__link"
             >
               <InfoIcon sx={{ fontSize: 30, margin: "5px auto" }} />
               <span className="header_item_name">Details</span>
             </Nav.Link>
           </Nav.Item>
-        </div>
 
-        {/* <ul className="sidebar__project-list">
-          {projects &&
-            projects.map((project) => (
-              <>
-                <li
-                  key={project.id}
-                  className={
-                    project.id == projectId ? "sidebar_project_selected" : ""
-                  }
-                >
-                  <Link
-                    to={`/table/${project.id}`}
-                    className="sidebar__project__link"
-                  >
-                    <div className="sidebar__project"> {project.name}</div>
-                  </Link>
-                </li>
-              </>
-            ))}
-        </ul> */}
+          <Nav.Item className="header__item">
+            <Nav.Link
+              as={Link}
+              to={`/usage/${projectId}`}
+              className="header__link"
+            >
+              <AssessmentIcon sx={{ fontSize: 30, margin: "5px auto" }} />
+              <span className="header_item_name">Usage</span>
+            </Nav.Link>
+          </Nav.Item>
+        </div>
       </div>
     </div>
   );
