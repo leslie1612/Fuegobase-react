@@ -12,6 +12,17 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // import PrivateRoute from "./components/PrivateRoute";
 
 const theme = createTheme({
+  // components: {
+  //   MuiSvgIcon: {
+  //     styleOverrides: {
+  //       root: {
+  //         "&:hover": {
+  //           cursor: "pointer",
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
   palette: {
     primary: {
       light: "#ced4da",

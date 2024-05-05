@@ -18,6 +18,7 @@ const Sidebar = () => {
   const { projectId } = useParams();
   const [projects, setProjects] = React.useState([]);
   const [selectedProjectId, setSelectedProjectId] = React.useState("");
+  const [selectedRoute, setSelectedRoute] = React.useState("");
   const location = useLocation();
   const path = location.pathname;
   const pathParts = path.split("/");
@@ -26,6 +27,7 @@ const Sidebar = () => {
   React.useEffect(() => {
     API.getProjects(token).then((json) => {
       setProjects(json.data);
+      setSelectedRoute(currentRoute);
     });
   }, []);
 
@@ -84,51 +86,65 @@ const Sidebar = () => {
 
         <hr class="sidebar_divider" />
 
-        <div style={{ display: projectId ? "block" : "none" }}>
-          <Nav.Item className="header__item">
-            <Nav.Link
-              as={Link}
-              to={`/database/${projectId}`}
-              className="header__link"
-            >
-              <StorageRoundedIcon sx={{ fontSize: 30, margin: "5px auto" }} />
-              <span className="header_item_name">Database</span>
-            </Nav.Link>
-          </Nav.Item>
+        <Nav.Item
+          className={`header__item ${
+            selectedRoute == "database" ? "sidebar_selected " : ""
+          }`}
+        >
+          <Nav.Link
+            as={Link}
+            to={`/database/${projectId}`}
+            className="header__link"
+          >
+            <StorageRoundedIcon sx={{ fontSize: 30, margin: "5px auto" }} />
+            <span className="header_item_name">Database</span>
+          </Nav.Link>
+        </Nav.Item>
 
-          <Nav.Item className="header__item">
-            <Nav.Link
-              as={Link}
-              to={`/query/${projectId}`}
-              className="header__link"
-            >
-              <FindInPageIcon sx={{ fontSize: 30, margin: "5px auto" }} />
-              <span className="header_item_name">Query</span>
-            </Nav.Link>
-          </Nav.Item>
+        <Nav.Item
+          className={`header__item ${
+            selectedRoute == "query" ? "sidebar_selected " : ""
+          }`}
+        >
+          <Nav.Link
+            as={Link}
+            to={`/query/${projectId}`}
+            className="header__link"
+          >
+            <FindInPageIcon sx={{ fontSize: 30, margin: "5px auto" }} />
+            <span className="header_item_name">Query</span>
+          </Nav.Link>
+        </Nav.Item>
 
-          <Nav.Item className="header__item">
-            <Nav.Link
-              as={Link}
-              to={`/details/${projectId}`}
-              className="header__link"
-            >
-              <InfoIcon sx={{ fontSize: 30, margin: "5px auto" }} />
-              <span className="header_item_name">Details</span>
-            </Nav.Link>
-          </Nav.Item>
+        <Nav.Item
+          className={`header__item ${
+            selectedRoute == "details" ? "sidebar_selected " : ""
+          }`}
+        >
+          <Nav.Link
+            as={Link}
+            to={`/details/${projectId}`}
+            className="header__link"
+          >
+            <InfoIcon sx={{ fontSize: 30, margin: "5px auto" }} />
+            <span className="header_item_name">Details</span>
+          </Nav.Link>
+        </Nav.Item>
 
-          <Nav.Item className="header__item">
-            <Nav.Link
-              as={Link}
-              to={`/usage/${projectId}`}
-              className="header__link"
-            >
-              <AssessmentIcon sx={{ fontSize: 30, margin: "5px auto" }} />
-              <span className="header_item_name">Usage</span>
-            </Nav.Link>
-          </Nav.Item>
-        </div>
+        <Nav.Item
+          className={`header__item ${
+            selectedRoute == "usage" ? "sidebar_selected " : ""
+          }`}
+        >
+          <Nav.Link
+            as={Link}
+            to={`/usage/${projectId}`}
+            className="header__link"
+          >
+            <AssessmentIcon sx={{ fontSize: 30, margin: "5px auto" }} />
+            <span className="header_item_name">Usage</span>
+          </Nav.Link>
+        </Nav.Item>
       </div>
     </div>
   );

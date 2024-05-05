@@ -16,35 +16,46 @@ li {
 }
 
 /* layout */
-.container {
-  /* margin-top: 5rem; */
-  /* background-color: #5b5751; */
-  font-size: 1.5rem;
-  max-width: 1500px;
-  /* border: 3px solid black; */
+.database_container {
+  font-size: 18px;
+  padding-bottom: 50px;
+  max-width: 1200px;
 }
-/* .row {
-  margin-bottom: 20px;
-} */
 .col {
-  padding: 10px 20px;
-  border: 1px solid black;
+  margin: 10px 0;
+  border: 1px solid #dee2e6;
+  padding: 0;
   /* border: 0.5px rgb(255, 255, 255) solid; */
+}
+.row {
+  margin: 0;
 }
 
 /* title */
 .database_title {
-  font-size: 3rem;
+  font-size: 30px;
   margin-bottom: 2rem;
-  padding: 1rem 1rem 1rem 0;
+  padding: 1rem 0;
+  position: relative;
+  font-weight: 500;
+}
+.database_title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 3px solid #c50000;
 }
 .table__path {
-  font-size: 1.5rem;
-  padding: 1rem;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 0 0 10px 0;
 }
 .database__table__title {
-  font-size: 1.8rem;
-  background-color: #b5b4b3;
+  font-size: 20px;
+  background-color: #e9ecef;
+  padding: 10px;
 }
 .database__add {
   margin-bottom: 10px;
@@ -59,8 +70,8 @@ li {
 .database__table__item {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
-  /* background-color: #fffcf2; */
+  font-weight: 300;
+  font-size: 16px;
 }
 
 /* db button */
@@ -108,13 +119,13 @@ li {
 /* collection */
 .database__collection,
 .database__document {
-  width: 70%;
+  width: 100%;
 }
 .db__collection__selected {
   /* background-color: rgba(243, 99, 42, 0.9); */
-  background-color: #ccc5b9;
-  color: white;
-  border-radius: 10px;
+  background-color: #f8f9fa;
+  /* color: white; */
+  /* border-radius: 10px; */
 }
 
 /* add area */

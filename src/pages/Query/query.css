@@ -1,42 +1,58 @@
 .query_container {
-  margin-top: 10rem;
-  font-size: 1.2rem;
-  /* background-color: rgb(116, 62, 62); */
-  /* color: white; */
-  max-width: 1500px;
-  border: 1px solid black;
-  font-size: 1.5rem;
+  font-size: 18px;
+  padding-bottom: 50px;
+  max-width: 1200px;
 }
+
 .query_builder_title {
-  font-size: 2.5rem;
+  font-size: 30px;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+  position: relative;
+  font-weight: 500;
+}
+.query_builder_title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 3px solid #c50000;
 }
 
 .query_col {
   display: flex;
   align-items: center;
   border: 0px;
+  /* border: 1px solid black; */
+  padding: 10px;
 }
 .query_row {
   height: 3.5rem;
 }
-.statement {
-  justify-content: center;
+.query_statement {
+  font-size: 18px;
+  font-weight: 500;
 }
+.query_path_outcome {
+  font-size: 18px;
+}
+.query_icon {
+  text-align: center;
+}
+
 .query_btn_group {
   display: flex;
   justify-content: end;
 }
-.query_btn {
-  margin-left: 1rem;
-}
 
 /* table */
 .query_table_head {
-  font-size: 1.3rem;
-  text-align: center;
+  font-size: 18px;
+  /* text-align: center; */
 }
 .query_field_value_data {
-  font-size: 1.2rem;
+  font-size: 18px;
   padding: 0.5rem;
 }
 .query_no_data {

@@ -108,7 +108,7 @@ ol {
 }
 
 .sidebar {
-  width: 300px;
+  width: 250px;
   height: 100vh;
   background-color: #e9ecef;
   display: flex;
@@ -119,14 +119,14 @@ ol {
 }
 
 .sidebar_logo {
-  width: 10rem;
-  height: 10rem;
-  margin: 30px 20px;
+  width: 8rem;
+  height: 8rem;
+  margin: 20px 20px;
 }
 
 .sidebar__project__title {
   font-size: 1.8rem;
-  margin: 20px 5px 10px;
+  margin: 10px 5px 10px;
   color: #212529;
   font-weight: 800;
 }
@@ -168,7 +168,7 @@ ol {
 }
 
 .header__item {
-  margin: 5px;
+  margin: 5px 0;
   font-size: 20px;
 }
 .header__link {
@@ -182,4 +182,7 @@ ol {
   line-height: 40px;
   height: 40px;
   margin-left: 25px;
+}
+.sidebar_selected {
+  background-color: #dee2e6;
 }

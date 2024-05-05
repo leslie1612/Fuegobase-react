@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Table from "react-bootstrap/Table";
 import API from "../../utils/api";
+import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -123,17 +124,18 @@ const SettingPage = () => {
                   <td className="setting_details_item_title">Project name :</td>
                   <td className="setting_details_item_value">{projectName}</td>
                   <td style={{ textAlign: "right" }}>
-                    <EditIcon
+                    <IconButton
                       color="secondary"
                       sx={{
                         fontSize: 30,
                         "&:hover": {
                           color: "primary.dark",
                         },
-                        margin: "0 20px",
                       }}
-                    />
-                    <DeleteIcon
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
                       color="secondary"
                       sx={{
                         fontSize: 30,
@@ -142,7 +144,9 @@ const SettingPage = () => {
                         },
                       }}
                       onClick={() => deleteProject()}
-                    />
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </td>
                 </tr>
                 <tr>
@@ -154,7 +158,7 @@ const SettingPage = () => {
                   <td className="setting_details_item_title">API Key :</td>
                   <td className="setting_details_item_value">
                     {apiKey}
-                    <ContentCopyIcon
+                    <IconButton
                       color="secondary"
                       className="setting_copy_icon"
                       sx={{
@@ -162,23 +166,14 @@ const SettingPage = () => {
                         "&:hover": {
                           color: "primary.dark",
                         },
-                        marginLeft: "10px",
                       }}
                       onClick={() => handleCopyClick(apiKey)}
-                    />
+                    >
+                      <ContentCopyIcon />
+                    </IconButton>
                   </td>
                   <td style={{ textAlign: "right" }}>
-                    <AutorenewIcon
-                      color="secondary"
-                      sx={{
-                        fontSize: 30,
-                        "&:hover": {
-                          color: "primary.dark",
-                        },
-                        margin: "0 20px",
-                      }}
-                    />
-                    <DeleteIcon
+                    <IconButton
                       color="secondary"
                       sx={{
                         fontSize: 30,
@@ -186,7 +181,20 @@ const SettingPage = () => {
                           color: "primary.dark",
                         },
                       }}
-                    />
+                    >
+                      <AutorenewIcon />
+                    </IconButton>
+                    <IconButton
+                      color="secondary"
+                      sx={{
+                        fontSize: 30,
+                        "&:hover": {
+                          color: "primary.dark",
+                        },
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </td>
                 </tr>
               </tbody>
@@ -197,10 +205,11 @@ const SettingPage = () => {
           {/* <div style={{ textAlign: "right" }}> */}
           <div>
             <Button
+              size="small"
               variant="contained"
               onClick={() => handleDomainAdding()}
               color="primary"
-              sx={{ margin: "20px 0px" }}
+              sx={{ margin: "0px 0px 20px 0" }}
             >
               <AddIcon /> add domain
             </Button>
@@ -231,19 +240,20 @@ const SettingPage = () => {
                       {domain.type}
                     </td>
                     <td style={{ textAlign: "center" }}>
-                      <DeleteIcon
+                      <IconButton
                         color="secondary"
                         sx={{
                           fontSize: 30,
                           "&:hover": {
                             color: "primary.dark",
                           },
-                          margin: "0px 10px",
                         }}
                         onClick={() => {
                           deletetDomain(domain);
                         }}
-                      />
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </td>
                   </tr>
                 ))}
@@ -295,27 +305,6 @@ const SettingPage = () => {
             >
               Submit
             </Button>
-
-            {/* <input
-              type="text"
-              placeholder="Enter new domain"
-              value={domainNameInputValue}
-              onChange={(e) => {
-                handleDomainNameChange(e);
-              }}
-            />
-            <Button
-              className="database__submit__btn"
-              onClick={() => addNewDomain()}
-            >
-              submit
-            </Button>
-            <Button
-              className="database__delete__btn"
-              onClick={() => closeInput()}
-            >
-              cancel
-            </Button> */}
           </div>
         </div>
       </Layout>

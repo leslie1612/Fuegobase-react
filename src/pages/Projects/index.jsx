@@ -141,8 +141,10 @@ const Projects = () => {
                   style={{ backgroundColor: "#7d7d7d" }}
                 ></div>
                 <div className="ag-courses-item_title project_title_add">
-                  <AddIcon sx={{ fontSize: 50 }} />
-                  <span style={{ padding: "10px" }}>Add Project</span>
+                  <AddIcon
+                    sx={{ fontSize: 30, stroke: "black", strokeWidth: 1 }}
+                  />
+                  <span> Add Project</span>
                 </div>
                 <div className="ag-courses-item_date-box">
                   <span className="ag-courses-item_date">
@@ -173,8 +175,8 @@ const Projects = () => {
                 </div>
               </>
             ))}
-          <img className="project_cloud" src="/cloud.gif" />
         </div>
+        <img className="project_cloud" src="/cloud.gif" />
       </div>
     </>
   );

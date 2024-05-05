@@ -2,6 +2,7 @@
 .project__layout {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .project__header__container {
   background-color: #343a40;
@@ -9,7 +10,6 @@
   margin-bottom: 0;
   border-bottom: 0;
   width: 100%;
-  position: fixed;
   z-index: 999;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
   display: flex;
@@ -33,15 +33,14 @@
 .project_title {
   color: #f8f9fa;
   font-size: 1.7rem;
-  margin: 200px 200px 0 230px;
+  margin: 135px 200px 0 230px;
 }
 
 .project_container {
   display: flex;
   flex-wrap: wrap;
   max-width: 2000px;
-  margin-left: 200px;
-  margin-top: 50px;
+  margin: 50px 50px 50px 200px;
 }
 
 .project_delete_btn {
@@ -63,21 +62,21 @@
 .ag-courses_item {
   -ms-flex-preferred-size: calc(33.33333% - 30px);
   flex-basis: calc(33.33333% - 30px);
-  margin: 0 30px 30px;
+  margin: 0 20px 20px;
   overflow: hidden;
   border-radius: 28px;
-  width: 300px;
-  height: 200px;
+  width: 220px;
+  height: 180px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .ag-courses_item {
   -ms-flex-preferred-size: calc(33.33333% - 30px);
   flex-basis: calc(33.33333% - 30px);
-  margin: 0 30px 30px;
+  margin: 0 20px 20px;
   overflow: hidden;
   border-radius: 28px;
-  width: 300px;
-  height: 200px;
+  width: 220px;
+  height: 180px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -100,21 +99,22 @@
 .ag-courses-item_title {
   min-height: 100px;
   margin: 10px;
-  overflow: hidden;
+  overflow: auto;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 25px;
   color: #212529;
   z-index: 2;
   position: relative;
+  overflow-wrap: break-word;
 }
 .project_title_add {
-  line-height: 150px;
-  font-size: 30px;
+  line-height: 120px;
+  font-size: 25px;
   margin: auto;
   font-weight: bolder;
 }
 .ag-courses-item_date-box {
-  font-size: 18px;
+  font-size: 15px;
   color: #212529;
   z-index: 2;
   position: relative;
@@ -142,12 +142,12 @@
   color: #7d7d7d;
 }
 .project_cloud {
-  width: 800px;
-  height: 800px;
+  width: 60vh;
+  height: auto;
   position: fixed;
-  top: 45%;
-  left: 55%;
-  z-index: -1;
+  right: 20px;
+  bottom: -100px;
+  z-index: -2;
 }
 
 .project_input_container {

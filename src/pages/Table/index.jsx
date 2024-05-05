@@ -4,10 +4,11 @@ import { AuthContext } from "../../context/AuthContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Layout from "../../components/Layout";
 import FieldInput from "./FieldInput";
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import API from "../../utils/api";
 import "./DBTable.css";
-import { ElevatorSharp } from "@mui/icons-material";
 
 const DBTable = () => {
   const { token } = useContext(AuthContext);
@@ -41,6 +42,7 @@ const DBTable = () => {
   const [isUpdateField, setIsUpdateField] = useState(false);
   const [infoType, setInfoType] = useState("");
   const [isInfoValueNumber, setIsInfoValueNumber] = useState(false);
+  const [path, setPath] = useState("");
 
   React.useEffect(() => {
     console.log(token);
@@ -48,6 +50,7 @@ const DBTable = () => {
       API.getCollections(projectId, token).then((json) => {
         setCollections(json.data);
       });
+      setPathValue(projectId, null, null, null);
     }
   }, [reloadCollction, projectId]);
 
@@ -68,14 +71,45 @@ const DBTable = () => {
     });
   }, [reloadField]);
 
+  const setPathValue = (
+    projectId,
+    expandedCollectionId,
+    expandedDocumentId,
+    selectedFieldId
+  ) => {
+    let pathValue = `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections`;
+    if (expandedCollectionId) {
+      pathValue += `/${expandedCollectionId}/documents`;
+      if (expandedDocumentId) {
+        pathValue += `/${expandedDocumentId}/fields`;
+        if (selectedFieldId) {
+          pathValue += `/${selectedFieldId}`;
+        }
+      }
+    }
+    setPath(pathValue);
+  };
+
+  const handleCopyClick = async (path) => {
+    try {
+      await navigator.clipboard.writeText(path);
+      alert("Copied to clipboard!");
+    } catch (err) {
+      console.error("Unable to copy to clipboard.", err);
+      alert("Copy to clipboard failed.");
+    }
+  };
+
   const handleCollectionClick = (collectionId) => {
     if (expandedCollectionId === collectionId) {
       setExpandedCollectionId(null);
       setExpandedDocumentId(null);
       setSelectedFieldId(null);
+      setPathValue(projectId, null, null, null);
     } else {
       setExpandedCollectionId(collectionId);
       setExpandedDocumentId(null);
+      setPathValue(projectId, collectionId, null, null);
       API.getDocuments(projectId, collectionId, token).then((json) => {
         setDocuments({ ...documents, [collectionId]: json.data });
       });
@@ -86,8 +120,10 @@ const DBTable = () => {
     if (expandedDocumentId === documentId) {
       setExpandedDocumentId(null);
       setSelectedFieldId(null);
+      setPathValue(projectId, collectionId, null, null);
     } else {
       setExpandedDocumentId(documentId);
+      setPathValue(projectId, collectionId, documentId, null);
       API.getFields(projectId, collectionId, documentId, token).then((json) => {
         setFields({ ...fields, [documentId]: json.data });
       });
@@ -97,8 +133,10 @@ const DBTable = () => {
   const handleFieldClick = (collectionId, documentId, fieldId, fiedlType) => {
     if (selectedFieldId === fieldId) {
       setSelectedFieldId(null);
+      setPathValue(projectId, collectionId, documentId, null);
     } else {
       setSelectedFieldId(fieldId);
+      setPathValue(projectId, collectionId, documentId, fieldId);
     }
   };
 
@@ -114,6 +152,9 @@ const DBTable = () => {
                 </div>
                 <div className="field_value_info_buttons">
                   <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
                     className="database__edit__btn"
                     onClick={() => {
                       editFieldValue(field.id, info);
@@ -122,6 +163,9 @@ const DBTable = () => {
                     edit
                   </Button>
                   <Button
+                    size="small"
+                    variant="contained"
+                    color="cancel"
                     className="database__delete__btn"
                     onClick={() => {
                       deleteFieldValue(field.id, info.valueId);
@@ -479,10 +523,10 @@ const DBTable = () => {
   return (
     <>
       <Layout>
-        <div className="container">
+        <div className="database_container">
           <h1 className="database_title">Database</h1>
           <div className="row">
-            <div className="table__path">
+            {/* <div className="table__path">
               Path : https://fuegobase.store/api/v1/databases/projects/
               {projectId}
               /collections
@@ -495,18 +539,33 @@ const DBTable = () => {
                   </span>
                 )}
               </span>
+              <ContentCopyIcon
+                className="query_icon"
+                sx={{ fontSize: 20, marginLeft: 1 }}
+                onClick={() => handleCopyClick(queryPath)}
+              />
+            </div> */}
+
+            <div className="table__path">
+              Path : {path}
+              <IconButton
+                className="query_icon"
+                onClick={() => handleCopyClick(path)}
+              >
+                <ContentCopyIcon sx={{ fontSize: 20 }} />
+              </IconButton>
             </div>
           </div>
           <div className="row">
             <div className="col">
               <h2 className="database__table__title">Collections</h2>
               <div className="database__add">
-                <span
+                {/* <span
                   className="database__add__title"
                   onClick={() => addCollection()}
                 >
                   + add
-                </span>
+                </span> */}
                 <div
                   className={`database__add__group ${
                     collectionEditing ? "database__popup" : ""
@@ -573,6 +632,20 @@ const DBTable = () => {
                 </div>
               </div>
 
+              <div
+                className="database__table__item"
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                <span
+                  className="database__add__title"
+                  onClick={() => addCollection()}
+                >
+                  + add
+                </span>
+              </div>
+
               {collections &&
                 collections.map((collection, index) => (
                   <>
@@ -617,12 +690,12 @@ const DBTable = () => {
             <div className="col">
               <h2 className="database__table__title">Documents</h2>
               <div className="database__add">
-                <span
+                {/* <span
                   onClick={() => addDocument()}
                   className="database__add__title"
                 >
                   + add
-                </span>
+                </span> */}
                 <div
                   className={`database__add__group ${
                     documentEditing ? "database__popup" : ""
@@ -687,6 +760,21 @@ const DBTable = () => {
                 </div>
               </div>
 
+              <div
+                className="database__table__item"
+                style={{
+                  visibility: expandedCollectionId ? "visible" : "hidden",
+                  cursor: "pointer",
+                }}
+              >
+                <span
+                  onClick={() => addDocument()}
+                  className="database__add__title"
+                >
+                  + add
+                </span>
+              </div>
+
               {collections &&
                 collections.map((collection, index) => (
                   <div
@@ -745,12 +833,12 @@ const DBTable = () => {
             <div className="col">
               <h2 className="database__table__title">Fields</h2>
               <div className="database__add">
-                <span
+                {/* <span
                   onClick={() => addField()}
                   className="database__add__title"
                 >
                   + add
-                </span>
+                </span> */}
 
                 <div
                   className={`database__field__add__group ${
@@ -833,6 +921,22 @@ const DBTable = () => {
                   </div>
                 </div>
               </div>
+
+              <div
+                className="database__table__item"
+                style={{
+                  visibility: expandedDocumentId ? "visible" : "hidden",
+                  cursor: "pointer",
+                }}
+              >
+                <span
+                  onClick={() => addField()}
+                  className="database__add__title"
+                >
+                  + add
+                </span>
+              </div>
+
               {collections &&
                 collections.map((collection, index) => (
                   <div
