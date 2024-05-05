@@ -13,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import CircularIndeterminate from "../../components/Loading";
 import API from "../../utils/api";
 import "./DBTable.css";
 
@@ -50,6 +51,7 @@ const DBTable = () => {
   const [isInfoValueNumber, setIsInfoValueNumber] = useState(false);
   const [path, setPath] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
     console.log(token);
@@ -117,7 +119,9 @@ const DBTable = () => {
       setExpandedCollectionId(collectionId);
       setExpandedDocumentId(null);
       setPathValue(projectId, collectionId, null, null);
+      setIsLoading(true);
       API.getDocuments(projectId, collectionId, token).then((json) => {
+        setIsLoading(false);
         setDocuments({ ...documents, [collectionId]: json.data });
       });
     }
@@ -131,7 +135,9 @@ const DBTable = () => {
     } else {
       setExpandedDocumentId(documentId);
       setPathValue(projectId, collectionId, documentId, null);
+      setIsLoading(true);
       API.getFields(projectId, collectionId, documentId, token).then((json) => {
+        setIsLoading(false);
         setFields({ ...fields, [documentId]: json.data });
       });
     }
@@ -275,9 +281,14 @@ const DBTable = () => {
   };
 
   const updateFieldValue = () => {
+    if (editingFieldValue === "" || editingFieldValue == null) {
+      alert("Can't be empty");
+      return;
+    }
     setFieldValueEditing(!fieldValueEditing);
     setShowOverlay(false);
     setInfoType("");
+    setIsLoading(true);
     const data = {
       value: editingFieldValue,
     };
@@ -295,6 +306,7 @@ const DBTable = () => {
         console.log("update success");
         setReloadField(!reloadField);
       }
+      setIsLoading(false);
     });
   };
 
@@ -319,6 +331,11 @@ const DBTable = () => {
     setShowOverlay(false);
 
     if (isUpdateField) {
+      if (valueInfoArray[0].value === "" || valueInfoArray[0].value == null) {
+        alert("Can't be empty");
+        return;
+      }
+      setIsLoading(true);
       const data = {
         key: valueInfoArray[0].key,
         value: valueInfoArray[0].value,
@@ -336,8 +353,14 @@ const DBTable = () => {
         if (status == 200) {
           setReloadField(!reloadField);
         }
+        setIsLoading(false);
       });
     } else {
+      if (fieldName === "" || fieldName == null) {
+        alert("Can't be empty");
+        return;
+      }
+      setIsLoading(true);
       const data = {
         type: fieldType,
         key: fieldName,
@@ -356,6 +379,7 @@ const DBTable = () => {
         } else if (status == 400) {
           alert("name repeat!");
         }
+        setIsLoading(false);
       });
     }
 
@@ -370,9 +394,16 @@ const DBTable = () => {
   };
 
   const addNewCollection = async (myData) => {
+    if (
+      myData.collectionInputValue === "" ||
+      myData.collectionInputValue === null
+    ) {
+      alert("Can't be empty");
+      return;
+    }
     setCollectionEditing(!collectionEditing);
     setShowOverlay(!showOverlay);
-
+    setIsLoading(true);
     const data = {
       name: myData.collectionInputValue,
     };
@@ -381,6 +412,7 @@ const DBTable = () => {
         setCollectionInputValue("");
         setReloadCollection(!reloadCollction);
       }
+      setIsLoading(false);
     });
   };
 
@@ -390,6 +422,11 @@ const DBTable = () => {
   };
 
   const addNewDocument = async (name) => {
+    if (name.documentInputValue === "" || name.documentInputValue === null) {
+      alert("Can't be empty");
+      return;
+    }
+    setIsLoading(true);
     setDocumentEditing(!documentEditing);
     setShowOverlay(false);
 
@@ -402,6 +439,7 @@ const DBTable = () => {
           setDocumentInputValue("");
           setReloadDocument(!reloadDocument);
         }
+        setIsLoading(false);
       }
     );
   };
@@ -427,7 +465,16 @@ const DBTable = () => {
   };
 
   const renameCollection = () => {
+    if (
+      renameCollectionInputValue === "" ||
+      renameCollectionInputValue === null
+    ) {
+      alert("Can't be empty");
+      return;
+    }
+    setRenameCollectionEditing(false);
     setShowOverlay(false);
+    setIsLoading(true);
     const data = {
       name: renameCollectionInputValue,
     };
@@ -439,6 +486,7 @@ const DBTable = () => {
           setRenameCollectionEditing(false);
           setExpandedCollectionId(null);
         }
+        setIsLoading(false);
       }
     );
   };
@@ -456,7 +504,13 @@ const DBTable = () => {
   };
 
   const renameDocument = () => {
+    if (renameDocumentInputValue === "" || renameDocumentInputValue === null) {
+      alert("Can't be empty");
+      return;
+    }
     setShowOverlay(false);
+    setRenameDocumentEditing(false);
+    setIsLoading(true);
     const data = {
       name: renameDocumentInputValue,
     };
@@ -470,9 +524,9 @@ const DBTable = () => {
       if (status === 200) {
         setReloadDocument(!reloadDocument);
         setRenameDocumentInputValue("");
-        setRenameDocumentEditing(false);
         setExpandedDocumentId(null);
       }
+      setIsLoading(false);
     });
   };
 
@@ -574,6 +628,14 @@ const DBTable = () => {
       {showOverlay && (
         <div className="overlay" onClick={() => closeInput()}></div>
       )}
+      {isLoading && (
+        <>
+          <div className="overlay"></div>
+          <div className="database_loading">
+            <CircularIndeterminate size="60px" color="cancel" />
+          </div>
+        </>
+      )}
       <Layout>
         <div className="database_container">
           <h1 className="database_title">Database</h1>
@@ -623,16 +685,18 @@ const DBTable = () => {
                   </h3>
                   <Box
                     sx={{
-                      width: 800,
+                      width: 500,
                       maxWidth: "100%",
                     }}
                   >
                     <TextField
+                      required
                       fullWidth
                       type="text"
                       value={collectionInputValue}
                       onChange={(e) => setCollectionInputValue(e.target.value)}
                       inputProps={{
+                        maxLength: 50,
                         style: {
                           padding: "10px",
                           fontSize: "15px",
@@ -644,11 +708,12 @@ const DBTable = () => {
                     variant="contained"
                     color="cancel"
                     size="small"
-                    sx={{ margin: "10px 0 0 600px" }}
+                    sx={{ margin: "10px 0 0 300px" }}
                     onClick={() => addCollection()}
                   >
                     cancel
                   </Button>
+
                   <Button
                     onClick={() => addNewCollection({ collectionInputValue })}
                     variant="contained"
@@ -674,11 +739,12 @@ const DBTable = () => {
                   </h3>
                   <Box
                     sx={{
-                      width: 800,
+                      width: 500,
                       maxWidth: "100%",
                     }}
                   >
                     <TextField
+                      required
                       fullWidth
                       type="text"
                       value={renameCollectionInputValue}
@@ -686,6 +752,7 @@ const DBTable = () => {
                         setRenameCollectionInputValue(e.target.value)
                       }
                       inputProps={{
+                        maxLength: 50,
                         style: {
                           padding: "10px",
                           fontSize: "15px",
@@ -706,7 +773,7 @@ const DBTable = () => {
                     variant="contained"
                     color="cancel"
                     size="small"
-                    sx={{ margin: "10px 0 0 600px" }}
+                    sx={{ margin: "10px 0 0 300px" }}
                     onClick={() => cancelRenameCollection()}
                   >
                     cancel
@@ -812,16 +879,18 @@ const DBTable = () => {
                   </h3>
                   <Box
                     sx={{
-                      width: 800,
+                      width: 500,
                       maxWidth: "100%",
                     }}
                   >
                     <TextField
+                      required
                       fullWidth
                       type="text"
                       value={documentInputValue}
                       onChange={(e) => setDocumentInputValue(e.target.value)}
                       inputProps={{
+                        maxLength: 50,
                         style: {
                           padding: "10px",
                           fontSize: "15px",
@@ -838,7 +907,7 @@ const DBTable = () => {
                   <Button
                     variant="contained"
                     size="small"
-                    sx={{ margin: "10px 0 0 600px" }}
+                    sx={{ margin: "10px 0 0 300px" }}
                     color="cancel"
                     onClick={() => addDocument()}
                   >
@@ -868,11 +937,12 @@ const DBTable = () => {
                   </h3>
                   <Box
                     sx={{
-                      width: 800,
+                      width: 500,
                       maxWidth: "100%",
                     }}
                   >
                     <TextField
+                      required
                       fullWidth
                       type="text"
                       value={renameDocumentInputValue}
@@ -880,6 +950,7 @@ const DBTable = () => {
                         setRenameDocumentInputValue(e.target.value)
                       }
                       inputProps={{
+                        maxLength: 50,
                         style: {
                           padding: "10px",
                           fontSize: "15px",
@@ -899,7 +970,7 @@ const DBTable = () => {
                     variant="contained"
                     color="cancel"
                     size="small"
-                    sx={{ margin: "10px 0 0 600px" }}
+                    sx={{ margin: "10px 0 0 300px" }}
                     onClick={() => cancelRenameDocument()}
                   >
                     cancel
@@ -1036,7 +1107,7 @@ const DBTable = () => {
                   </h3>
                   <Box
                     sx={{
-                      width: 800,
+                      width: 500,
                       maxWidth: "100%",
                     }}
                   >
@@ -1046,16 +1117,14 @@ const DBTable = () => {
                         displayEmpty
                         size="small"
                         sx={{
-                          margin: "10px 25px",
+                          margin: "10px 0",
                           minWidth: 200,
                           display: "block",
                           backgroundColor: "#F8F9FA",
                         }}
                         onChange={(e) => handleEditingFieldValueChange(e)}
                       >
-                        <MenuItem value="none" disabled>
-                          Select project
-                        </MenuItem>
+                        <MenuItem value="none" disabled></MenuItem>
                         <MenuItem value="TRUE">TRUE</MenuItem>
                         <MenuItem value="FALSE">FALSE</MenuItem>
                       </Select>
@@ -1071,11 +1140,13 @@ const DBTable = () => {
                     // </select>
                     infoType == "Number" ? (
                       <TextField
+                        required
                         fullWidth
                         type="number"
                         value={editingFieldValue}
                         onChange={(e) => handleEditingFieldValueChange(e)}
                         inputProps={{
+                          maxLength: 200,
                           style: {
                             padding: "10px",
                             fontSize: "15px",
@@ -1090,11 +1161,13 @@ const DBTable = () => {
                       //   onChange={(e) => handleEditingFieldValueChange(e)}
                       // />
                       <TextField
+                        required
                         fullWidth
                         type="text"
                         value={editingFieldValue}
                         onChange={(e) => handleEditingFieldValueChange(e)}
                         inputProps={{
+                          maxLength: 200,
                           style: {
                             padding: "10px",
                             fontSize: "15px",
@@ -1113,7 +1186,7 @@ const DBTable = () => {
                   <Button
                     variant="contained"
                     size="small"
-                    sx={{ margin: "10px 0 0 600px" }}
+                    sx={{ margin: "10px 0 0 300px" }}
                     color="cancel"
                     onClick={() => cancelUpdateFieldValue()}
                   >
@@ -1131,7 +1204,7 @@ const DBTable = () => {
 
                 <div
                   className={`database__field__add__group ${
-                    fieldEditing ? "database__popup" : ""
+                    fieldEditing ? "database__input__popup" : ""
                   }`}
                   style={{ display: fieldEditing ? "block" : "none" }}
                 >

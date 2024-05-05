@@ -58,6 +58,10 @@ const SettingPage = () => {
   };
 
   const addNewDomain = () => {
+    if (domainNameInputValue === "") {
+      alert("Domain can't be empty.");
+      return;
+    }
     const data = {
       domainName: domainNameInputValue,
     };
@@ -288,6 +292,7 @@ const SettingPage = () => {
                   handleDomainNameChange(e);
                 }}
                 inputProps={{
+                  maxLength: 100,
                   style: {
                     padding: "10px",
                     fontSize: "20px",

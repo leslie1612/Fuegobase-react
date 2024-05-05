@@ -43,6 +43,7 @@ const Projects = () => {
     console.log(projectName);
     if (projectName === "") {
       alert("Project name can't be empty.");
+      return;
     }
     const data = {
       name: projectName,
@@ -56,16 +57,6 @@ const Projects = () => {
         alert("Project name is already used.");
       }
     });
-  };
-
-  const deleteProject = (project) => {
-    if (confirm(`Delete project ${project.name} ?`)) {
-      API.deleteProject(project.id, token).then((status) => {
-        if (status === 204) {
-          setReloadProjects(!reloadProjects);
-        }
-      });
-    }
   };
 
   return (
@@ -109,6 +100,7 @@ const Projects = () => {
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 inputProps={{
+                  maxLength: 50,
                   style: {
                     padding: "10px",
                     fontSize: "20px",

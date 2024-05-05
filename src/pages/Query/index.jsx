@@ -7,9 +7,15 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
 import Table from "react-bootstrap/Table";
+import Tooltip from "@mui/material/Tooltip";
+import InfoIcon from "@mui/icons-material/Info";
 import { useParams } from "react-router-dom";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CircularIndeterminate from "../../components/Loading";
 import API from "../../utils/api";
 import "./query.css";
 
@@ -25,6 +31,7 @@ const QueryIndex = () => {
   const [opened, setOpened] = useState(false);
   const [queryPath, setQueryPath] = useState("");
   const [operator, setOperator] = useState("EQUAL");
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
     if (projectId) {
@@ -33,6 +40,8 @@ const QueryIndex = () => {
       });
     }
   }, [projectId]);
+
+  const menuItemStyle = { fontSize: 15 };
 
   const handleCollectionChange = (value) => {
     setSelectedCollection(value);
@@ -66,13 +75,6 @@ const QueryIndex = () => {
   };
 
   const queryData = () => {
-    console.log(
-      selectedCollection,
-      fieldKeyInputValue,
-      valueInputValue,
-      fieldType,
-      operator
-    );
     if (
       selectedCollection == "" ||
       fieldKeyInputValue == "" ||
@@ -81,7 +83,7 @@ const QueryIndex = () => {
     ) {
       alert("Every field must be required.");
     } else {
-      console.log(fieldType);
+      setIsLoading(true);
       API.getDataByFilter(
         projectId,
         selectedCollection,
@@ -101,6 +103,7 @@ const QueryIndex = () => {
         } else {
           setDocumentData([-1]);
         }
+        setIsLoading(false);
       });
     }
   };
@@ -159,7 +162,37 @@ const QueryIndex = () => {
                 Collection
               </Col>
               <Col sm={6} className="query_col">
-                <Form.Control
+                <Select
+                  fullWidth
+                  required
+                  value={selectedCollection || "none"}
+                  onChange={(e) => {
+                    handleCollectionChange(e.target.value);
+                  }}
+                  displayEmpty
+                  size="small"
+                  sx={{
+                    marginLeft: "auto",
+                    minWidth: 200,
+                    fontSize: 15,
+                  }}
+                >
+                  <MenuItem value="none" disabled sx={menuItemStyle}>
+                    Choose a collection name
+                  </MenuItem>
+                  {collections &&
+                    collections.map((collection) => (
+                      <MenuItem
+                        key={collection.id}
+                        value={collection.id}
+                        sx={menuItemStyle}
+                      >
+                        {collection.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+
+                {/*  <Form.Control
                   className="query__collection"
                   as="select"
                   aria-label="Select number"
@@ -176,8 +209,8 @@ const QueryIndex = () => {
                       <option key={collection.id} value={collection.id}>
                         {collection.name}
                       </option>
-                    ))}
-                </Form.Control>
+                    ))} 
+                </Form.Control>*/}
               </Col>
               <Form.Group as={Col} className="query_col "></Form.Group>
             </Row>
@@ -188,7 +221,35 @@ const QueryIndex = () => {
               </Col>
 
               <Col className="query_col">
-                <Form.Control
+                <TextField
+                  required
+                  fullWidth
+                  type="text"
+                  placeholder="Enter field key"
+                  label="field key"
+                  value={fieldKeyInputValue}
+                  onChange={(e) => {
+                    handleFieldKeyChange(e.target.value);
+                  }}
+                  inputProps={{
+                    style: {
+                      padding: "10px",
+                      fontSize: "15px",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: "15px",
+                      marginTop: "-3px",
+                    },
+                  }}
+                />
+                <Tooltip title="If you want to query the key value of a map, please use ' . '">
+                  <IconButton>
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
+                {/* <Form.Control
                   required
                   type="text"
                   placeholder="Enter field key"
@@ -196,11 +257,43 @@ const QueryIndex = () => {
                   onChange={(e) => {
                     handleFieldKeyChange(e.target.value);
                   }}
-                />
+                /> */}
               </Col>
 
               <Col className="query_col " sm={3}>
-                <Form.Control
+                <Select
+                  required
+                  value={operator || "EQUAL"}
+                  displayEmpty
+                  size="small"
+                  sx={{
+                    marginLeft: "auto",
+                    minWidth: 200,
+                    fontSize: 15,
+                  }}
+                  onChange={(e) => handleOperatorChange(e.target.value)}
+                >
+                  <MenuItem value="EQUAL" sx={menuItemStyle}>
+                    ==
+                  </MenuItem>
+                  <MenuItem value="GREATER_THAN" sx={menuItemStyle}>
+                    &gt;
+                  </MenuItem>
+                  <MenuItem value="LESS_THAN" sx={menuItemStyle}>
+                    &lt;
+                  </MenuItem>
+                  <MenuItem value="GREATER_THAN_OR_EQUAL" sx={menuItemStyle}>
+                    &gt;=
+                  </MenuItem>
+                  <MenuItem value="LESS_THAN_OR_EQUAL" sx={menuItemStyle}>
+                    &lt;=
+                  </MenuItem>
+                  <MenuItem value="CONTAINS" sx={menuItemStyle}>
+                    array_contains
+                  </MenuItem>
+                </Select>
+
+                {/* <Form.Control
                   as="select"
                   value={operator || "EQUAL"}
                   onChange={(e) => handleOperatorChange(e.target.value)}
@@ -211,13 +304,34 @@ const QueryIndex = () => {
                   <option value="GREATER_THAN_OR_EQUAL"> &gt;= </option>
                   <option value="LESS_THAN_OR_EQUAL"> &lt;= </option>
                   <option value="CONTAINS">array_contains</option>
-                </Form.Control>
+                </Form.Control> */}
               </Col>
             </Row>
 
             <Row className="query_row">
               <Col md={{ span: 2, offset: 2 }} className="query_col">
-                <Form.Control
+                <Select
+                  required
+                  value={fieldType || "String"}
+                  displayEmpty
+                  size="small"
+                  sx={{
+                    minWidth: 130,
+                    fontSize: 15,
+                  }}
+                  onChange={(e) => handleTypeChange(e.target.value)}
+                >
+                  <MenuItem value="String" sx={menuItemStyle}>
+                    String
+                  </MenuItem>
+                  <MenuItem value="Number" sx={menuItemStyle}>
+                    Number
+                  </MenuItem>
+                  <MenuItem value="Boolean" sx={menuItemStyle}>
+                    Boolean
+                  </MenuItem>
+                </Select>
+                {/* <Form.Control
                   as="select"
                   value={fieldType || "String"}
                   onChange={(e) => handleTypeChange(e.target.value)}
@@ -225,18 +339,41 @@ const QueryIndex = () => {
                   <option value="String">String</option>
                   <option value="Number">Number</option>
                   <option value="Boolean">Boolean</option>
-                </Form.Control>
+                </Form.Control> */}
               </Col>
 
               <Col className="query_col">
-                <Form.Control
+                <TextField
+                  required
+                  fullWidth
+                  type="text"
+                  placeholder="Enter field value"
+                  label="field value"
+                  value={valueInputValue}
+                  onChange={(e) => {
+                    handleValueInputChange(e.target.value);
+                  }}
+                  inputProps={{
+                    style: {
+                      padding: "10px",
+                      fontSize: "15px",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: "15px",
+                      marginTop: "-3px",
+                    },
+                  }}
+                />
+                {/* <Form.Control
                   type="text"
                   placeholder="Enter field value"
                   value={valueInputValue}
                   onChange={(e) => {
                     handleValueInputChange(e.target.value);
                   }}
-                />
+                /> */}
               </Col>
             </Row>
 
@@ -254,17 +391,21 @@ const QueryIndex = () => {
                 >
                   Clear
                 </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  className="project_submit query_btn"
-                  sx={{ margin: "10px 0 0 10px" }}
-                  onClick={() => {
-                    queryData();
-                  }}
-                >
-                  Submit
-                </Button>
+                {isLoading ? (
+                  <CircularIndeterminate size="30px" />
+                ) : (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    className="project_submit query_btn"
+                    sx={{ margin: "10px 0 0 10px" }}
+                    onClick={() => {
+                      queryData();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                )}
               </Col>
             </Row>
           </Container>
@@ -275,7 +416,7 @@ const QueryIndex = () => {
               <thead className="thead-light">
                 <tr>
                   <th className="query_table_head" style={{ width: "25%" }}>
-                    Document ID{" "}
+                    Document ID
                   </th>
                   <th className="query_table_head" style={{ width: "25%" }}>
                     Document Name

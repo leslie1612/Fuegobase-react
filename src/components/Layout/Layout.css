@@ -102,9 +102,18 @@ q {
 }
 a:hover {
   text-decoration: none;
-  color: inherit;
+  /* color: inherit; */
+}
+button:focus {
+  outline: none;
+  outline-offset: none;
 }
 
+.form-control:focus {
+  box-shadow: none;
+  /* border-color: 212529; */
+  border: 1.5px solid #212529;
+}
 .layout_wrapper {
   /* background-color: #fffcf2; */
   display: flex;
