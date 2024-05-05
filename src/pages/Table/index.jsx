@@ -4,9 +4,15 @@ import { AuthContext } from "../../context/AuthContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Layout from "../../components/Layout";
 import FieldInput from "./FieldInput";
-// import Button from "react-bootstrap/Button";
 import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import API from "../../utils/api";
 import "./DBTable.css";
 
@@ -43,6 +49,7 @@ const DBTable = () => {
   const [infoType, setInfoType] = useState("");
   const [isInfoValueNumber, setIsInfoValueNumber] = useState(false);
   const [path, setPath] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
 
   React.useEffect(() => {
     console.log(token);
@@ -149,31 +156,49 @@ const DBTable = () => {
               <div className="field_value_info_container" key={info.valueId}>
                 <div className="field__value__info__name">
                   {fieldInfo(field, info)}
+                  <div className="field_value_info_buttons">
+                    <IconButton
+                      color="secondary"
+                      sx={{
+                        fontSize: 20,
+                        padding: 0,
+                        margin: 0.5,
+                        "&:hover": {
+                          color: "primary.dark",
+                        },
+                      }}
+                      onClick={() => {
+                        editFieldValue(field.id, info);
+                      }}
+                    >
+                      <EditIcon
+                        sx={{
+                          fontSize: 20,
+                        }}
+                      />
+                    </IconButton>
+                    <IconButton
+                      color="secondary"
+                      sx={{
+                        padding: "0",
+                        margin: 0.5,
+                        "&:hover": {
+                          color: "primary.dark",
+                        },
+                      }}
+                      onClick={() => {
+                        deleteFieldValue(field.id, info);
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          fontSize: 20,
+                        }}
+                      />
+                    </IconButton>
+                  </div>
                 </div>
-                <div className="field_value_info_buttons">
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    className="database__edit__btn"
-                    onClick={() => {
-                      editFieldValue(field.id, info);
-                    }}
-                  >
-                    edit
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="cancel"
-                    className="database__delete__btn"
-                    onClick={() => {
-                      deleteFieldValue(field.id, info.valueId);
-                    }}
-                  >
-                    X
-                  </Button>
-                </div>
+                {/* <div className="field_value_info_buttons"></div> */}
               </div>
             ))}
         </>
@@ -187,14 +212,26 @@ const DBTable = () => {
               {fieldInfo(field, info)}
             </div>
             <div className="field_value_info_buttons">
-              <Button
-                className="database__edit__btn"
+              <IconButton
+                color="secondary"
+                sx={{
+                  fontSize: 20,
+                  padding: 0,
+                  margin: 0.5,
+                  "&:hover": {
+                    color: "primary.dark",
+                  },
+                }}
                 onClick={() => {
                   editFieldValue(field.id, info);
                 }}
               >
-                edit
-              </Button>
+                <EditIcon
+                  sx={{
+                    fontSize: 20,
+                  }}
+                />
+              </IconButton>
             </div>
           </div>
         ))
@@ -205,15 +242,19 @@ const DBTable = () => {
   const fieldInfo = (field, info) => {
     if (field.type === "Map") {
       return (
-        <li className="field_value_info">
-          {info.key} : {info.value} ({info.type})
-        </li>
+        <>
+          <div>
+            {info.key} : {info.value}
+          </div>
+          <div className="field__value__info__type">({info.type})</div>
+        </>
       );
     } else if (field.type === "Array") {
       return (
-        <li className="field_value_info">
-          {info.value} ({info.type})
-        </li>
+        <>
+          <div>{info.value}</div>
+          <div className="field__value__info__type">({info.type})</div>
+        </>
       );
     } else {
       return <span>{info.value}</span>;
@@ -226,6 +267,7 @@ const DBTable = () => {
     setEditingFieldId(fieldId);
     setInfoType(info.type);
     setEditingFieldValueId(info.valueId);
+    setShowOverlay(!showOverlay);
   };
 
   const handleEditingFieldValueChange = (e) => {
@@ -234,6 +276,7 @@ const DBTable = () => {
 
   const updateFieldValue = () => {
     setFieldValueEditing(!fieldValueEditing);
+    setShowOverlay(false);
     setInfoType("");
     const data = {
       value: editingFieldValue,
@@ -259,10 +302,12 @@ const DBTable = () => {
     setFieldValueEditing(!fieldValueEditing);
     setInfoType("");
     setEditingFieldValue("");
+    setShowOverlay(false);
   };
 
   const addFieldValue = (field) => {
     setFieldEditing(!fieldEditing);
+    setShowOverlay(true);
     setFieldName(field.name);
     setFieldType(field.type);
     setIsUpdateField(true);
@@ -271,6 +316,7 @@ const DBTable = () => {
 
   const addNewField = () => {
     setFieldEditing(!fieldEditing);
+    setShowOverlay(false);
 
     if (isUpdateField) {
       const data = {
@@ -311,20 +357,6 @@ const DBTable = () => {
           alert("name repeat!");
         }
       });
-
-      // const response = await API.addNewField(
-      //   projectId,
-      //   expandedCollectionId,
-      //   expandedDocumentId,
-      //   token,
-      //   data
-      // );
-      // const jsonData = await response.json();
-      // if (response.status == 201) {
-      //   setReloadField(!reloadField);
-      // } else {
-      //   alert(jsonData.error);
-      // }
     }
 
     setFieldName("");
@@ -334,10 +366,12 @@ const DBTable = () => {
 
   const addCollection = () => {
     setCollectionEditing(!collectionEditing);
+    setShowOverlay(!showOverlay);
   };
 
   const addNewCollection = async (myData) => {
     setCollectionEditing(!collectionEditing);
+    setShowOverlay(!showOverlay);
 
     const data = {
       name: myData.collectionInputValue,
@@ -351,11 +385,13 @@ const DBTable = () => {
   };
 
   const addDocument = () => {
+    setShowOverlay(!showOverlay);
     setDocumentEditing(!documentEditing);
   };
 
   const addNewDocument = async (name) => {
     setDocumentEditing(!documentEditing);
+    setShowOverlay(false);
 
     const data = {
       name: name.documentInputValue,
@@ -373,6 +409,7 @@ const DBTable = () => {
   const addField = () => {
     setFieldEditing(!fieldEditing);
     setIsUpdateField(false);
+    setShowOverlay(true);
   };
 
   const cancelFieldEditing = () => {
@@ -380,16 +417,17 @@ const DBTable = () => {
     setFieldName("");
     setFieldType("none");
     setValueInfoArray([{ key: null, type: "none", value: "" }]);
+    setShowOverlay(false);
   };
 
   const handleCollectionRename = (collection) => {
     setRenameCollectionEditing(!renameCollectionEditing);
     setRenameCollectionInputValue(collection.name);
-    console.log(expandedCollectionId);
+    setShowOverlay(true);
   };
 
   const renameCollection = () => {
-    console.log(expandedCollectionId);
+    setShowOverlay(false);
     const data = {
       name: renameCollectionInputValue,
     };
@@ -408,14 +446,17 @@ const DBTable = () => {
   const cancelRenameCollection = () => {
     setRenameCollectionEditing(!renameCollectionEditing);
     setRenameCollectionInputValue("");
+    setShowOverlay(false);
   };
 
   const handleDocumentRename = (document) => {
     setRenameDocumentEditing(!renameDocumentEditing);
     setRenameDocumentInputValue(document.name);
+    setShowOverlay(true);
   };
 
   const renameDocument = () => {
+    setShowOverlay(false);
     const data = {
       name: renameDocumentInputValue,
     };
@@ -438,6 +479,7 @@ const DBTable = () => {
   const cancelRenameDocument = () => {
     setRenameDocumentEditing(!renameDocumentEditing);
     setRenameDocumentInputValue("");
+    setShowOverlay(false);
   };
 
   const deleteCollection = (collection) => {
@@ -451,47 +493,54 @@ const DBTable = () => {
       );
     }
   };
-  const deleteDocument = () => {
-    API.deleteDocument(
-      projectId,
-      expandedCollectionId,
-      expandedDocumentId,
-      token
-    ).then((status) => {
-      if (status == 204) {
-        setReloadDocument(!reloadDocument);
-      }
-    });
-  };
-  const deleteFieldValue = (fieldId, valueId) => {
-    API.deleteFieldValue(
-      projectId,
-      expandedCollectionId,
-      expandedDocumentId,
-      fieldId,
-      valueId,
-      token
-    ).then((status) => {
-      if (status == 204) {
-        console.log("success");
-        setReloadField(!reloadField);
-      }
-    });
+  const deleteDocument = (document) => {
+    if (confirm(`Delete document ${document.name} ?`)) {
+      API.deleteDocument(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        token
+      ).then((status) => {
+        if (status == 204) {
+          setReloadDocument(!reloadDocument);
+        }
+      });
+    }
   };
 
-  const deleteFieldKey = (fieldId) => {
-    API.deleteFieldKey(
-      projectId,
-      expandedCollectionId,
-      expandedDocumentId,
-      fieldId,
-      token
-    ).then((status) => {
-      if (status == 204) {
-        console.log("success");
-        setReloadField(!reloadField);
-      }
-    });
+  const deleteFieldValue = (fieldId, info) => {
+    if (confirm(`Delete field value ?`)) {
+      API.deleteFieldValue(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        fieldId,
+        info.valueId,
+        token
+      ).then((status) => {
+        if (status == 204) {
+          console.log("success");
+          setReloadField(!reloadField);
+        }
+      });
+    }
+  };
+
+  const deleteFieldKey = (field) => {
+    if (confirm(`Delete field ${field.name} ?`)) {
+      API.deleteFieldKey(
+        projectId,
+        expandedCollectionId,
+        expandedDocumentId,
+        field.id,
+        token
+      ).then((status) => {
+        if (status == 204) {
+          console.log("success");
+          setReloadField(!reloadField);
+        }
+      });
+    }
   };
 
   const handleFieldNameChange = (e) => {
@@ -522,6 +571,9 @@ const DBTable = () => {
 
   return (
     <>
+      {showOverlay && (
+        <div className="overlay" onClick={() => closeInput()}></div>
+      )}
       <Layout>
         <div className="database_container">
           <h1 className="database_title">Database</h1>
@@ -557,39 +609,53 @@ const DBTable = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col">
+            <div className="col database_col">
               <h2 className="database__table__title">Collections</h2>
               <div className="database__add">
-                {/* <span
-                  className="database__add__title"
-                  onClick={() => addCollection()}
-                >
-                  + add
-                </span> */}
                 <div
                   className={`database__add__group ${
                     collectionEditing ? "database__popup" : ""
                   }`}
                   style={{ display: collectionEditing ? "block" : "none" }}
                 >
-                  <h3>New collection name : </h3>
-                  <input
-                    className="database__add__input"
-                    type="text"
-                    value={collectionInputValue}
-                    onChange={(e) => setCollectionInputValue(e.target.value)}
-                  />
-                  <Button
-                    className="database__submit__btn"
-                    onClick={() => addNewCollection({ collectionInputValue })}
+                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                    New collection name :
+                  </h3>
+                  <Box
+                    sx={{
+                      width: 800,
+                      maxWidth: "100%",
+                    }}
                   >
-                    Submit
-                  </Button>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      value={collectionInputValue}
+                      onChange={(e) => setCollectionInputValue(e.target.value)}
+                      inputProps={{
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                  </Box>
                   <Button
-                    className="database__delete__btn"
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 0 0 600px" }}
                     onClick={() => addCollection()}
                   >
                     cancel
+                  </Button>
+                  <Button
+                    onClick={() => addNewCollection({ collectionInputValue })}
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 10px" }}
+                  >
+                    Submit
                   </Button>
                 </div>
               </div>
@@ -602,48 +668,68 @@ const DBTable = () => {
                   style={{
                     display: renameCollectionEditing ? "block" : "none",
                   }}
-
-                  // className="database__add__group"
-                  // style={{
-                  //   display: renameCollectionEditing ? "block" : "none",
-                  // }}
                 >
-                  <h3>Rename collection : </h3>
-                  <input
-                    className="database__add__input"
-                    type="text"
-                    value={renameCollectionInputValue}
-                    onChange={(e) =>
-                      setRenameCollectionInputValue(e.target.value)
-                    }
-                  />
-                  <Button
-                    className="database__submit__btn"
-                    onClick={() => renameCollection()}
+                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                    Rename collection :
+                  </h3>
+                  <Box
+                    sx={{
+                      width: 800,
+                      maxWidth: "100%",
+                    }}
                   >
-                    submit
-                  </Button>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      value={renameCollectionInputValue}
+                      onChange={(e) =>
+                        setRenameCollectionInputValue(e.target.value)
+                      }
+                      inputProps={{
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                    {/* <input
+                      className="database__add__input"
+                      type="text"
+                      value={renameCollectionInputValue}
+                      onChange={(e) =>
+                        setRenameCollectionInputValue(e.target.value)
+                      }
+                    /> */}
+                  </Box>
+
                   <Button
-                    className="database__delete__btn"
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 0 0 600px" }}
                     onClick={() => cancelRenameCollection()}
                   >
                     cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 10px" }}
+                    onClick={() => renameCollection()}
+                  >
+                    submit
                   </Button>
                 </div>
               </div>
 
               <div
-                className="database__table__item"
+                className="database__table__item database__add__item"
                 style={{
                   cursor: "pointer",
                 }}
+                onClick={() => addCollection()}
               >
-                <span
-                  className="database__add__title"
-                  onClick={() => addCollection()}
-                >
-                  + add
-                </span>
+                + add
               </div>
 
               {collections &&
@@ -664,22 +750,47 @@ const DBTable = () => {
 
                       {expandedCollectionId === collection.id && (
                         <>
-                          <Button
-                            className="database__edit__btn"
-                            onClick={() => {
-                              handleCollectionRename(collection);
-                            }}
-                          >
-                            edit
-                          </Button>
-                          <Button
-                            className="database__delete__btn"
-                            onClick={() => {
-                              deleteCollection(collection);
-                            }}
-                          >
-                            X
-                          </Button>
+                          <div className="database_item_icon">
+                            <IconButton
+                              color="secondary"
+                              sx={{
+                                fontSize: 20,
+                                padding: 0,
+                                margin: 0.5,
+                                "&:hover": {
+                                  color: "primary.dark",
+                                },
+                              }}
+                              onClick={() => {
+                                handleCollectionRename(collection);
+                              }}
+                            >
+                              <EditIcon
+                                sx={{
+                                  fontSize: 20,
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton
+                              color="secondary"
+                              sx={{
+                                padding: "0",
+                                margin: 0.5,
+                                "&:hover": {
+                                  color: "primary.dark",
+                                },
+                              }}
+                              onClick={() => {
+                                deleteCollection(collection);
+                              }}
+                            >
+                              <DeleteIcon
+                                sx={{
+                                  fontSize: 20,
+                                }}
+                              />
+                            </IconButton>
+                          </div>
                         </>
                       )}
                     </div>
@@ -687,39 +798,59 @@ const DBTable = () => {
                 ))}
             </div>
 
-            <div className="col">
+            <div className="col database_col">
               <h2 className="database__table__title">Documents</h2>
               <div className="database__add">
-                {/* <span
-                  onClick={() => addDocument()}
-                  className="database__add__title"
-                >
-                  + add
-                </span> */}
                 <div
                   className={`database__add__group ${
                     documentEditing ? "database__popup" : ""
                   }`}
                   style={{ display: documentEditing ? "block" : "none" }}
                 >
-                  <h2>New Document Name : </h2>
-                  <input
-                    className="database__add__input"
-                    type="text"
-                    value={documentInputValue}
-                    onChange={(e) => setDocumentInputValue(e.target.value)}
-                  />
-                  <Button
-                    className="database__submit__btn"
-                    onClick={() => addNewDocument({ documentInputValue })}
+                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                    New Document Name :
+                  </h3>
+                  <Box
+                    sx={{
+                      width: 800,
+                      maxWidth: "100%",
+                    }}
                   >
-                    submit
-                  </Button>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      value={documentInputValue}
+                      onChange={(e) => setDocumentInputValue(e.target.value)}
+                      inputProps={{
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                    {/* <input
+                      className="database__add__input"
+                      type="text"
+                      value={documentInputValue}
+                      onChange={(e) => setDocumentInputValue(e.target.value)}
+                    /> */}
+                  </Box>
                   <Button
-                    className="database__delete__btn"
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 600px" }}
+                    color="cancel"
                     onClick={() => addDocument()}
                   >
                     cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 10px" }}
+                    onClick={() => addNewDocument({ documentInputValue })}
+                  >
+                    submit
                   </Button>
                 </div>
               </div>
@@ -731,48 +862,68 @@ const DBTable = () => {
                   style={{
                     display: renameDocumentEditing ? "block" : "none",
                   }}
-                  // className="database__add__group"
-                  // style={{
-                  //   display: renameDocumentEditing ? "block" : "none",
-                  // }}
                 >
-                  <h3>Rename document : </h3>
-                  <input
-                    className="database__add__input"
-                    type="text"
-                    value={renameDocumentInputValue}
-                    onChange={(e) =>
-                      setRenameDocumentInputValue(e.target.value)
-                    }
-                  />
-                  <Button
-                    className="database__submit__btn"
-                    onClick={() => renameDocument()}
+                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                    Rename document :
+                  </h3>
+                  <Box
+                    sx={{
+                      width: 800,
+                      maxWidth: "100%",
+                    }}
                   >
-                    submit
-                  </Button>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      value={renameDocumentInputValue}
+                      onChange={(e) =>
+                        setRenameDocumentInputValue(e.target.value)
+                      }
+                      inputProps={{
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                    {/* <input
+                      className="database__add__input"
+                      type="text"
+                      value={renameDocumentInputValue}
+                      onChange={(e) =>
+                        setRenameDocumentInputValue(e.target.value)
+                      }
+                    /> */}
+                  </Box>
                   <Button
-                    className="database__delete__btn"
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 0 0 600px" }}
                     onClick={() => cancelRenameDocument()}
                   >
                     cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 10px" }}
+                    onClick={() => renameDocument()}
+                  >
+                    submit
                   </Button>
                 </div>
               </div>
 
               <div
-                className="database__table__item"
+                className="database__table__item database__add__item"
                 style={{
                   visibility: expandedCollectionId ? "visible" : "hidden",
                   cursor: "pointer",
                 }}
+                onClick={() => addDocument()}
               >
-                <span
-                  onClick={() => addDocument()}
-                  className="database__add__title"
-                >
-                  + add
-                </span>
+                + add
               </div>
 
               {collections &&
@@ -805,7 +956,47 @@ const DBTable = () => {
 
                           {expandedDocumentId === document.id && (
                             <>
-                              <Button
+                              <div className="database_item_icon">
+                                <IconButton
+                                  color="secondary"
+                                  sx={{
+                                    fontSize: 20,
+                                    padding: 0,
+                                    margin: 0.5,
+                                    "&:hover": {
+                                      color: "primary.dark",
+                                    },
+                                  }}
+                                  onClick={() => {
+                                    handleDocumentRename(document);
+                                  }}
+                                >
+                                  <EditIcon
+                                    sx={{
+                                      fontSize: 20,
+                                    }}
+                                  />
+                                </IconButton>
+                                <IconButton
+                                  color="secondary"
+                                  sx={{
+                                    padding: "0",
+                                    margin: 0.5,
+                                    "&:hover": {
+                                      color: "primary.dark",
+                                    },
+                                  }}
+                                  onClick={() => {
+                                    deleteDocument(document);
+                                  }}
+                                >
+                                  <DeleteIcon
+                                    sx={{
+                                      fontSize: 20,
+                                    }}
+                                  />
+                                </IconButton>
+                                {/* <Button
                                 className="database__edit__btn"
                                 onClick={() => {
                                   handleDocumentRename(document);
@@ -820,7 +1011,8 @@ const DBTable = () => {
                                 }}
                               >
                                 X
-                              </Button>
+                              </Button> */}
+                              </div>
                             </>
                           )}
                         </div>
@@ -830,61 +1022,113 @@ const DBTable = () => {
                 ))}
             </div>
 
-            <div className="col">
+            <div className="col database_col">
               <h2 className="database__table__title">Fields</h2>
               <div className="database__add">
-                {/* <span
-                  onClick={() => addField()}
-                  className="database__add__title"
-                >
-                  + add
-                </span> */}
-
                 <div
                   className={`database__field__add__group ${
                     fieldValueEditing ? "database__popup" : ""
                   }`}
                   style={{ display: fieldValueEditing ? "block" : "none" }}
                 >
-                  {infoType == "Boolean" ? (
-                    <select
-                      value={editingFieldValue}
-                      onChange={(e) => handleEditingFieldValueChange(e)}
-                    >
-                      <option value="none" disabled>
-                        --select--
-                      </option>
-                      <option value="TRUE">TRUE</option>
-                      <option value="FALSE">FALSE</option>
-                    </select>
-                  ) : infoType == "Number" ? (
-                    <input
-                      className="database__add__input"
-                      type="number"
-                      value={editingFieldValue}
-                      onChange={(e) => handleEditingFieldValueChange(e)}
-                    />
-                  ) : (
-                    <input
-                      className="database__add__input"
-                      type="text"
-                      value={editingFieldValue}
-                      onChange={(e) => handleEditingFieldValueChange(e)}
-                    />
-                  )}
-                  <Button
-                    className="database__submit__btn"
-                    onClick={() => updateFieldValue({ editingFieldValue })}
+                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                    Update value :
+                  </h3>
+                  <Box
+                    sx={{
+                      width: 800,
+                      maxWidth: "100%",
+                    }}
                   >
-                    submit
-                  </Button>
+                    {infoType == "Boolean" ? (
+                      <Select
+                        value={editingFieldValue}
+                        displayEmpty
+                        size="small"
+                        sx={{
+                          margin: "10px 25px",
+                          minWidth: 200,
+                          display: "block",
+                          backgroundColor: "#F8F9FA",
+                        }}
+                        onChange={(e) => handleEditingFieldValueChange(e)}
+                      >
+                        <MenuItem value="none" disabled>
+                          Select project
+                        </MenuItem>
+                        <MenuItem value="TRUE">TRUE</MenuItem>
+                        <MenuItem value="FALSE">FALSE</MenuItem>
+                      </Select>
+                    ) : // <select
+                    //   value={editingFieldValue}
+                    //   onChange={(e) => handleEditingFieldValueChange(e)}
+                    // >
+                    //   <option value="none" disabled>
+                    //     --select--
+                    //   </option>
+                    //   <option value="TRUE">TRUE</option>
+                    //   <option value="FALSE">FALSE</option>
+                    // </select>
+                    infoType == "Number" ? (
+                      <TextField
+                        fullWidth
+                        type="number"
+                        value={editingFieldValue}
+                        onChange={(e) => handleEditingFieldValueChange(e)}
+                        inputProps={{
+                          style: {
+                            padding: "10px",
+                            fontSize: "15px",
+                          },
+                        }}
+                      />
+                    ) : (
+                      // <input
+                      //   className="database__add__input"
+                      //   type="number"
+                      //   value={editingFieldValue}
+                      //   onChange={(e) => handleEditingFieldValueChange(e)}
+                      // />
+                      <TextField
+                        fullWidth
+                        type="text"
+                        value={editingFieldValue}
+                        onChange={(e) => handleEditingFieldValueChange(e)}
+                        inputProps={{
+                          style: {
+                            padding: "10px",
+                            fontSize: "15px",
+                          },
+                        }}
+                      />
+                      // <input
+                      //   className="database__add__input"
+                      //   type="text"
+                      //   value={editingFieldValue}
+                      //   onChange={(e) => handleEditingFieldValueChange(e)}
+                      // />
+                    )}
+                  </Box>
+
                   <Button
-                    className="database__delete__btn"
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 600px" }}
+                    color="cancel"
                     onClick={() => cancelUpdateFieldValue()}
                   >
                     cancel
                   </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 10px" }}
+                    onClick={() => updateFieldValue({ editingFieldValue })}
+                  >
+                    submit
+                  </Button>
                 </div>
+
                 <div
                   className={`database__field__add__group ${
                     fieldEditing ? "database__popup" : ""
@@ -905,36 +1149,35 @@ const DBTable = () => {
                   />
                   <div className="field__value__btn__group">
                     <Button
-                      className="project_submit value__add__btn"
-                      variant="primary"
-                      onClick={addNewField}
-                    >
-                      Submit
-                    </Button>
-                    <Button
-                      className="project_cancel value__add__btn"
-                      variant="secondary"
+                      variant="contained"
+                      size="small"
+                      sx={{ margin: "10px 0 0 600px" }}
+                      color="cancel"
                       onClick={() => cancelFieldEditing()}
                     >
                       Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      sx={{ margin: "10px 0 0 10px" }}
+                      onClick={addNewField}
+                    >
+                      Submit
                     </Button>
                   </div>
                 </div>
               </div>
 
               <div
-                className="database__table__item"
+                className="database__table__item database__add__item"
                 style={{
                   visibility: expandedDocumentId ? "visible" : "hidden",
                   cursor: "pointer",
                 }}
+                onClick={() => addField()}
               >
-                <span
-                  onClick={() => addField()}
-                  className="database__add__title"
-                >
-                  + add
-                </span>
+                + add
               </div>
 
               {collections &&
@@ -963,7 +1206,12 @@ const DBTable = () => {
                         {fields[document.id]?.map((field) => (
                           <div className="database__table__item">
                             <div
-                              className="database__field"
+                              // className="database__field"
+                              className={`database__field ${
+                                selectedFieldId === field.id
+                                  ? "db__collection__selected"
+                                  : ""
+                              }`}
                               key={field.id}
                               onClick={() =>
                                 handleFieldClick(
@@ -986,23 +1234,46 @@ const DBTable = () => {
                                   <>
                                     {(field.type === "Array" ||
                                       field.type === "Map") && (
-                                      <Button
-                                        className="database__submit__btn"
+                                      <IconButton
+                                        color="secondary"
+                                        sx={{
+                                          padding: "0",
+                                          margin: 0.5,
+                                          "&:hover": {
+                                            color: "primary.dark",
+                                          },
+                                        }}
                                         onClick={() => {
                                           addFieldValue(field);
                                         }}
                                       >
-                                        +
-                                      </Button>
+                                        <AddIcon
+                                          sx={{
+                                            fontSize: 20,
+                                          }}
+                                        />
+                                      </IconButton>
                                     )}
-                                    <Button
-                                      className="database__delete__btn field__delete__btn"
+
+                                    <IconButton
+                                      color="secondary"
+                                      sx={{
+                                        padding: "0",
+                                        margin: 0.5,
+                                        "&:hover": {
+                                          color: "primary.dark",
+                                        },
+                                      }}
                                       onClick={() => {
-                                        deleteFieldKey(field.id);
+                                        deleteFieldKey(field);
                                       }}
                                     >
-                                      X
-                                    </Button>
+                                      <DeleteIcon
+                                        sx={{
+                                          fontSize: 20,
+                                        }}
+                                      />
+                                    </IconButton>
                                   </>
                                 )}
                               </div>

@@ -24,12 +24,12 @@
   display: flex;
   align-items: center;
   border: 0px;
-  /* border: 1px solid black; */
   padding: 10px;
 }
 .query_row {
   height: 3.5rem;
 }
+
 .query_statement {
   font-size: 18px;
   font-weight: 500;
@@ -49,11 +49,11 @@
 /* table */
 .query_table_head {
   font-size: 18px;
-  /* text-align: center; */
+  font-weight: 500;
 }
 .query_field_value_data {
   font-size: 18px;
-  padding: 0.5rem;
+  font-weight: 300;
 }
 .query_no_data {
   font-size: 2rem;

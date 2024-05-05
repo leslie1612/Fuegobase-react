@@ -31,7 +31,7 @@
 
 .setting_key_group {
   display: flex;
-  border: 1px solid black;
+  border: 1px solid rgb(141, 141, 141);
   padding: 10px;
 }
 .setting_copy_icon {
@@ -42,11 +42,13 @@
 }
 .setting_details_item_title {
   font-weight: 500;
+  height: 20px;
+  line-height: 20px;
 }
 .setting_details_item_value {
   font-weight: 300;
-  height: 30px;
-  line-height: 30px;
+  height: 20px;
+  line-height: 20px;
 }
 .setting_details_domain_value {
   font-weight: 300;

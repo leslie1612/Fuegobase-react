@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Table from "react-bootstrap/Table";
 import { useParams } from "react-router-dom";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -141,11 +142,13 @@ const QueryIndex = () => {
               <Row className="query_row">
                 <Col md={2} className="query_col query_statement">
                   Query Path
-                  <ContentCopyIcon
+                  <IconButton
                     className="query_icon"
-                    sx={{ fontSize: 20, marginLeft: 1 }}
+                    sx={{ marginLeft: 1 }}
                     onClick={() => handleCopyClick(queryPath)}
-                  />
+                  >
+                    <ContentCopyIcon sx={{ fontSize: 20 }} />
+                  </IconButton>
                 </Col>
                 <Col className="query_col query_path_outcome">{queryPath}</Col>
               </Row>
@@ -177,8 +180,6 @@ const QueryIndex = () => {
                 </Form.Control>
               </Col>
               <Form.Group as={Col} className="query_col "></Form.Group>
-              {/* <Form.Group as={Col} className="query_col"></Form.Group>
-              <Form.Group as={Col} className="query_col"></Form.Group> */}
             </Row>
 
             <Row className="query_row">
@@ -212,8 +213,6 @@ const QueryIndex = () => {
                   <option value="CONTAINS">array_contains</option>
                 </Form.Control>
               </Col>
-              {/* <Form.Group as={Col} className="query_col"></Form.Group> */}
-              {/* <Form.Group as={Col} className="query_col"></Form.Group> */}
             </Row>
 
             <Row className="query_row">

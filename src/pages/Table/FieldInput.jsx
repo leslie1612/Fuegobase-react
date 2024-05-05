@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button";
 const FieldInput = ({
   fieldName,
   handleFieldNameChange,
@@ -57,6 +57,8 @@ const FieldInput = ({
           {fieldType === "Array" ? (
             <>
               <Button
+                variant="contained"
+                size="small"
                 className="database__submit__btn"
                 style={{ display: isUpdateField ? "none" : "block" }}
                 onClick={() => {
@@ -69,6 +71,8 @@ const FieldInput = ({
           ) : fieldType === "Map" ? (
             <>
               <Button
+                variant="contained"
+                size="small"
                 className="database__submit__btn"
                 style={{ display: isUpdateField ? "none" : "block" }}
                 onClick={() => {

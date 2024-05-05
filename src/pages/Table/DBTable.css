@@ -7,14 +7,6 @@ li {
   list-style-type: none;
 }
 
-.field_value_info_buttons {
-  display: none;
-}
-
-.field_value_info_container:hover .field_value_info_buttons {
-  display: block;
-}
-
 /* layout */
 .database_container {
   font-size: 18px;
@@ -25,7 +17,11 @@ li {
   margin: 10px 0;
   border: 1px solid #dee2e6;
   padding: 0;
-  /* border: 0.5px rgb(255, 255, 255) solid; */
+  max-height: 65vh;
+  overflow: scroll;
+}
+.database_col {
+  height: 65vh;
 }
 .row {
   margin: 0;
@@ -56,9 +52,9 @@ li {
   font-size: 20px;
   background-color: #e9ecef;
   padding: 10px;
-}
-.database__add {
-  margin-bottom: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .database__collection,
@@ -70,8 +66,13 @@ li {
 .database__table__item {
   display: flex;
   align-items: center;
-  font-weight: 300;
+  font-weight: 500;
   font-size: 16px;
+}
+.database_item_icon {
+  display: flex;
+  position: absolute;
+  right: 0;
 }
 
 /* db button */
@@ -91,21 +92,9 @@ li {
   border: #ccc5b9;
 }
 
-/* .database__edit__btn {
-  background-color: #eb5e28;
-  border: #eb5e28;
-  color: white;
-  border: none;
-  margin: 0 0 0 5px;
-  cursor: pointer;
-}
-.database__edit__btn:hover {
-  background-color: #ff6f00;
-  border: #eb5e28;
-} */
-
-.database__add__title {
+.database__add__item {
   padding: 8px;
+  border-bottom: 1px solid #e9ecef;
 }
 .database__submit__btn {
   background-color: #eb5e28;
@@ -130,9 +119,11 @@ li {
 
 /* add area */
 .database__add__group {
-  padding: 10px 0 0 0;
-  width: 40rem;
-  height: 10rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  margin: 0 15px;
+  align-items: center;
 }
 .database__add__input {
   background-color: #fffcf2;
@@ -153,7 +144,7 @@ li {
   border: 2px white solid;
   width: 100%;
   cursor: pointer;
-  border-bottom: 3px solid #eb5e28;
+  border-bottom: 3px solid #e9ecef;
 }
 .database__field__key {
   display: flex;
@@ -172,12 +163,26 @@ li {
   display: flex;
   align-items: center;
   height: 36px;
+  width: 100%;
+}
+.field_value_info_buttons {
+  display: none;
+  text-indent: 0;
+}
+
+.field_value_info_container:hover .field_value_info_buttons {
+  display: block;
 }
 .field__value__info__name {
   text-indent: 1.5em;
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
-.field_value_info_buttons {
+.field__value__info__type {
   margin-left: auto;
+  font-size: 12px;
+  color: #495057;
 }
 
 /* FieldInput.css */
@@ -220,13 +225,27 @@ li {
 
 .database__popup {
   position: fixed;
-  top: 50%;
+  width: 800px;
+  top: 40%;
   left: 50%;
-  transform: translate(-30%, -50%);
+  transform: translate(-50%, -50%);
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 6;
   display: none;
+  max-height: 60vh;
+  overflow: scroll;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: block;
 }

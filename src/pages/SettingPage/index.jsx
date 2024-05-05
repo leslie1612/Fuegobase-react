@@ -121,13 +121,14 @@ const SettingPage = () => {
             <Table>
               <tbody>
                 <tr>
-                  <td className="setting_details_item_title">Project name :</td>
+                  <td className="setting_details_item_title">Project name </td>
                   <td className="setting_details_item_value">{projectName}</td>
                   <td style={{ textAlign: "right" }}>
                     <IconButton
                       color="secondary"
                       sx={{
-                        fontSize: 30,
+                        fontSize: 20,
+                        padding: "0 8px",
                         "&:hover": {
                           color: "primary.dark",
                         },
@@ -138,7 +139,8 @@ const SettingPage = () => {
                     <IconButton
                       color="secondary"
                       sx={{
-                        fontSize: 30,
+                        fontSize: 20,
+                        padding: "0 8px",
                         "&:hover": {
                           color: "primary.dark",
                         },
@@ -150,33 +152,34 @@ const SettingPage = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="setting_details_item_title">Project ID :</td>
+                  <td className="setting_details_item_title">Project ID </td>
                   <td className="setting_details_item_value">{projectId}</td>
                   <td></td>
                 </tr>
                 <tr>
-                  <td className="setting_details_item_title">API Key :</td>
+                  <td className="setting_details_item_title">API Key </td>
                   <td className="setting_details_item_value">
                     {apiKey}
                     <IconButton
                       color="secondary"
                       className="setting_copy_icon"
                       sx={{
-                        fontSize: 25,
+                        padding: "0 8px",
                         "&:hover": {
                           color: "primary.dark",
                         },
                       }}
                       onClick={() => handleCopyClick(apiKey)}
                     >
-                      <ContentCopyIcon />
+                      <ContentCopyIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                   </td>
                   <td style={{ textAlign: "right" }}>
                     <IconButton
                       color="secondary"
                       sx={{
-                        fontSize: 30,
+                        fontSize: 20,
+                        padding: "0 8px",
                         "&:hover": {
                           color: "primary.dark",
                         },
@@ -187,7 +190,8 @@ const SettingPage = () => {
                     <IconButton
                       color="secondary"
                       sx={{
-                        fontSize: 30,
+                        fontSize: 20,
+                        padding: "0px 8px",
                         "&:hover": {
                           color: "primary.dark",
                         },
@@ -243,7 +247,8 @@ const SettingPage = () => {
                       <IconButton
                         color="secondary"
                         sx={{
-                          fontSize: 30,
+                          fontSize: 20,
+                          padding: "0 8px",
                           "&:hover": {
                             color: "primary.dark",
                           },
