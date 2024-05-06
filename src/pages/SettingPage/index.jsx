@@ -12,12 +12,14 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import Tooltip from "@mui/material/Tooltip";
 import Layout from "../../components/Layout";
 import "./settingPage.css";
+import { TokenSharp } from "@mui/icons-material";
 
 const SettingPage = () => {
   const { token } = useContext(AuthContext);
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState([]);
   const { projectId } = useParams();
   const [projectName, setProjectName] = useState("");
   const [domainName, setDomainName] = useState([]);
@@ -26,23 +28,28 @@ const SettingPage = () => {
   const [addingNewDomain, setAddingNewDomain] = useState(false);
   const navigate = useNavigate();
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isAPIKeyMoreThanOne, setIsAPIKeyMoreThanOne] = useState(false);
 
   useEffect(() => {
     if (projectId) {
-      API.getDomainWhiteList(projectId).then((json) => {
+      API.getProjectDetails(projectId, token).then((json) => {
         setProjectName(json.data.projectName);
         setDomainName(json.data.domain);
         setApiKey(json.data.apiKey);
+        setIsAPIKeyMoreThanOne(json.data.apiKey.length > 1);
+        console.log(json.data.apiKey.length);
       });
     }
   }, [projectId, reloadPage]);
 
   useEffect(() => {
     if (projectId) {
-      API.getDomainWhiteList(projectId).then((json) => {
+      API.getProjectDetails(projectId, token).then((json) => {
         setProjectName(json.data.projectName);
         setDomainName(json.data.domain);
         setApiKey(json.data.apiKey);
+        setIsAPIKeyMoreThanOne(json.data.apiKey.length > 1);
+        console.log(json.data.apiKey.length);
       });
     }
   }, []);
@@ -65,7 +72,7 @@ const SettingPage = () => {
     const data = {
       domainName: domainNameInputValue,
     };
-    API.addNewDomain(projectId, data).then((status) => {
+    API.addNewDomain(projectId, data, token).then((status) => {
       if (status === 201) {
         setDomainNameInputValue("");
         setAddingNewDomain(!addingNewDomain);
@@ -77,7 +84,7 @@ const SettingPage = () => {
 
   const deletetDomain = (domain) => {
     if (confirm(`Delete domain ${domain.domainName} ?`)) {
-      API.deleteDomain(projectId, domain.id).then((status) => {
+      API.deleteDomain(projectId, domain.id, token).then((status) => {
         if (status === 204) {
           setReloadPage(!reloadPage);
         }
@@ -101,9 +108,35 @@ const SettingPage = () => {
         if (status === 204) {
           navigate("/projects");
         } else {
-          alert("Fail to delete project, please try again");
+          alert("Fail to delete project, please try again later.");
         }
       });
+    }
+  };
+  const handleApikeyDelete = (name) => {
+    if (
+      confirm(
+        `Are you sure you want to delete API key ${name} ? \n\nDeleting your API key is immediate and irreversible. \n\nTo ensure a smooth API key rotation, please replace this key with a new API key before deleting.`
+      )
+    ) {
+      API.deleteAPIKey(name, token).then((status) => {
+        if (status === 204) {
+          setReloadPage(!reloadPage);
+        } else {
+          alert("Fail to delete API Key.");
+        }
+      });
+    }
+  };
+  const gnerateNewAPIKey = async () => {
+    if (confirm(`Do you want to generate a new key ?`)) {
+      const response = await API.getNewAPIKey(projectId, token);
+      if (response.status === 200) {
+        setReloadPage(!reloadPage);
+      } else {
+        const json = await response.json();
+        alert(json.error);
+      }
     }
   };
 
@@ -160,57 +193,108 @@ const SettingPage = () => {
                   <td className="setting_details_item_value">{projectId}</td>
                   <td></td>
                 </tr>
-                <tr>
-                  <td className="setting_details_item_title">API Key </td>
-                  <td className="setting_details_item_value">
-                    {apiKey}
-                    <IconButton
-                      color="secondary"
-                      className="setting_copy_icon"
-                      sx={{
-                        padding: "0 8px",
-                        "&:hover": {
-                          color: "primary.dark",
-                        },
-                      }}
-                      onClick={() => handleCopyClick(apiKey)}
-                    >
-                      <ContentCopyIcon sx={{ fontSize: 20 }} />
-                    </IconButton>
-                  </td>
-                  <td style={{ textAlign: "right" }}>
-                    <IconButton
-                      color="secondary"
-                      sx={{
-                        fontSize: 20,
-                        padding: "0 8px",
-                        "&:hover": {
-                          color: "primary.dark",
-                        },
-                      }}
-                    >
-                      <AutorenewIcon />
-                    </IconButton>
-                    <IconButton
-                      color="secondary"
-                      sx={{
-                        fontSize: 20,
-                        padding: "0px 8px",
-                        "&:hover": {
-                          color: "primary.dark",
-                        },
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </td>
-                </tr>
+                {apiKey &&
+                  apiKey.map((name, index) => (
+                    <tr key={name}>
+                      {index === 0 ? (
+                        <>
+                          <td className="setting_details_item_title">
+                            API Key
+                            <Tooltip title="Generate a new API Key">
+                              <IconButton
+                                color="secondary"
+                                sx={{
+                                  fontSize: 20,
+                                  padding: "0 8px",
+                                  "&:hover": {
+                                    color: "primary.dark",
+                                  },
+                                }}
+                                onClick={() => gnerateNewAPIKey()}
+                              >
+                                <AutorenewIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                          <td className="setting_details_item_value">
+                            {name}
+                            <IconButton
+                              color="secondary"
+                              className="setting_copy_icon"
+                              sx={{
+                                padding: "0 8px",
+                                "&:hover": {
+                                  color: "primary.dark",
+                                },
+                              }}
+                              onClick={() => handleCopyClick(name)}
+                            >
+                              <ContentCopyIcon sx={{ fontSize: 20 }} />
+                            </IconButton>
+                          </td>
+
+                          <td style={{ textAlign: "right" }}>
+                            {isAPIKeyMoreThanOne && (
+                              <IconButton
+                                color="secondary"
+                                sx={{
+                                  fontSize: 20,
+                                  padding: "0px 8px",
+                                  "&:hover": {
+                                    color: "primary.dark",
+                                  },
+                                }}
+                                onClick={() => handleApikeyDelete(name)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="setting_details_item_title"> </td>
+                          <td className="setting_details_item_value">
+                            {name}
+                            <IconButton
+                              color="secondary"
+                              className="setting_copy_icon"
+                              sx={{
+                                padding: "0 8px",
+                                "&:hover": {
+                                  color: "primary.dark",
+                                },
+                              }}
+                              onClick={() => handleCopyClick(name)}
+                            >
+                              <ContentCopyIcon sx={{ fontSize: 20 }} />
+                            </IconButton>
+                          </td>
+
+                          <td style={{ textAlign: "right" }}>
+                            <IconButton
+                              color="secondary"
+                              sx={{
+                                fontSize: 20,
+                                padding: "0px 8px",
+                                "&:hover": {
+                                  color: "primary.dark",
+                                },
+                              }}
+                              onClick={() => handleApikeyDelete(name)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </div>
 
           <h1 className="setting_title">Authorized domain</h1>
-          {/* <div style={{ textAlign: "right" }}> */}
           <div>
             <Button
               size="small"

@@ -1,7 +1,7 @@
 const API = {
   // hostname: "/api/v1",
-  hostname: "https://fuegobase.store/api/v1",
-  // hostname: "http://localhost:8080/api/v1",
+  // hostname: "https://fuegobase.store/api/v1",
+  hostname: "http://localhost:8080/api/v1",
   signin(data) {
     return fetch(`${this.hostname}/user/signin`, {
       body: JSON.stringify(data),
@@ -241,24 +241,34 @@ const API = {
       (response) => response.json()
     );
   },
-  getDomainWhiteList(id) {
-    return fetch(`${this.hostname}/databases/whitelist/${id}`).then(
-      (response) => response.json()
-    );
+  getProjectDetails(id, jwtToken) {
+    return fetch(`${this.hostname}/databases/whitelist/${id}`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    }).then((response) => response.json());
   },
-  addNewDomain(id, data) {
+  addNewDomain(id, data, jwtToken) {
     return fetch(`${this.hostname}/databases/whitelist/${id}`, {
       body: JSON.stringify(data),
       headers: new Headers({
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       }),
       method: "POST",
     }).then((response) => response.status);
   },
-  deleteDomain(id, domainId) {
+  deleteDomain(id, domainId, jwtToken) {
     return fetch(
       `${this.hostname}/databases/whitelist/${id}/domain/${domainId}`,
-      { method: "DELETE" }
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        }),
+        method: "DELETE",
+      }
     ).then((response) => response.status);
   },
   getDataByFilter(id, collectionId, filter, value, type, operator, jwtToken) {
@@ -271,6 +281,23 @@ const API = {
         }),
       }
     ).then((response) => response.json());
+  },
+  deleteAPIKey(apiKey, jwtToken) {
+    return fetch(`${this.hostname}/security/project/key/${apiKey}`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+      method: "DELETE",
+    }).then((response) => response.status);
+  },
+  getNewAPIKey(projectId, jwtToken) {
+    return fetch(`${this.hostname}/security/project/${projectId}`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    });
   },
 };
 export default API;
