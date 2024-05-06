@@ -100,7 +100,7 @@ const Projects = () => {
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 inputProps={{
-                  maxLength: 50,
+                  maxLength: 20,
                   style: {
                     padding: "10px",
                     fontSize: "20px",

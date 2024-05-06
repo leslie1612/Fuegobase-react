@@ -3,6 +3,12 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 const FieldInput = ({
   fieldName,
   handleFieldNameChange,
@@ -26,88 +32,114 @@ const FieldInput = ({
   return (
     <>
       <Row className="field__value__item">
-        <Form.Group as={Col} md={4} controlId="formGridType">
-          <Form.Label>Key</Form.Label>
-          <Form.Control
+        <Form.Group as={Col} md={3} controlId="formGridType">
+          <InputLabel>Key</InputLabel>
+          <TextField
+            size="small"
             readOnly={isUpdateField ? true : false}
             value={fieldName || ""}
             onChange={(e) => handleFieldNameChange(e)}
+            inputProps={{
+              maxLength: 50,
+            }}
           />
         </Form.Group>
 
         <Form.Group as={Col} md={2} controlId="formGridType">
-          <Form.Label>Type</Form.Label>
-          <Form.Control
-            as="select"
+          <InputLabel>Type</InputLabel>
+          <Select
+            size="small"
+            required
             disabled={isUpdateField}
             value={fieldType || "none"}
             onChange={(e) => handleTypeChange(e)}
+            sx={{
+              minWidth: 120,
+            }}
           >
-            <option value="none" disabled></option>
-            <option value="String">String</option>
-            <option value="Number">Number</option>
-            <option value="Boolean">Boolean</option>
-            <option value="Array">Array</option>
-            <option value="Map">Map</option>
-          </Form.Control>
+            <MenuItem value="none" disabled></MenuItem>
+            <MenuItem value="String">String</MenuItem>
+            <MenuItem value="Number">Number</MenuItem>
+            <MenuItem value="Boolean">Boolean</MenuItem>
+            <MenuItem value="Array">Array</MenuItem>
+            <MenuItem value="Map">Map</MenuItem>
+          </Select>
         </Form.Group>
 
         <Form.Group as={Col} md={4} controlId="formGridValue">
-          <Form.Label>Value</Form.Label>
+          <InputLabel>Value</InputLabel>
           {fieldType === "Array" ? (
             <>
-              <Button
-                variant="contained"
+              <IconButton
                 size="small"
-                className="database__submit__btn"
-                style={{ display: isUpdateField ? "none" : "block" }}
+                style={{
+                  display: isUpdateField ? "none" : "block",
+                  margin: 5,
+                }}
                 onClick={() => {
                   addNewValue();
                 }}
               >
-                +
-              </Button>
+                <AddCircleIcon
+                  sx={{
+                    fontSize: 30,
+                  }}
+                />
+              </IconButton>
             </>
           ) : fieldType === "Map" ? (
-            <>
-              <Button
-                variant="contained"
-                size="small"
-                className="database__submit__btn"
-                style={{ display: isUpdateField ? "none" : "block" }}
-                onClick={() => {
-                  addNewValue();
+            <IconButton
+              size="small"
+              style={{
+                display: isUpdateField ? "none" : "block",
+                margin: 5,
+              }}
+              onClick={() => {
+                addNewValue();
+              }}
+            >
+              <AddCircleIcon
+                sx={{
+                  fontSize: 30,
                 }}
-              >
-                +
-              </Button>
-            </>
+              />
+            </IconButton>
           ) : fieldType === "Boolean" ? (
-            <Form.Control
-              as="select"
+            <Select
+              size="small"
               value={valueInfoArray[0].value || "none"}
               onChange={(e) => handleValueInfoChange(e, 0, "value")}
             >
-              <option value="none" disabled>
+              <MenuItem value="none" disabled>
                 --select--
-              </option>
-              <option value="TRUE">TRUE</option>
-              <option value="FALSE">FALSE</option>
-            </Form.Control>
+              </MenuItem>
+              <MenuItem value="TRUE">TRUE</MenuItem>
+              <MenuItem value="FALSE">FALSE</MenuItem>
+            </Select>
           ) : fieldType === "Number" ? (
-            <Form.Control
+            <TextField
+              size="small"
               type="number"
+              inputProps={{
+                maxLength: 50,
+              }}
               value={(valueInfoArray[0] && valueInfoArray[0].value) || ""}
               onChange={(e) => handleValueInfoChange(e, 0, "value")}
             />
           ) : (
-            <Form.Control
+            <TextField
+              fullWidth
+              size="small"
+              type="text"
+              inputProps={{
+                maxLength: 200,
+              }}
               value={(valueInfoArray[0] && valueInfoArray[0].value) || ""}
               onChange={(e) => handleValueInfoChange(e, 0, "value")}
+              sx={{ minWidth: 400 }}
             />
           )}
         </Form.Group>
-        <Col md={2}></Col>
       </Row>
 
       {valueInfoArray &&
@@ -123,38 +155,53 @@ const FieldInput = ({
             <Col md={2}></Col>
             <Form.Group
               as={Col}
-              md={4}
+              md={3}
               style={{
                 visibility: fieldType === "Array" ? "hidden" : "visible",
               }}
             >
-              <Form.Label>Key</Form.Label>
-              <Form.Control
+              <InputLabel>Key</InputLabel>
+              <TextField
+                size="small"
+                fullWidth
                 value={value.key}
                 onChange={(e) => handleValueInfoChange(e, index, "key")}
+                inputProps={{
+                  maxLength: 50,
+                }}
               />
             </Form.Group>
 
             <Form.Group as={Col} md={2}>
-              <Form.Label>Type</Form.Label>
-              <Form.Control
-                as="select"
+              <InputLabel>Type</InputLabel>
+              <Select
+                size="small"
+                required
                 value={value.type}
                 onChange={(e) => handleValueInfoChange(e, index, "type")}
+                sx={{
+                  minWidth: 120,
+                }}
               >
-                <option value="none" disabled></option>
-                <option value="String">String</option>
-                <option value="Number">Number</option>
-              </Form.Control>
+                <MenuItem value="none" disabled></MenuItem>
+                <MenuItem value="String">String</MenuItem>
+                <MenuItem value="Number">Number</MenuItem>
+              </Select>
             </Form.Group>
-            <Form.Group as={Col} md={4}>
-              <Form.Label>Value</Form.Label>
-              <Form.Control
+            <Form.Group as={Col} md={3}>
+              <InputLabel>Value</InputLabel>
+              <TextField
+                size="small"
+                required
                 type={
                   valueInfoArray[index]["type"] === "Number" ? "number" : "text"
                 }
                 value={value.value}
                 onChange={(e) => handleValueInfoChange(e, index, "value")}
+                inputProps={{
+                  maxLength: 200,
+                }}
+                sx={{ minWidth: 350 }}
               />
             </Form.Group>
           </Row>

@@ -4,7 +4,6 @@ import { AuthContext } from "../../context/AuthContext";
 import Nav from "react-bootstrap/Nav";
 import API from "../../utils/api";
 import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import StorageRoundedIcon from "@mui/icons-material/StorageRounded";
@@ -47,25 +46,40 @@ const Sidebar = () => {
       <div className="sidebar__project__title">Projects</div>
       <div className="sidebar__projects">
         <FormControl
-          sx={{ minWidth: 250, display: "flex", justifyContent: "center" }}
+          sx={{
+            minWidth: 250,
+          }}
         >
           <Select
             value={projectId}
             displayEmpty
             size="small"
             sx={{
-              margin: "10px 25px",
-              minWidth: 200,
+              margin: "10px 10px",
+              maxWidth: 230,
               display: "block",
               backgroundColor: "#F8F9FA",
+              textOverflow: "ellipsis",
+              fontSize: 15,
             }}
           >
-            <MenuItem value="" disabled>
+            <MenuItem
+              sx={{
+                fontSize: 15,
+              }}
+              value=""
+              disabled
+            >
               Select project
             </MenuItem>
             {projects &&
               projects.map((project) => (
                 <MenuItem
+                  sx={{
+                    fontSize: 15,
+                    whiteSpace: "unset",
+                    wordBreak: "break-all",
+                  }}
                   value={project.id}
                   key={project.id}
                   className={
