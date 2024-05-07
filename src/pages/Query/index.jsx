@@ -183,8 +183,8 @@ const QueryIndex = () => {
                   {collections &&
                     collections.map((collection) => (
                       <MenuItem
-                        key={collection.id}
-                        value={collection.id}
+                        key={collection.hashId}
+                        value={collection.hashId}
                         sx={menuItemStyle}
                       >
                         {collection.name}
@@ -438,7 +438,10 @@ const QueryIndex = () => {
                   documentData.map((item, index) => (
                     <tr key={index}>
                       <td style={{ width: "25%" }}>
-                        <div className="query_field_value_data"> {item.id}</div>
+                        <div className="query_field_value_data">
+                          {" "}
+                          {item.hashId}
+                        </div>
                       </td>
                       <td style={{ width: "25%" }}>
                         <div className="query_field_value_data">
@@ -447,7 +450,7 @@ const QueryIndex = () => {
                       </td>
                       <td style={{ width: "25%" }}>
                         {item.fields.map((field) => (
-                          <div key={field.id}>
+                          <div key={field.valueHashId}>
                             <div className="query_field_value_data">
                               <span>{field.name} : </span>
                               <span>{handleFieldValue(field)}</span>

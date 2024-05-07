@@ -80,14 +80,16 @@ const Sidebar = () => {
                     whiteSpace: "unset",
                     wordBreak: "break-all",
                   }}
-                  value={project.id}
-                  key={project.id}
+                  value={project.hashId}
+                  key={project.hashId}
                   className={
-                    project.id == projectId ? "sidebar_project_selected" : ""
+                    project.hashId == projectId
+                      ? "sidebar_project_selected"
+                      : ""
                   }
                 >
                   <Link
-                    to={`/${currentRoute}/${project.id}`}
+                    to={`/${currentRoute}/${project.hashId}`}
                     className="sidebar__project__link"
                   >
                     <div className="sidebar__project"> {project.name}</div>

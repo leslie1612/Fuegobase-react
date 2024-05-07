@@ -153,14 +153,17 @@ const Projects = () => {
                 <div className="project_componen_container">
                   <div class="ag-courses_item">
                     <Link
-                      to={`/database/${project.id}`}
+                      to={`/database/${project.hashId}`}
                       class="ag-courses-item_link"
                     >
                       <div class="ag-courses-item_bg"></div>
                       <div class="ag-courses-item_title">{project.name}</div>
                       <div class="ag-courses-item_date-box">
                         Project ID :
-                        <span class="ag-courses-item_date"> {project.id}</span>
+                        <span class="ag-courses-item_date">
+                          {" "}
+                          {project.hashId}
+                        </span>
                       </div>
                     </Link>
                   </div>

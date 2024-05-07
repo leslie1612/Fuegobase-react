@@ -159,7 +159,10 @@ const DBTable = () => {
         <>
           {field.valueInfo &&
             field.valueInfo.map((info) => (
-              <div className="field_value_info_container" key={info.valueId}>
+              <div
+                className="field_value_info_container"
+                key={info.valueHashId}
+              >
                 <div className="field__value__info__name">
                   {fieldInfo(field, info)}
                   <div className="field_value_info_buttons">
@@ -174,7 +177,7 @@ const DBTable = () => {
                         },
                       }}
                       onClick={() => {
-                        editFieldValue(field.id, info);
+                        editFieldValue(field.hashId, info);
                       }}
                     >
                       <EditIcon
@@ -193,7 +196,7 @@ const DBTable = () => {
                         },
                       }}
                       onClick={() => {
-                        deleteFieldValue(field.id, info);
+                        deleteFieldValue(field.hashId, info);
                       }}
                     >
                       <DeleteIcon
@@ -213,7 +216,7 @@ const DBTable = () => {
       return (
         field.valueInfo &&
         field.valueInfo.map((info) => (
-          <div className="field_value_info_container" key={info.valueId}>
+          <div className="field_value_info_container" key={info.valueHashId}>
             <div className="field__value__info__name">
               {fieldInfo(field, info)}
             </div>
@@ -229,7 +232,7 @@ const DBTable = () => {
                   },
                 }}
                 onClick={() => {
-                  editFieldValue(field.id, info);
+                  editFieldValue(field.hashId, info);
                 }}
               >
                 <EditIcon
@@ -272,7 +275,7 @@ const DBTable = () => {
     setEditingFieldValue(info.value);
     setEditingFieldId(fieldId);
     setInfoType(info.type);
-    setEditingFieldValueId(info.valueId);
+    setEditingFieldValueId(info.valueHashId);
     setShowOverlay(!showOverlay);
   };
 
@@ -281,6 +284,7 @@ const DBTable = () => {
   };
 
   const updateFieldValue = () => {
+    console.log(editingFieldValueId);
     if (editingFieldValue === "" || editingFieldValue == null) {
       alert("Can't be empty");
       return;
@@ -323,7 +327,7 @@ const DBTable = () => {
     setFieldName(field.name);
     setFieldType(field.type);
     setIsUpdateField(true);
-    setEditingFieldId(field.id);
+    setEditingFieldId(field.hashId);
   };
 
   const addNewField = () => {
@@ -385,7 +389,7 @@ const DBTable = () => {
 
     setFieldName("");
     setFieldType("none");
-    setValueInfoArray([{ key: null, type: "none", value: "" }]);
+    setValueInfoArray([{ key: "", type: "none", value: "" }]);
   };
 
   const addCollection = () => {
@@ -569,7 +573,7 @@ const DBTable = () => {
         expandedCollectionId,
         expandedDocumentId,
         fieldId,
-        info.valueId,
+        info.valueHashId,
         token
       ).then((status) => {
         if (status == 204) {
@@ -586,7 +590,7 @@ const DBTable = () => {
         projectId,
         expandedCollectionId,
         expandedDocumentId,
-        field.id,
+        field.hashId,
         token
       ).then((status) => {
         if (status == 204) {
@@ -805,17 +809,17 @@ const DBTable = () => {
                     <div className="database__table__item">
                       <div
                         className={`database__collection ${
-                          expandedCollectionId === collection.id
+                          expandedCollectionId === collection.hashId
                             ? "db__collection__selected"
                             : ""
                         }`}
-                        key={collection.id}
-                        onClick={() => handleCollectionClick(collection.id)}
+                        key={collection.hashId}
+                        onClick={() => handleCollectionClick(collection.hashId)}
                       >
                         {collection.name}
                       </div>
 
-                      {expandedCollectionId === collection.id && (
+                      {expandedCollectionId === collection.hashId && (
                         <>
                           <div className="database_item_icon">
                             <IconButton
@@ -1002,30 +1006,33 @@ const DBTable = () => {
                   <div
                     style={{
                       display:
-                        expandedCollectionId === collection.id
+                        expandedCollectionId === collection.hashId
                           ? "block"
                           : "none",
                     }}
-                    key={collection.id}
+                    key={collection.hashId}
                   >
-                    {documents[collection.id]?.map((document) => (
+                    {documents[collection.hashId]?.map((document) => (
                       <>
                         <div className="database__table__item">
                           <div
                             className={`database__document ${
-                              expandedDocumentId === document.id
+                              expandedDocumentId === document.hashId
                                 ? "db__collection__selected"
                                 : ""
                             }`}
-                            key={document.id}
+                            key={document.hashId}
                             onClick={() =>
-                              handleDocumentClick(collection.id, document.id)
+                              handleDocumentClick(
+                                collection.hashId,
+                                document.hashId
+                              )
                             }
                           >
                             {document.name}
                           </div>
 
-                          {expandedDocumentId === document.id && (
+                          {expandedDocumentId === document.hashId && (
                             <>
                               <div className="database_item_icon">
                                 <IconButton
@@ -1259,38 +1266,38 @@ const DBTable = () => {
                     className="database__documents"
                     style={{
                       display:
-                        expandedCollectionId === collection.id
+                        expandedCollectionId === collection.hashId
                           ? "block"
                           : "none",
                     }}
-                    key={collection.id}
+                    key={collection.hashId}
                   >
-                    {documents[collection.id]?.map((document) => (
+                    {documents[collection.hashId]?.map((document) => (
                       <div
                         className="database__fields"
                         style={{
                           display:
-                            expandedDocumentId === document.id
+                            expandedDocumentId === document.hashId
                               ? "block"
                               : "none",
                         }}
-                        key={document.id}
+                        key={document.hashId}
                       >
-                        {fields[document.id]?.map((field) => (
+                        {fields[document.hashId]?.map((field) => (
                           <div className="database__table__item">
                             <div
                               // className="database__field"
                               className={`database__field ${
-                                selectedFieldId === field.id
+                                selectedFieldId === field.hashId
                                   ? "db__collection__selected"
                                   : ""
                               }`}
-                              key={field.id}
+                              key={field.hashId}
                               onClick={() =>
                                 handleFieldClick(
-                                  collection.id,
-                                  document.id,
-                                  field.id,
+                                  collection.hashId,
+                                  document.hashId,
+                                  field.hashId,
                                   field.type
                                 )
                               }
@@ -1303,7 +1310,7 @@ const DBTable = () => {
                                   ({field.type})
                                 </div>
 
-                                {selectedFieldId === field.id && (
+                                {selectedFieldId === field.hashId && (
                                   <>
                                     {(field.type === "Array" ||
                                       field.type === "Map") && (
