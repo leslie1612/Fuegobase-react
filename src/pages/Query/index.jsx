@@ -74,7 +74,7 @@ const QueryIndex = () => {
     setOperator(value);
   };
 
-  const queryData = () => {
+  const queryData = async () => {
     if (
       selectedCollection == "" ||
       fieldKeyInputValue == "" ||
@@ -84,7 +84,8 @@ const QueryIndex = () => {
       alert("Every field must be required.");
     } else {
       setIsLoading(true);
-      API.getDataByFilter(
+
+      const response = await API.getDataByFilter(
         projectId,
         selectedCollection,
         fieldKeyInputValue,
@@ -92,19 +93,20 @@ const QueryIndex = () => {
         fieldType,
         operator,
         token
-      ).then((json) => {
-        if (json.data.length > 0) {
-          setDocumentData(json.data);
-          setOpened(true);
-          setQueryPath(
-            `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
-          );
-          console.log("success", queryPath);
-        } else {
-          setDocumentData([-1]);
-        }
-        setIsLoading(false);
-      });
+      );
+      const json = await response.json();
+      if (response.status == 200) {
+        setDocumentData(json.data);
+        setOpened(true);
+        setQueryPath(
+          `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
+        );
+        console.log("success", queryPath);
+      } else {
+        setDocumentData([-1]);
+      }
+
+      setIsLoading(false);
     }
   };
 
@@ -137,62 +139,62 @@ const QueryIndex = () => {
 
   return (
     <>
-      <Layout>
-        <div className="query_container">
-          <Container className="query_builder_container">
-            <h2 className="query_builder_title">Query Builder</h2>
-            {opened && (
-              <Row className="query_row">
-                <Col md={2} className="query_col query_statement">
-                  Query Path
-                  <IconButton
-                    className="query_icon"
-                    sx={{ marginLeft: 1 }}
-                    onClick={() => handleCopyClick(queryPath)}
-                  >
-                    <ContentCopyIcon sx={{ fontSize: 20 }} />
-                  </IconButton>
-                </Col>
-                <Col className="query_col query_path_outcome">{queryPath}</Col>
-              </Row>
-            )}
-
-            <Row className="query_row ">
-              <Col sm={2} className="query_col query_statement">
-                Collection
-              </Col>
-              <Col sm={6} className="query_col">
-                <Select
-                  fullWidth
-                  required
-                  value={selectedCollection || "none"}
-                  onChange={(e) => {
-                    handleCollectionChange(e.target.value);
-                  }}
-                  displayEmpty
-                  size="small"
-                  sx={{
-                    marginLeft: "auto",
-                    minWidth: 200,
-                    fontSize: 15,
-                  }}
+      {/* <Layout> */}
+      <div className="query_container">
+        <Container className="query_builder_container">
+          <h2 className="query_builder_title">Query Builder</h2>
+          {opened && (
+            <Row className="query_row">
+              <Col md={2} className="query_col query_statement">
+                Query Path
+                <IconButton
+                  className="query_icon"
+                  sx={{ marginLeft: 1 }}
+                  onClick={() => handleCopyClick(queryPath)}
                 >
-                  <MenuItem value="none" disabled sx={menuItemStyle}>
-                    Choose a collection name
-                  </MenuItem>
-                  {collections &&
-                    collections.map((collection) => (
-                      <MenuItem
-                        key={collection.hashId}
-                        value={collection.hashId}
-                        sx={menuItemStyle}
-                      >
-                        {collection.name}
-                      </MenuItem>
-                    ))}
-                </Select>
+                  <ContentCopyIcon sx={{ fontSize: 20 }} />
+                </IconButton>
+              </Col>
+              <Col className="query_col query_path_outcome">{queryPath}</Col>
+            </Row>
+          )}
 
-                {/*  <Form.Control
+          <Row className="query_row ">
+            <Col sm={2} className="query_col query_statement">
+              Collection
+            </Col>
+            <Col sm={6} className="query_col">
+              <Select
+                fullWidth
+                required
+                value={selectedCollection || "none"}
+                onChange={(e) => {
+                  handleCollectionChange(e.target.value);
+                }}
+                displayEmpty
+                size="small"
+                sx={{
+                  marginLeft: "auto",
+                  minWidth: 200,
+                  fontSize: 15,
+                }}
+              >
+                <MenuItem value="none" disabled sx={menuItemStyle}>
+                  Choose a collection name
+                </MenuItem>
+                {collections &&
+                  collections.map((collection) => (
+                    <MenuItem
+                      key={collection.hashId}
+                      value={collection.hashId}
+                      sx={menuItemStyle}
+                    >
+                      {collection.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+
+              {/*  <Form.Control
                   className="query__collection"
                   as="select"
                   aria-label="Select number"
@@ -211,45 +213,45 @@ const QueryIndex = () => {
                       </option>
                     ))} 
                 </Form.Control>*/}
-              </Col>
-              <Form.Group as={Col} className="query_col "></Form.Group>
-            </Row>
+            </Col>
+            <Form.Group as={Col} className="query_col "></Form.Group>
+          </Row>
 
-            <Row className="query_row">
-              <Col sm={2} className="query_col query_statement ">
-                WHERE
-              </Col>
+          <Row className="query_row">
+            <Col sm={2} className="query_col query_statement ">
+              WHERE
+            </Col>
 
-              <Col className="query_col">
-                <TextField
-                  required
-                  fullWidth
-                  type="text"
-                  placeholder="Enter field key"
-                  label="field key"
-                  value={fieldKeyInputValue}
-                  onChange={(e) => {
-                    handleFieldKeyChange(e.target.value);
-                  }}
-                  inputProps={{
-                    style: {
-                      padding: "10px",
-                      fontSize: "15px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: {
-                      fontSize: "15px",
-                      marginTop: "-3px",
-                    },
-                  }}
-                />
-                <Tooltip title="If you want to query the key value of a map, please use ' . '">
-                  <IconButton>
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
-                {/* <Form.Control
+            <Col className="query_col">
+              <TextField
+                required
+                fullWidth
+                type="text"
+                placeholder="Enter field key"
+                label="field key"
+                value={fieldKeyInputValue}
+                onChange={(e) => {
+                  handleFieldKeyChange(e.target.value);
+                }}
+                inputProps={{
+                  style: {
+                    padding: "10px",
+                    fontSize: "15px",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontSize: "15px",
+                    marginTop: "-3px",
+                  },
+                }}
+              />
+              <Tooltip title="If you want to query the key value of a map, please use ' . '">
+                <IconButton>
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+              {/* <Form.Control
                   required
                   type="text"
                   placeholder="Enter field key"
@@ -258,42 +260,42 @@ const QueryIndex = () => {
                     handleFieldKeyChange(e.target.value);
                   }}
                 /> */}
-              </Col>
+            </Col>
 
-              <Col className="query_col " sm={3}>
-                <Select
-                  required
-                  value={operator || "EQUAL"}
-                  displayEmpty
-                  size="small"
-                  sx={{
-                    marginLeft: "auto",
-                    minWidth: 200,
-                    fontSize: 15,
-                  }}
-                  onChange={(e) => handleOperatorChange(e.target.value)}
-                >
-                  <MenuItem value="EQUAL" sx={menuItemStyle}>
-                    ==
-                  </MenuItem>
-                  <MenuItem value="GREATER_THAN" sx={menuItemStyle}>
-                    &gt;
-                  </MenuItem>
-                  <MenuItem value="LESS_THAN" sx={menuItemStyle}>
-                    &lt;
-                  </MenuItem>
-                  <MenuItem value="GREATER_THAN_OR_EQUAL" sx={menuItemStyle}>
-                    &gt;=
-                  </MenuItem>
-                  <MenuItem value="LESS_THAN_OR_EQUAL" sx={menuItemStyle}>
-                    &lt;=
-                  </MenuItem>
-                  <MenuItem value="CONTAINS" sx={menuItemStyle}>
-                    array_contains
-                  </MenuItem>
-                </Select>
+            <Col className="query_col " sm={3}>
+              <Select
+                required
+                value={operator || "EQUAL"}
+                displayEmpty
+                size="small"
+                sx={{
+                  marginLeft: "auto",
+                  minWidth: 200,
+                  fontSize: 15,
+                }}
+                onChange={(e) => handleOperatorChange(e.target.value)}
+              >
+                <MenuItem value="EQUAL" sx={menuItemStyle}>
+                  ==
+                </MenuItem>
+                <MenuItem value="GREATER_THAN" sx={menuItemStyle}>
+                  &gt;
+                </MenuItem>
+                <MenuItem value="LESS_THAN" sx={menuItemStyle}>
+                  &lt;
+                </MenuItem>
+                <MenuItem value="GREATER_THAN_OR_EQUAL" sx={menuItemStyle}>
+                  &gt;=
+                </MenuItem>
+                <MenuItem value="LESS_THAN_OR_EQUAL" sx={menuItemStyle}>
+                  &lt;=
+                </MenuItem>
+                <MenuItem value="CONTAINS" sx={menuItemStyle}>
+                  array_contains
+                </MenuItem>
+              </Select>
 
-                {/* <Form.Control
+              {/* <Form.Control
                   as="select"
                   value={operator || "EQUAL"}
                   onChange={(e) => handleOperatorChange(e.target.value)}
@@ -305,33 +307,33 @@ const QueryIndex = () => {
                   <option value="LESS_THAN_OR_EQUAL"> &lt;= </option>
                   <option value="CONTAINS">array_contains</option>
                 </Form.Control> */}
-              </Col>
-            </Row>
+            </Col>
+          </Row>
 
-            <Row className="query_row">
-              <Col md={{ span: 2, offset: 2 }} className="query_col">
-                <Select
-                  required
-                  value={fieldType || "String"}
-                  displayEmpty
-                  size="small"
-                  sx={{
-                    minWidth: 130,
-                    fontSize: 15,
-                  }}
-                  onChange={(e) => handleTypeChange(e.target.value)}
-                >
-                  <MenuItem value="String" sx={menuItemStyle}>
-                    String
-                  </MenuItem>
-                  <MenuItem value="Number" sx={menuItemStyle}>
-                    Number
-                  </MenuItem>
-                  <MenuItem value="Boolean" sx={menuItemStyle}>
-                    Boolean
-                  </MenuItem>
-                </Select>
-                {/* <Form.Control
+          <Row className="query_row">
+            <Col md={{ span: 2, offset: 2 }} className="query_col">
+              <Select
+                required
+                value={fieldType || "String"}
+                displayEmpty
+                size="small"
+                sx={{
+                  minWidth: 130,
+                  fontSize: 15,
+                }}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <MenuItem value="String" sx={menuItemStyle}>
+                  String
+                </MenuItem>
+                <MenuItem value="Number" sx={menuItemStyle}>
+                  Number
+                </MenuItem>
+                <MenuItem value="Boolean" sx={menuItemStyle}>
+                  Boolean
+                </MenuItem>
+              </Select>
+              {/* <Form.Control
                   as="select"
                   value={fieldType || "String"}
                   onChange={(e) => handleTypeChange(e.target.value)}
@@ -340,33 +342,33 @@ const QueryIndex = () => {
                   <option value="Number">Number</option>
                   <option value="Boolean">Boolean</option>
                 </Form.Control> */}
-              </Col>
+            </Col>
 
-              <Col className="query_col">
-                <TextField
-                  required
-                  fullWidth
-                  type="text"
-                  placeholder="Enter field value"
-                  label="field value"
-                  value={valueInputValue}
-                  onChange={(e) => {
-                    handleValueInputChange(e.target.value);
-                  }}
-                  inputProps={{
-                    style: {
-                      padding: "10px",
-                      fontSize: "15px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: {
-                      fontSize: "15px",
-                      marginTop: "-3px",
-                    },
-                  }}
-                />
-                {/* <Form.Control
+            <Col className="query_col">
+              <TextField
+                required
+                fullWidth
+                type="text"
+                placeholder="Enter field value"
+                label="field value"
+                value={valueInputValue}
+                onChange={(e) => {
+                  handleValueInputChange(e.target.value);
+                }}
+                inputProps={{
+                  style: {
+                    padding: "10px",
+                    fontSize: "15px",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontSize: "15px",
+                    marginTop: "-3px",
+                  },
+                }}
+              />
+              {/* <Form.Control
                   type="text"
                   placeholder="Enter field value"
                   value={valueInputValue}
@@ -374,98 +376,96 @@ const QueryIndex = () => {
                     handleValueInputChange(e.target.value);
                   }}
                 /> */}
-              </Col>
-            </Row>
+            </Col>
+          </Row>
 
-            <Row className="query_row">
-              <Col className="query_col query_btn_group">
+          <Row className="query_row">
+            <Col className="query_col query_btn_group">
+              <Button
+                className="project_cancel query_btn"
+                size="small"
+                variant="contained"
+                color="cancel"
+                sx={{ margin: "10px 0 0 10px" }}
+                onClick={() => {
+                  clearInput();
+                }}
+              >
+                Clear
+              </Button>
+              {isLoading ? (
+                <CircularIndeterminate size="30px" />
+              ) : (
                 <Button
-                  className="project_cancel query_btn"
-                  size="small"
                   variant="contained"
-                  color="cancel"
+                  size="small"
+                  className="project_submit query_btn"
                   sx={{ margin: "10px 0 0 10px" }}
                   onClick={() => {
-                    clearInput();
+                    queryData();
                   }}
                 >
-                  Clear
+                  Submit
                 </Button>
-                {isLoading ? (
-                  <CircularIndeterminate size="30px" />
-                ) : (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    className="project_submit query_btn"
-                    sx={{ margin: "10px 0 0 10px" }}
-                    onClick={() => {
-                      queryData();
-                    }}
-                  >
-                    Submit
-                  </Button>
-                )}
-              </Col>
-            </Row>
-          </Container>
+              )}
+            </Col>
+          </Row>
+        </Container>
 
-          <Container className="query_container">
-            <h2 className="query_builder_title">Query Result</h2>
-            <Table bordered hover className="query_table">
-              <thead className="thead-light">
+        <Container className="query_container">
+          <h2 className="query_builder_title">Query Result</h2>
+          <Table bordered hover className="query_table">
+            <thead className="thead-light">
+              <tr>
+                <th className="query_table_head" style={{ width: "25%" }}>
+                  Document ID
+                </th>
+                <th className="query_table_head" style={{ width: "25%" }}>
+                  Document Name
+                </th>
+                <th className="query_table_head" style={{ width: "50%" }}>
+                  Field Value
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {documentData[0] === -1 ? (
                 <tr>
-                  <th className="query_table_head" style={{ width: "25%" }}>
-                    Document ID
-                  </th>
-                  <th className="query_table_head" style={{ width: "25%" }}>
-                    Document Name
-                  </th>
-                  <th className="query_table_head" style={{ width: "50%" }}>
-                    Field Value
-                  </th>
+                  <td colSpan="3" className="query_no_data">
+                    No data
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {documentData[0] === -1 ? (
-                  <tr>
-                    <td colSpan="3" className="query_no_data">
-                      No data
+              ) : (
+                documentData &&
+                documentData.map((item, index) => (
+                  <tr key={index}>
+                    <td style={{ width: "25%" }}>
+                      <div className="query_field_value_data">
+                        {" "}
+                        {item.hashId}
+                      </div>
+                    </td>
+                    <td style={{ width: "25%" }}>
+                      <div className="query_field_value_data">{item.name}</div>
+                    </td>
+                    <td style={{ width: "25%" }}>
+                      {item.fields.map((field) => (
+                        <div key={field.valueHashId}>
+                          <div className="query_field_value_data">
+                            <span>{field.name} : </span>
+                            <span>{handleFieldValue(field)}</span>
+                          </div>
+                        </div>
+                      ))}
                     </td>
                   </tr>
-                ) : (
-                  documentData &&
-                  documentData.map((item, index) => (
-                    <tr key={index}>
-                      <td style={{ width: "25%" }}>
-                        <div className="query_field_value_data">
-                          {" "}
-                          {item.hashId}
-                        </div>
-                      </td>
-                      <td style={{ width: "25%" }}>
-                        <div className="query_field_value_data">
-                          {item.name}
-                        </div>
-                      </td>
-                      <td style={{ width: "25%" }}>
-                        {item.fields.map((field) => (
-                          <div key={field.valueHashId}>
-                            <div className="query_field_value_data">
-                              <span>{field.name} : </span>
-                              <span>{handleFieldValue(field)}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
-          </Container>
-        </div>
-      </Layout>
+                ))
+              )}
+            </tbody>
+          </Table>
+        </Container>
+      </div>
+      {/* </Layout> */}
     </>
   );
 };

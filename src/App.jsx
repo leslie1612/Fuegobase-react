@@ -9,7 +9,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import PrivateRoute from "./components/PrivateRoute";
+import Layout from "./components/Layout";
+import PrivateRoute from "./components/PrivateRoute";
 
 const theme = createTheme({
   palette: {
@@ -48,13 +49,21 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Registration />} />
-            {/* <Route element={<PrivateRoute />}> */}
+
             <Route path="/projects" element={<Projects />} />
-            <Route path="/database/:projectId" element={<DBTable />} />
-            <Route path="/usage/:projectId" element={<Dashboard />} />
-            <Route path="/details/:projectId" element={<SettingPage />} />
-            <Route path="/query/:projectId" element={<QueryIndex />} />
-            {/* </Route> */}
+            <Route path="/projects/*" element={<Layout />}>
+              <Route path="database/:projectId" element={<DBTable />} />
+              <Route path="usage/:projectId" element={<Dashboard />} />
+              <Route path="details/:projectId" element={<SettingPage />} />
+              <Route path="query/:projectId" element={<QueryIndex />} />
+            </Route>
+
+            {/* <Layout>
+              <Route path="/database/:projectId" element={<DBTable />} />
+              <Route path="/usage/:projectId" element={<Dashboard />} />
+              <Route path="/details/:projectId" element={<SettingPage />} />
+              <Route path="/query/:projectId" element={<QueryIndex />} />
+            </Layout> */}
           </Routes>
         </BrowserRouter>
       </AuthProvider>

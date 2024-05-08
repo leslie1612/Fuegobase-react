@@ -1,4 +1,10 @@
 /* layout css */
+.header {
+  display: none;
+}
+.sidebar {
+  display: none;
+}
 .project__layout {
   display: flex;
   flex-direction: column;

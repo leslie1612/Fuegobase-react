@@ -114,6 +114,22 @@ button:focus {
   /* border-color: 212529; */
   border: 1.5px solid #212529;
 }
+/* .layout_wrapper {
+  height: 100vh;
+  .main {
+    flex: 1;
+    padding: 100px 0 0 200px;
+    height: 100vh;
+    max-width: 1400px;
+  }
+}
+.content {
+  height: 100vh;
+  max-width: 1200px;
+  padding: 6rem 3rem;
+  margin: 0 auto;
+} */
+
 .layout_wrapper {
   /* background-color: #fffcf2; */
   display: flex;

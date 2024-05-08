@@ -640,11 +640,11 @@ const DBTable = () => {
           </div>
         </>
       )}
-      <Layout>
-        <div className="database_container">
-          <h1 className="database_title">Database</h1>
-          <div className="row">
-            {/* <div className="table__path">
+      {/* <Layout> */}
+      <div className="database_container">
+        <h1 className="database_title">Database</h1>
+        <div className="row">
+          {/* <div className="table__path">
               Path : https://fuegobase.store/api/v1/databases/projects/
               {projectId}
               /collections
@@ -664,106 +664,106 @@ const DBTable = () => {
               />
             </div> */}
 
-            <div className="table__path">
-              Path : {path}
-              <IconButton
-                className="query_icon"
-                onClick={() => handleCopyClick(path)}
-              >
-                <ContentCopyIcon sx={{ fontSize: 20 }} />
-              </IconButton>
-            </div>
+          <div className="table__path">
+            Path : {path}
+            <IconButton
+              className="query_icon"
+              onClick={() => handleCopyClick(path)}
+            >
+              <ContentCopyIcon sx={{ fontSize: 20 }} />
+            </IconButton>
           </div>
-          <div className="row">
-            <div className="col database_col">
-              <h2 className="database__table__title">Collections</h2>
-              <div className="database__add">
-                <div
-                  className={`database__add__group ${
-                    collectionEditing ? "database__popup" : ""
-                  }`}
-                  style={{ display: collectionEditing ? "block" : "none" }}
-                >
-                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
-                    New collection name :
-                  </h3>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <TextField
-                      required
-                      fullWidth
-                      type="text"
-                      value={collectionInputValue}
-                      onChange={(e) => setCollectionInputValue(e.target.value)}
-                      inputProps={{
-                        maxLength: 50,
-                        style: {
-                          padding: "10px",
-                          fontSize: "15px",
-                        },
-                      }}
-                    />
-                  </Box>
-                  <Button
-                    variant="contained"
-                    color="cancel"
-                    size="small"
-                    sx={{ margin: "10px 0 0 300px" }}
-                    onClick={() => addCollection()}
-                  >
-                    cancel
-                  </Button>
-
-                  <Button
-                    onClick={() => addNewCollection({ collectionInputValue })}
-                    variant="contained"
-                    size="small"
-                    sx={{ margin: "10px 0 0 10px" }}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </div>
-
-              <div className="database__add">
-                <div
-                  className={`database__add__group ${
-                    renameCollectionEditing ? "database__popup" : ""
-                  }`}
-                  style={{
-                    display: renameCollectionEditing ? "block" : "none",
+        </div>
+        <div className="row">
+          <div className="col database_col">
+            <h2 className="database__table__title">Collections</h2>
+            <div className="database__add">
+              <div
+                className={`database__add__group ${
+                  collectionEditing ? "database__popup" : ""
+                }`}
+                style={{ display: collectionEditing ? "block" : "none" }}
+              >
+                <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                  New collection name :
+                </h3>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
                   }}
                 >
-                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
-                    Rename collection :
-                  </h3>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "100%",
+                  <TextField
+                    required
+                    fullWidth
+                    type="text"
+                    value={collectionInputValue}
+                    onChange={(e) => setCollectionInputValue(e.target.value)}
+                    inputProps={{
+                      maxLength: 50,
+                      style: {
+                        padding: "10px",
+                        fontSize: "15px",
+                      },
                     }}
-                  >
-                    <TextField
-                      required
-                      fullWidth
-                      type="text"
-                      value={renameCollectionInputValue}
-                      onChange={(e) =>
-                        setRenameCollectionInputValue(e.target.value)
-                      }
-                      inputProps={{
-                        maxLength: 50,
-                        style: {
-                          padding: "10px",
-                          fontSize: "15px",
-                        },
-                      }}
-                    />
-                    {/* <input
+                  />
+                </Box>
+                <Button
+                  variant="contained"
+                  color="cancel"
+                  size="small"
+                  sx={{ margin: "10px 0 0 300px" }}
+                  onClick={() => addCollection()}
+                >
+                  cancel
+                </Button>
+
+                <Button
+                  onClick={() => addNewCollection({ collectionInputValue })}
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 10px" }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+
+            <div className="database__add">
+              <div
+                className={`database__add__group ${
+                  renameCollectionEditing ? "database__popup" : ""
+                }`}
+                style={{
+                  display: renameCollectionEditing ? "block" : "none",
+                }}
+              >
+                <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                  Rename collection :
+                </h3>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
+                  }}
+                >
+                  <TextField
+                    required
+                    fullWidth
+                    type="text"
+                    value={renameCollectionInputValue}
+                    onChange={(e) =>
+                      setRenameCollectionInputValue(e.target.value)
+                    }
+                    inputProps={{
+                      maxLength: 50,
+                      style: {
+                        padding: "10px",
+                        fontSize: "15px",
+                      },
+                    }}
+                  />
+                  {/* <input
                       className="database__add__input"
                       type="text"
                       value={renameCollectionInputValue}
@@ -771,197 +771,197 @@ const DBTable = () => {
                         setRenameCollectionInputValue(e.target.value)
                       }
                     /> */}
-                  </Box>
+                </Box>
 
-                  <Button
-                    variant="contained"
-                    color="cancel"
-                    size="small"
-                    sx={{ margin: "10px 0 0 300px" }}
-                    onClick={() => cancelRenameCollection()}
-                  >
-                    cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ margin: "10px 0 0 10px" }}
-                    onClick={() => renameCollection()}
-                  >
-                    submit
-                  </Button>
-                </div>
+                <Button
+                  variant="contained"
+                  color="cancel"
+                  size="small"
+                  sx={{ margin: "10px 0 0 300px" }}
+                  onClick={() => cancelRenameCollection()}
+                >
+                  cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 10px" }}
+                  onClick={() => renameCollection()}
+                >
+                  submit
+                </Button>
               </div>
+            </div>
 
-              <div
-                className="database__table__item database__add__item"
-                style={{
-                  cursor: "pointer",
-                }}
-                onClick={() => addCollection()}
-              >
-                + add
-              </div>
+            <div
+              className="database__table__item database__add__item"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => addCollection()}
+            >
+              + add
+            </div>
 
-              {collections &&
-                collections.map((collection, index) => (
-                  <>
-                    <div className="database__table__item">
-                      <div
-                        className={`database__collection ${
-                          expandedCollectionId === collection.hashId
-                            ? "db__collection__selected"
-                            : ""
-                        }`}
-                        key={collection.hashId}
-                        onClick={() => handleCollectionClick(collection.hashId)}
-                      >
-                        {collection.name}
-                      </div>
+            {collections &&
+              collections.map((collection, index) => (
+                <>
+                  <div className="database__table__item">
+                    <div
+                      className={`database__collection ${
+                        expandedCollectionId === collection.hashId
+                          ? "db__collection__selected"
+                          : ""
+                      }`}
+                      key={collection.hashId}
+                      onClick={() => handleCollectionClick(collection.hashId)}
+                    >
+                      {collection.name}
+                    </div>
 
-                      {expandedCollectionId === collection.hashId && (
-                        <>
-                          <div className="database_item_icon">
-                            <IconButton
-                              color="secondary"
+                    {expandedCollectionId === collection.hashId && (
+                      <>
+                        <div className="database_item_icon">
+                          <IconButton
+                            color="secondary"
+                            sx={{
+                              fontSize: 20,
+                              padding: 0,
+                              margin: 0.5,
+                              "&:hover": {
+                                color: "primary.dark",
+                              },
+                            }}
+                            onClick={() => {
+                              handleCollectionRename(collection);
+                            }}
+                          >
+                            <EditIcon
                               sx={{
                                 fontSize: 20,
-                                padding: 0,
-                                margin: 0.5,
-                                "&:hover": {
-                                  color: "primary.dark",
-                                },
                               }}
-                              onClick={() => {
-                                handleCollectionRename(collection);
-                              }}
-                            >
-                              <EditIcon
-                                sx={{
-                                  fontSize: 20,
-                                }}
-                              />
-                            </IconButton>
-                            <IconButton
-                              color="secondary"
+                            />
+                          </IconButton>
+                          <IconButton
+                            color="secondary"
+                            sx={{
+                              padding: "0",
+                              margin: 0.5,
+                              "&:hover": {
+                                color: "primary.dark",
+                              },
+                            }}
+                            onClick={() => {
+                              deleteCollection(collection);
+                            }}
+                          >
+                            <DeleteIcon
                               sx={{
-                                padding: "0",
-                                margin: 0.5,
-                                "&:hover": {
-                                  color: "primary.dark",
-                                },
+                                fontSize: 20,
                               }}
-                              onClick={() => {
-                                deleteCollection(collection);
-                              }}
-                            >
-                              <DeleteIcon
-                                sx={{
-                                  fontSize: 20,
-                                }}
-                              />
-                            </IconButton>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </>
-                ))}
-            </div>
+                            />
+                          </IconButton>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </>
+              ))}
+          </div>
 
-            <div className="col database_col">
-              <h2 className="database__table__title">Documents</h2>
-              <div className="database__add">
-                <div
-                  className={`database__add__group ${
-                    documentEditing ? "database__popup" : ""
-                  }`}
-                  style={{ display: documentEditing ? "block" : "none" }}
-                >
-                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
-                    New Document Name :
-                  </h3>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <TextField
-                      required
-                      fullWidth
-                      type="text"
-                      value={documentInputValue}
-                      onChange={(e) => setDocumentInputValue(e.target.value)}
-                      inputProps={{
-                        maxLength: 50,
-                        style: {
-                          padding: "10px",
-                          fontSize: "15px",
-                        },
-                      }}
-                    />
-                    {/* <input
-                      className="database__add__input"
-                      type="text"
-                      value={documentInputValue}
-                      onChange={(e) => setDocumentInputValue(e.target.value)}
-                    /> */}
-                  </Box>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ margin: "10px 0 0 300px" }}
-                    color="cancel"
-                    onClick={() => addDocument()}
-                  >
-                    cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ margin: "10px 0 0 10px" }}
-                    onClick={() => addNewDocument({ documentInputValue })}
-                  >
-                    submit
-                  </Button>
-                </div>
-              </div>
-              <div className="database__add">
-                <div
-                  className={`database__add__group ${
-                    renameDocumentEditing ? "database__popup" : ""
-                  }`}
-                  style={{
-                    display: renameDocumentEditing ? "block" : "none",
+          <div className="col database_col">
+            <h2 className="database__table__title">Documents</h2>
+            <div className="database__add">
+              <div
+                className={`database__add__group ${
+                  documentEditing ? "database__popup" : ""
+                }`}
+                style={{ display: documentEditing ? "block" : "none" }}
+              >
+                <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                  New Document Name :
+                </h3>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
                   }}
                 >
-                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
-                    Rename document :
-                  </h3>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "100%",
+                  <TextField
+                    required
+                    fullWidth
+                    type="text"
+                    value={documentInputValue}
+                    onChange={(e) => setDocumentInputValue(e.target.value)}
+                    inputProps={{
+                      maxLength: 50,
+                      style: {
+                        padding: "10px",
+                        fontSize: "15px",
+                      },
                     }}
-                  >
-                    <TextField
-                      required
-                      fullWidth
+                  />
+                  {/* <input
+                      className="database__add__input"
                       type="text"
-                      value={renameDocumentInputValue}
-                      onChange={(e) =>
-                        setRenameDocumentInputValue(e.target.value)
-                      }
-                      inputProps={{
-                        maxLength: 50,
-                        style: {
-                          padding: "10px",
-                          fontSize: "15px",
-                        },
-                      }}
-                    />
-                    {/* <input
+                      value={documentInputValue}
+                      onChange={(e) => setDocumentInputValue(e.target.value)}
+                    /> */}
+                </Box>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 300px" }}
+                  color="cancel"
+                  onClick={() => addDocument()}
+                >
+                  cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 10px" }}
+                  onClick={() => addNewDocument({ documentInputValue })}
+                >
+                  submit
+                </Button>
+              </div>
+            </div>
+            <div className="database__add">
+              <div
+                className={`database__add__group ${
+                  renameDocumentEditing ? "database__popup" : ""
+                }`}
+                style={{
+                  display: renameDocumentEditing ? "block" : "none",
+                }}
+              >
+                <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                  Rename document :
+                </h3>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
+                  }}
+                >
+                  <TextField
+                    required
+                    fullWidth
+                    type="text"
+                    value={renameDocumentInputValue}
+                    onChange={(e) =>
+                      setRenameDocumentInputValue(e.target.value)
+                    }
+                    inputProps={{
+                      maxLength: 50,
+                      style: {
+                        padding: "10px",
+                        fontSize: "15px",
+                      },
+                    }}
+                  />
+                  {/* <input
                       className="database__add__input"
                       type="text"
                       value={renameDocumentInputValue}
@@ -969,112 +969,112 @@ const DBTable = () => {
                         setRenameDocumentInputValue(e.target.value)
                       }
                     /> */}
-                  </Box>
-                  <Button
-                    variant="contained"
-                    color="cancel"
-                    size="small"
-                    sx={{ margin: "10px 0 0 300px" }}
-                    onClick={() => cancelRenameDocument()}
-                  >
-                    cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ margin: "10px 0 0 10px" }}
-                    onClick={() => renameDocument()}
-                  >
-                    submit
-                  </Button>
-                </div>
+                </Box>
+                <Button
+                  variant="contained"
+                  color="cancel"
+                  size="small"
+                  sx={{ margin: "10px 0 0 300px" }}
+                  onClick={() => cancelRenameDocument()}
+                >
+                  cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 10px" }}
+                  onClick={() => renameDocument()}
+                >
+                  submit
+                </Button>
               </div>
+            </div>
 
-              <div
-                className="database__table__item database__add__item"
-                style={{
-                  visibility: expandedCollectionId ? "visible" : "hidden",
-                  cursor: "pointer",
-                }}
-                onClick={() => addDocument()}
-              >
-                + add
-              </div>
+            <div
+              className="database__table__item database__add__item"
+              style={{
+                visibility: expandedCollectionId ? "visible" : "hidden",
+                cursor: "pointer",
+              }}
+              onClick={() => addDocument()}
+            >
+              + add
+            </div>
 
-              {collections &&
-                collections.map((collection, index) => (
-                  <div
-                    style={{
-                      display:
-                        expandedCollectionId === collection.hashId
-                          ? "block"
-                          : "none",
-                    }}
-                    key={collection.hashId}
-                  >
-                    {documents[collection.hashId]?.map((document) => (
-                      <>
-                        <div className="database__table__item">
-                          <div
-                            className={`database__document ${
-                              expandedDocumentId === document.hashId
-                                ? "db__collection__selected"
-                                : ""
-                            }`}
-                            key={document.hashId}
-                            onClick={() =>
-                              handleDocumentClick(
-                                collection.hashId,
-                                document.hashId
-                              )
-                            }
-                          >
-                            {document.name}
-                          </div>
+            {collections &&
+              collections.map((collection, index) => (
+                <div
+                  style={{
+                    display:
+                      expandedCollectionId === collection.hashId
+                        ? "block"
+                        : "none",
+                  }}
+                  key={collection.hashId}
+                >
+                  {documents[collection.hashId]?.map((document) => (
+                    <>
+                      <div className="database__table__item">
+                        <div
+                          className={`database__document ${
+                            expandedDocumentId === document.hashId
+                              ? "db__collection__selected"
+                              : ""
+                          }`}
+                          key={document.hashId}
+                          onClick={() =>
+                            handleDocumentClick(
+                              collection.hashId,
+                              document.hashId
+                            )
+                          }
+                        >
+                          {document.name}
+                        </div>
 
-                          {expandedDocumentId === document.hashId && (
-                            <>
-                              <div className="database_item_icon">
-                                <IconButton
-                                  color="secondary"
+                        {expandedDocumentId === document.hashId && (
+                          <>
+                            <div className="database_item_icon">
+                              <IconButton
+                                color="secondary"
+                                sx={{
+                                  fontSize: 20,
+                                  padding: 0,
+                                  margin: 0.5,
+                                  "&:hover": {
+                                    color: "primary.dark",
+                                  },
+                                }}
+                                onClick={() => {
+                                  handleDocumentRename(document);
+                                }}
+                              >
+                                <EditIcon
                                   sx={{
                                     fontSize: 20,
-                                    padding: 0,
-                                    margin: 0.5,
-                                    "&:hover": {
-                                      color: "primary.dark",
-                                    },
                                   }}
-                                  onClick={() => {
-                                    handleDocumentRename(document);
-                                  }}
-                                >
-                                  <EditIcon
-                                    sx={{
-                                      fontSize: 20,
-                                    }}
-                                  />
-                                </IconButton>
-                                <IconButton
-                                  color="secondary"
+                                />
+                              </IconButton>
+                              <IconButton
+                                color="secondary"
+                                sx={{
+                                  padding: "0",
+                                  margin: 0.5,
+                                  "&:hover": {
+                                    color: "primary.dark",
+                                  },
+                                }}
+                                onClick={() => {
+                                  deleteDocument(document);
+                                }}
+                              >
+                                <DeleteIcon
                                   sx={{
-                                    padding: "0",
-                                    margin: 0.5,
-                                    "&:hover": {
-                                      color: "primary.dark",
-                                    },
+                                    fontSize: 20,
                                   }}
-                                  onClick={() => {
-                                    deleteDocument(document);
-                                  }}
-                                >
-                                  <DeleteIcon
-                                    sx={{
-                                      fontSize: 20,
-                                    }}
-                                  />
-                                </IconButton>
-                                {/* <Button
+                                />
+                              </IconButton>
+                              {/* <Button
                                 className="database__edit__btn"
                                 onClick={() => {
                                   handleDocumentRename(document);
@@ -1090,251 +1090,230 @@ const DBTable = () => {
                               >
                                 X
                               </Button> */}
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </>
-                    ))}
-                  </div>
-                ))}
-            </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  ))}
+                </div>
+              ))}
+          </div>
 
-            <div className="col database_col">
-              <h2 className="database__table__title">Fields</h2>
-              <div className="database__add">
-                <div
-                  className={`database__field__add__group ${
-                    fieldValueEditing ? "database__popup" : ""
-                  }`}
-                  style={{ display: fieldValueEditing ? "block" : "none" }}
+          <div className="col database_col">
+            <h2 className="database__table__title">Fields</h2>
+            <div className="database__add">
+              <div
+                className={`database__field__add__group ${
+                  fieldValueEditing ? "database__popup" : ""
+                }`}
+                style={{ display: fieldValueEditing ? "block" : "none" }}
+              >
+                <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
+                  Update value :
+                </h3>
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
+                  }}
                 >
-                  <h3 style={{ fontSize: "20px", margin: "10px 0 20px 0" }}>
-                    Update value :
-                  </h3>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "100%",
-                    }}
-                  >
-                    {infoType == "Boolean" ? (
-                      <Select
-                        value={editingFieldValue}
-                        displayEmpty
-                        size="small"
-                        sx={{
-                          margin: "10px 0",
-                          minWidth: 200,
-                          display: "block",
-                          backgroundColor: "#F8F9FA",
-                        }}
-                        onChange={(e) => handleEditingFieldValueChange(e)}
-                      >
-                        <MenuItem value="none" disabled></MenuItem>
-                        <MenuItem value="TRUE">TRUE</MenuItem>
-                        <MenuItem value="FALSE">FALSE</MenuItem>
-                      </Select>
-                    ) : // <select
+                  {infoType == "Boolean" ? (
+                    <Select
+                      value={editingFieldValue}
+                      displayEmpty
+                      size="small"
+                      sx={{
+                        margin: "10px 0",
+                        minWidth: 200,
+                        display: "block",
+                        backgroundColor: "#F8F9FA",
+                      }}
+                      onChange={(e) => handleEditingFieldValueChange(e)}
+                    >
+                      <MenuItem value="none" disabled></MenuItem>
+                      <MenuItem value="TRUE">TRUE</MenuItem>
+                      <MenuItem value="FALSE">FALSE</MenuItem>
+                    </Select>
+                  ) : // <select
+                  //   value={editingFieldValue}
+                  //   onChange={(e) => handleEditingFieldValueChange(e)}
+                  // >
+                  //   <option value="none" disabled>
+                  //     --select--
+                  //   </option>
+                  //   <option value="TRUE">TRUE</option>
+                  //   <option value="FALSE">FALSE</option>
+                  // </select>
+                  infoType == "Number" ? (
+                    <TextField
+                      required
+                      fullWidth
+                      type="number"
+                      value={editingFieldValue}
+                      onChange={(e) => handleEditingFieldValueChange(e)}
+                      inputProps={{
+                        maxLength: 200,
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                  ) : (
+                    // <input
+                    //   className="database__add__input"
+                    //   type="number"
                     //   value={editingFieldValue}
                     //   onChange={(e) => handleEditingFieldValueChange(e)}
-                    // >
-                    //   <option value="none" disabled>
-                    //     --select--
-                    //   </option>
-                    //   <option value="TRUE">TRUE</option>
-                    //   <option value="FALSE">FALSE</option>
-                    // </select>
-                    infoType == "Number" ? (
-                      <TextField
-                        required
-                        fullWidth
-                        type="number"
-                        value={editingFieldValue}
-                        onChange={(e) => handleEditingFieldValueChange(e)}
-                        inputProps={{
-                          maxLength: 200,
-                          style: {
-                            padding: "10px",
-                            fontSize: "15px",
-                          },
-                        }}
-                      />
-                    ) : (
-                      // <input
-                      //   className="database__add__input"
-                      //   type="number"
-                      //   value={editingFieldValue}
-                      //   onChange={(e) => handleEditingFieldValueChange(e)}
-                      // />
-                      <TextField
-                        required
-                        fullWidth
-                        type="text"
-                        value={editingFieldValue}
-                        onChange={(e) => handleEditingFieldValueChange(e)}
-                        inputProps={{
-                          maxLength: 200,
-                          style: {
-                            padding: "10px",
-                            fontSize: "15px",
-                          },
-                        }}
-                      />
-                      // <input
-                      //   className="database__add__input"
-                      //   type="text"
-                      //   value={editingFieldValue}
-                      //   onChange={(e) => handleEditingFieldValueChange(e)}
-                      // />
-                    )}
-                  </Box>
+                    // />
+                    <TextField
+                      required
+                      fullWidth
+                      type="text"
+                      value={editingFieldValue}
+                      onChange={(e) => handleEditingFieldValueChange(e)}
+                      inputProps={{
+                        maxLength: 200,
+                        style: {
+                          padding: "10px",
+                          fontSize: "15px",
+                        },
+                      }}
+                    />
+                    // <input
+                    //   className="database__add__input"
+                    //   type="text"
+                    //   value={editingFieldValue}
+                    //   onChange={(e) => handleEditingFieldValueChange(e)}
+                    // />
+                  )}
+                </Box>
 
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 300px" }}
+                  color="cancel"
+                  onClick={() => cancelUpdateFieldValue()}
+                >
+                  cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ margin: "10px 0 0 10px" }}
+                  onClick={() => updateFieldValue({ editingFieldValue })}
+                >
+                  submit
+                </Button>
+              </div>
+
+              <div
+                className={`database__field__add__group ${
+                  fieldEditing ? "database__input__popup" : ""
+                }`}
+                style={{ display: fieldEditing ? "block" : "none" }}
+              >
+                <FieldInput
+                  fieldName={fieldName}
+                  handleFieldNameChange={handleFieldNameChange}
+                  fieldType={fieldType}
+                  handleFieldTypeChange={handleFieldTypeChange}
+                  valueInfoArray={valueInfoArray}
+                  handleValueInfoChange={handleValueInfoChange}
+                  addNewValue={addNewValue}
+                  setInitialValueInfo={setInitialValueInfo}
+                  isUpdateField={isUpdateField}
+                  isInfoValueNumber={isInfoValueNumber}
+                />
+                <div className="field__value__btn__group">
                   <Button
                     variant="contained"
                     size="small"
-                    sx={{ margin: "10px 0 0 300px" }}
+                    sx={{ margin: "10px 0 0 600px" }}
                     color="cancel"
-                    onClick={() => cancelUpdateFieldValue()}
+                    onClick={() => cancelFieldEditing()}
                   >
-                    cancel
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
                     size="small"
                     sx={{ margin: "10px 0 0 10px" }}
-                    onClick={() => updateFieldValue({ editingFieldValue })}
+                    onClick={addNewField}
                   >
-                    submit
+                    Submit
                   </Button>
                 </div>
+              </div>
+            </div>
 
+            <div
+              className="database__table__item database__add__item"
+              style={{
+                visibility: expandedDocumentId ? "visible" : "hidden",
+                cursor: "pointer",
+              }}
+              onClick={() => addField()}
+            >
+              + add
+            </div>
+
+            {collections &&
+              collections.map((collection, index) => (
                 <div
-                  className={`database__field__add__group ${
-                    fieldEditing ? "database__input__popup" : ""
-                  }`}
-                  style={{ display: fieldEditing ? "block" : "none" }}
+                  className="database__documents"
+                  style={{
+                    display:
+                      expandedCollectionId === collection.hashId
+                        ? "block"
+                        : "none",
+                  }}
+                  key={collection.hashId}
                 >
-                  <FieldInput
-                    fieldName={fieldName}
-                    handleFieldNameChange={handleFieldNameChange}
-                    fieldType={fieldType}
-                    handleFieldTypeChange={handleFieldTypeChange}
-                    valueInfoArray={valueInfoArray}
-                    handleValueInfoChange={handleValueInfoChange}
-                    addNewValue={addNewValue}
-                    setInitialValueInfo={setInitialValueInfo}
-                    isUpdateField={isUpdateField}
-                    isInfoValueNumber={isInfoValueNumber}
-                  />
-                  <div className="field__value__btn__group">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      sx={{ margin: "10px 0 0 600px" }}
-                      color="cancel"
-                      onClick={() => cancelFieldEditing()}
+                  {documents[collection.hashId]?.map((document) => (
+                    <div
+                      className="database__fields"
+                      style={{
+                        display:
+                          expandedDocumentId === document.hashId
+                            ? "block"
+                            : "none",
+                      }}
+                      key={document.hashId}
                     >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      sx={{ margin: "10px 0 0 10px" }}
-                      onClick={addNewField}
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                      {fields[document.hashId]?.map((field) => (
+                        <div className="database__table__item">
+                          <div
+                            // className="database__field"
+                            className={`database__field ${
+                              selectedFieldId === field.hashId
+                                ? "db__collection__selected"
+                                : ""
+                            }`}
+                            key={field.hashId}
+                            onClick={() =>
+                              handleFieldClick(
+                                collection.hashId,
+                                document.hashId,
+                                field.hashId,
+                                field.type
+                              )
+                            }
+                          >
+                            <div className="database__table__item">
+                              <div className="database__field__name">
+                                {field.name} :
+                              </div>
+                              <div className="database__field__type">
+                                ({field.type})
+                              </div>
 
-              <div
-                className="database__table__item database__add__item"
-                style={{
-                  visibility: expandedDocumentId ? "visible" : "hidden",
-                  cursor: "pointer",
-                }}
-                onClick={() => addField()}
-              >
-                + add
-              </div>
-
-              {collections &&
-                collections.map((collection, index) => (
-                  <div
-                    className="database__documents"
-                    style={{
-                      display:
-                        expandedCollectionId === collection.hashId
-                          ? "block"
-                          : "none",
-                    }}
-                    key={collection.hashId}
-                  >
-                    {documents[collection.hashId]?.map((document) => (
-                      <div
-                        className="database__fields"
-                        style={{
-                          display:
-                            expandedDocumentId === document.hashId
-                              ? "block"
-                              : "none",
-                        }}
-                        key={document.hashId}
-                      >
-                        {fields[document.hashId]?.map((field) => (
-                          <div className="database__table__item">
-                            <div
-                              // className="database__field"
-                              className={`database__field ${
-                                selectedFieldId === field.hashId
-                                  ? "db__collection__selected"
-                                  : ""
-                              }`}
-                              key={field.hashId}
-                              onClick={() =>
-                                handleFieldClick(
-                                  collection.hashId,
-                                  document.hashId,
-                                  field.hashId,
-                                  field.type
-                                )
-                              }
-                            >
-                              <div className="database__table__item">
-                                <div className="database__field__name">
-                                  {field.name} :
-                                </div>
-                                <div className="database__field__type">
-                                  ({field.type})
-                                </div>
-
-                                {selectedFieldId === field.hashId && (
-                                  <>
-                                    {(field.type === "Array" ||
-                                      field.type === "Map") && (
-                                      <IconButton
-                                        color="secondary"
-                                        sx={{
-                                          padding: "0",
-                                          margin: 0.5,
-                                          "&:hover": {
-                                            color: "primary.dark",
-                                          },
-                                        }}
-                                        onClick={() => {
-                                          addFieldValue(field);
-                                        }}
-                                      >
-                                        <AddIcon
-                                          sx={{
-                                            fontSize: 20,
-                                          }}
-                                        />
-                                      </IconButton>
-                                    )}
-
+                              {selectedFieldId === field.hashId && (
+                                <>
+                                  {(field.type === "Array" ||
+                                    field.type === "Map") && (
                                     <IconButton
                                       color="secondary"
                                       sx={{
@@ -1345,30 +1324,51 @@ const DBTable = () => {
                                         },
                                       }}
                                       onClick={() => {
-                                        deleteFieldKey(field);
+                                        addFieldValue(field);
                                       }}
                                     >
-                                      <DeleteIcon
+                                      <AddIcon
                                         sx={{
                                           fontSize: 20,
                                         }}
                                       />
                                     </IconButton>
-                                  </>
-                                )}
-                              </div>
-                              <div>{renderFieldValue(field)}</div>
+                                  )}
+
+                                  <IconButton
+                                    color="secondary"
+                                    sx={{
+                                      padding: "0",
+                                      margin: 0.5,
+                                      "&:hover": {
+                                        color: "primary.dark",
+                                      },
+                                    }}
+                                    onClick={() => {
+                                      deleteFieldKey(field);
+                                    }}
+                                  >
+                                    <DeleteIcon
+                                      sx={{
+                                        fontSize: 20,
+                                      }}
+                                    />
+                                  </IconButton>
+                                </>
+                              )}
                             </div>
+                            <div>{renderFieldValue(field)}</div>
                           </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-            </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
           </div>
         </div>
-      </Layout>
+      </div>
+      {/* </Layout> */}
     </>
   );
 };

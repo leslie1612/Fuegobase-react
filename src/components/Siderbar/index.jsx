@@ -21,14 +21,18 @@ const Sidebar = () => {
   const location = useLocation();
   const path = location.pathname;
   const pathParts = path.split("/");
-  const currentRoute = pathParts[1];
+  const currentRoute = pathParts[2];
 
   React.useEffect(() => {
     API.getProjects(token).then((json) => {
       setProjects(json.data);
-      setSelectedRoute(currentRoute);
+      // setSelectedRoute(currentRoute);
     });
-  }, []);
+  }, [token]);
+
+  React.useEffect(() => {
+    setSelectedRoute(currentRoute);
+  }, [currentRoute]);
 
   React.useEffect(() => {
     setSelectedProjectId(projectId);
@@ -89,7 +93,7 @@ const Sidebar = () => {
                   }
                 >
                   <Link
-                    to={`/${currentRoute}/${project.hashId}`}
+                    to={`/projects/${currentRoute}/${project.hashId}`}
                     className="sidebar__project__link"
                   >
                     <div className="sidebar__project"> {project.name}</div>
@@ -109,7 +113,7 @@ const Sidebar = () => {
         >
           <Nav.Link
             as={Link}
-            to={`/database/${projectId}`}
+            to={`/projects/database/${projectId}`}
             className="header__link"
           >
             <StorageRoundedIcon sx={{ fontSize: 30, margin: "5px auto" }} />
@@ -124,7 +128,7 @@ const Sidebar = () => {
         >
           <Nav.Link
             as={Link}
-            to={`/query/${projectId}`}
+            to={`/projects/query/${projectId}`}
             className="header__link"
           >
             <FindInPageIcon sx={{ fontSize: 30, margin: "5px auto" }} />
@@ -139,7 +143,7 @@ const Sidebar = () => {
         >
           <Nav.Link
             as={Link}
-            to={`/details/${projectId}`}
+            to={`/projects/details/${projectId}`}
             className="header__link"
           >
             <InfoIcon sx={{ fontSize: 30, margin: "5px auto" }} />
@@ -154,7 +158,7 @@ const Sidebar = () => {
         >
           <Nav.Link
             as={Link}
-            to={`/usage/${projectId}`}
+            to={`/projects/usage/${projectId}`}
             className="header__link"
           >
             <AssessmentIcon sx={{ fontSize: 30, margin: "5px auto" }} />

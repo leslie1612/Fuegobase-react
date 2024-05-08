@@ -241,7 +241,7 @@ const API = {
       (response) => response.json()
     );
   },
-  getProjectDetails(id, jwtToken) {
+  getDomainList(id, jwtToken) {
     return fetch(`${this.hostname}/databases/whitelist/${id}`, {
       headers: new Headers({
         "Content-Type": "application/json",
@@ -280,7 +280,15 @@ const API = {
           Authorization: `Bearer ${jwtToken}`,
         }),
       }
-    ).then((response) => response.json());
+    );
+  },
+  getAllAPIKey(projectId, jwtToken) {
+    return fetch(`${this.hostname}/security/project/key/${projectId}`, {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      }),
+    }).then((response) => response.json());
   },
   deleteAPIKey(apiKey, jwtToken) {
     return fetch(`${this.hostname}/security/project/key/${apiKey}`, {
@@ -292,12 +300,15 @@ const API = {
     }).then((response) => response.status);
   },
   getNewAPIKey(projectId, jwtToken) {
-    return fetch(`${this.hostname}/security/project/${projectId}`, {
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
-      }),
-    });
+    return fetch(
+      `${this.hostname}/security/project/key/rotation/${projectId}`,
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        }),
+      }
+    );
   },
 };
 export default API;
