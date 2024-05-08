@@ -26,7 +26,6 @@ const Sidebar = () => {
   React.useEffect(() => {
     API.getProjects(token).then((json) => {
       setProjects(json.data);
-      // setSelectedRoute(currentRoute);
     });
   }, [token]);
 
@@ -101,7 +100,6 @@ const Sidebar = () => {
                 </MenuItem>
               ))}
           </Select>
-          {/* <FormHelperText>Without label</FormHelperText> */}
         </FormControl>
 
         <hr class="sidebar_divider" />

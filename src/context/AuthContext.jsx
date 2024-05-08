@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
 
     // if (!token) {
-    //   navigate("/login"); // 導航到登錄頁面
+    //   navigate("/login");
     // }
 
     setToken(storedToken);

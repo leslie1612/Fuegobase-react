@@ -67,11 +67,6 @@ const Projects = () => {
       <div className="project__layout">
         <div className="project__header__container">
           <Link to="/projects" className="project_header_link">
-            {/* <img
-              className="project_logo"
-              src="/public/database256.png"
-              alt="database-logo"
-            /> */}
             <div className="project_header_name">Fuegobase</div>
           </Link>
         </div>

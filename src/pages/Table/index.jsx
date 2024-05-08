@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import Layout from "../../components/Layout";
 import FieldInput from "./FieldInput";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
@@ -207,7 +206,6 @@ const DBTable = () => {
                     </IconButton>
                   </div>
                 </div>
-                {/* <div className="field_value_info_buttons"></div> */}
               </div>
             ))}
         </>
@@ -640,30 +638,10 @@ const DBTable = () => {
           </div>
         </>
       )}
-      {/* <Layout> */}
+
       <div className="database_container">
         <h1 className="database_title">Database</h1>
         <div className="row">
-          {/* <div className="table__path">
-              Path : https://fuegobase.store/api/v1/databases/projects/
-              {projectId}
-              /collections
-              <span>
-                {expandedCollectionId && (
-                  <span>
-                    /{expandedCollectionId}/documents
-                    {expandedDocumentId && `/${expandedDocumentId}/fields`}
-                    {selectedFieldId && `/${selectedFieldId}`}
-                  </span>
-                )}
-              </span>
-              <ContentCopyIcon
-                className="query_icon"
-                sx={{ fontSize: 20, marginLeft: 1 }}
-                onClick={() => handleCopyClick(queryPath)}
-              />
-            </div> */}
-
           <div className="table__path">
             Path : {path}
             <IconButton
@@ -763,14 +741,6 @@ const DBTable = () => {
                       },
                     }}
                   />
-                  {/* <input
-                      className="database__add__input"
-                      type="text"
-                      value={renameCollectionInputValue}
-                      onChange={(e) =>
-                        setRenameCollectionInputValue(e.target.value)
-                      }
-                    /> */}
                 </Box>
 
                 <Button
@@ -901,12 +871,6 @@ const DBTable = () => {
                       },
                     }}
                   />
-                  {/* <input
-                      className="database__add__input"
-                      type="text"
-                      value={documentInputValue}
-                      onChange={(e) => setDocumentInputValue(e.target.value)}
-                    /> */}
                 </Box>
                 <Button
                   variant="contained"
@@ -961,14 +925,6 @@ const DBTable = () => {
                       },
                     }}
                   />
-                  {/* <input
-                      className="database__add__input"
-                      type="text"
-                      value={renameDocumentInputValue}
-                      onChange={(e) =>
-                        setRenameDocumentInputValue(e.target.value)
-                      }
-                    /> */}
                 </Box>
                 <Button
                   variant="contained"
@@ -1074,22 +1030,6 @@ const DBTable = () => {
                                   }}
                                 />
                               </IconButton>
-                              {/* <Button
-                                className="database__edit__btn"
-                                onClick={() => {
-                                  handleDocumentRename(document);
-                                }}
-                              >
-                                edit
-                              </Button>
-                              <Button
-                                className="database__delete__btn"
-                                onClick={() => {
-                                  deleteDocument(document);
-                                }}
-                              >
-                                X
-                              </Button> */}
                             </div>
                           </>
                         )}
@@ -1135,17 +1075,7 @@ const DBTable = () => {
                       <MenuItem value="TRUE">TRUE</MenuItem>
                       <MenuItem value="FALSE">FALSE</MenuItem>
                     </Select>
-                  ) : // <select
-                  //   value={editingFieldValue}
-                  //   onChange={(e) => handleEditingFieldValueChange(e)}
-                  // >
-                  //   <option value="none" disabled>
-                  //     --select--
-                  //   </option>
-                  //   <option value="TRUE">TRUE</option>
-                  //   <option value="FALSE">FALSE</option>
-                  // </select>
-                  infoType == "Number" ? (
+                  ) : infoType == "Number" ? (
                     <TextField
                       required
                       fullWidth
@@ -1161,12 +1091,6 @@ const DBTable = () => {
                       }}
                     />
                   ) : (
-                    // <input
-                    //   className="database__add__input"
-                    //   type="number"
-                    //   value={editingFieldValue}
-                    //   onChange={(e) => handleEditingFieldValueChange(e)}
-                    // />
                     <TextField
                       required
                       fullWidth
@@ -1181,12 +1105,6 @@ const DBTable = () => {
                         },
                       }}
                     />
-                    // <input
-                    //   className="database__add__input"
-                    //   type="text"
-                    //   value={editingFieldValue}
-                    //   onChange={(e) => handleEditingFieldValueChange(e)}
-                    // />
                   )}
                 </Box>
 
@@ -1286,7 +1204,6 @@ const DBTable = () => {
                       {fields[document.hashId]?.map((field) => (
                         <div className="database__table__item">
                           <div
-                            // className="database__field"
                             className={`database__field ${
                               selectedFieldId === field.hashId
                                 ? "db__collection__selected"
@@ -1368,7 +1285,6 @@ const DBTable = () => {
           </div>
         </div>
       </div>
-      {/* </Layout> */}
     </>
   );
 };

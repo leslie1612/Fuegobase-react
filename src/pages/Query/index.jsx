@@ -139,7 +139,6 @@ const QueryIndex = () => {
 
   return (
     <>
-      {/* <Layout> */}
       <div className="query_container">
         <Container className="query_builder_container">
           <h2 className="query_builder_title">Query Builder</h2>
@@ -193,26 +192,6 @@ const QueryIndex = () => {
                     </MenuItem>
                   ))}
               </Select>
-
-              {/*  <Form.Control
-                  className="query__collection"
-                  as="select"
-                  aria-label="Select number"
-                  value={selectedCollection || "none"}
-                  onChange={(e) => {
-                    handleCollectionChange(e.target.value);
-                  }}
-                >
-                  <option value="none" disabled defaultValue>
-                    Choose a collection name
-                  </option>
-                  {collections &&
-                    collections.map((collection) => (
-                      <option key={collection.id} value={collection.id}>
-                        {collection.name}
-                      </option>
-                    ))} 
-                </Form.Control>*/}
             </Col>
             <Form.Group as={Col} className="query_col "></Form.Group>
           </Row>
@@ -251,15 +230,6 @@ const QueryIndex = () => {
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
-              {/* <Form.Control
-                  required
-                  type="text"
-                  placeholder="Enter field key"
-                  value={fieldKeyInputValue}
-                  onChange={(e) => {
-                    handleFieldKeyChange(e.target.value);
-                  }}
-                /> */}
             </Col>
 
             <Col className="query_col " sm={3}>
@@ -294,19 +264,6 @@ const QueryIndex = () => {
                   array_contains
                 </MenuItem>
               </Select>
-
-              {/* <Form.Control
-                  as="select"
-                  value={operator || "EQUAL"}
-                  onChange={(e) => handleOperatorChange(e.target.value)}
-                >
-                  <option value="EQUAL"> == </option>
-                  <option value="GREATER_THAN"> &gt; </option>
-                  <option value="LESS_THAN"> &lt; </option>
-                  <option value="GREATER_THAN_OR_EQUAL"> &gt;= </option>
-                  <option value="LESS_THAN_OR_EQUAL"> &lt;= </option>
-                  <option value="CONTAINS">array_contains</option>
-                </Form.Control> */}
             </Col>
           </Row>
 
@@ -333,15 +290,6 @@ const QueryIndex = () => {
                   Boolean
                 </MenuItem>
               </Select>
-              {/* <Form.Control
-                  as="select"
-                  value={fieldType || "String"}
-                  onChange={(e) => handleTypeChange(e.target.value)}
-                >
-                  <option value="String">String</option>
-                  <option value="Number">Number</option>
-                  <option value="Boolean">Boolean</option>
-                </Form.Control> */}
             </Col>
 
             <Col className="query_col">
@@ -368,14 +316,6 @@ const QueryIndex = () => {
                   },
                 }}
               />
-              {/* <Form.Control
-                  type="text"
-                  placeholder="Enter field value"
-                  value={valueInputValue}
-                  onChange={(e) => {
-                    handleValueInputChange(e.target.value);
-                  }}
-                /> */}
             </Col>
           </Row>
 
@@ -465,7 +405,6 @@ const QueryIndex = () => {
           </Table>
         </Container>
       </div>
-      {/* </Layout> */}
     </>
   );
 };

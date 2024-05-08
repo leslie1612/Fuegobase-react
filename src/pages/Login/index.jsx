@@ -29,7 +29,6 @@ const Login = () => {
       console.log(response);
       setToken(json.data.accessToken);
       localStorage.setItem("token", json.data.accessToken);
-      // setIsLogin(true);
       navigate("/projects");
     } else {
       alert(`An unexpected error occurred. Please try again.`);
