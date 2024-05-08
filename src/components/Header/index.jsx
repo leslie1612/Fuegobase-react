@@ -10,6 +10,11 @@ const Header = () => {
     <>
       <div className="header__container">
         <Link to="/projects" className="header_link">
+          <img
+            className="header_logo"
+            src="/database128.png"
+            alt="database-logo"
+          />
           <div className="header_name">Fuegobase</div>
         </Link>
       </div>

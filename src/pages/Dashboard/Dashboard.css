@@ -17,7 +17,7 @@ h3 {
 }
 .dashboard_title {
   font-size: 30px;
-  margin-bottom: 2rem;
+  margin-bottom: 10px;
   padding: 1rem 0;
   position: relative;
   font-weight: 500;
@@ -29,14 +29,14 @@ h3 {
   bottom: 0;
   left: 0;
   width: 100%;
-  border-bottom: 3px solid #c50000;
+  border-bottom: 3px solid #adb5bd;
 }
 .dashboard__container {
   font-size: 20px;
   max-width: 1200px;
   height: 130px;
   display: flex;
-  padding-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .plot-container {
@@ -59,6 +59,7 @@ h3 {
   overflow: hidden;
   padding: 30px 20px 20px;
   height: 90%;
+  width: 80%;
 }
 .c-dashboardInfo__title,
 .c-dashboardInfo__subInfo {

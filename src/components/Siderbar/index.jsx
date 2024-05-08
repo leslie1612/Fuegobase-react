@@ -39,13 +39,13 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <Link to="/projects">
+      {/* <Link to="/projects">
         <img
           className="sidebar_logo"
           src="/database256.png"
           alt="database-logo"
         />
-      </Link>
+      </Link> */}
       <div className="sidebar__project__title">Projects</div>
       <div className="sidebar__projects">
         <FormControl
@@ -63,12 +63,12 @@ const Sidebar = () => {
               display: "block",
               backgroundColor: "#F8F9FA",
               textOverflow: "ellipsis",
-              fontSize: 15,
+              fontSize: 16,
             }}
           >
             <MenuItem
               sx={{
-                fontSize: 15,
+                fontSize: 16,
               }}
               value=""
               disabled
@@ -79,7 +79,7 @@ const Sidebar = () => {
               projects.map((project) => (
                 <MenuItem
                   sx={{
-                    fontSize: 15,
+                    fontSize: 16,
                     whiteSpace: "unset",
                     wordBreak: "break-all",
                   }}

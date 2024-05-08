@@ -50,7 +50,7 @@ const SettingPage = () => {
     if (projectId) {
       API.getAllAPIKey(projectId, token).then((json) => {
         setApiKey(json.data);
-        setIsAPIKeyMoreThanOne(json.data.apiKey.length > 1);
+        setIsAPIKeyMoreThanOne(json.data.length > 1);
       });
     }
   }, [projectId, reloadPage]);
@@ -176,6 +176,7 @@ const SettingPage = () => {
                     sx={{
                       fontSize: 20,
                       padding: "0 8px",
+                      visibility: "hidden",
                       "&:hover": {
                         color: "primary.dark",
                       },

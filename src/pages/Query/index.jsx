@@ -84,6 +84,8 @@ const QueryIndex = () => {
       alert("Every field must be required.");
     } else {
       setIsLoading(true);
+      setOpened(false);
+      setQueryPath("");
 
       const response = await API.getDataByFilter(
         projectId,
@@ -95,7 +97,7 @@ const QueryIndex = () => {
         token
       );
       const json = await response.json();
-      if (response.status == 200) {
+      if (response.status == 200 && json.data.length > 0) {
         setDocumentData(json.data);
         setOpened(true);
         setQueryPath(
@@ -193,15 +195,20 @@ const QueryIndex = () => {
                   ))}
               </Select>
             </Col>
-            <Form.Group as={Col} className="query_col "></Form.Group>
+            {/* <Form.Group as={Col} className="query_col "></Form.Group> */}
           </Row>
 
           <Row className="query_row">
             <Col sm={2} className="query_col query_statement ">
               WHERE
+              <Tooltip title="If you want to query the key value of a map, please use ' . '">
+                <IconButton>
+                  <InfoIcon sx={{ fontSize: 20 }} />
+                </IconButton>
+              </Tooltip>
             </Col>
 
-            <Col className="query_col">
+            <Col className="query_col" sm={2}>
               <TextField
                 required
                 fullWidth
@@ -225,14 +232,9 @@ const QueryIndex = () => {
                   },
                 }}
               />
-              <Tooltip title="If you want to query the key value of a map, please use ' . '">
-                <IconButton>
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
             </Col>
 
-            <Col className="query_col " sm={3}>
+            <Col className="query_col " sm={2}>
               <Select
                 required
                 value={operator || "EQUAL"}
@@ -240,7 +242,8 @@ const QueryIndex = () => {
                 size="small"
                 sx={{
                   marginLeft: "auto",
-                  minWidth: 200,
+                  minWidth: 130,
+                  width: "100%",
                   fontSize: 15,
                 }}
                 onChange={(e) => handleOperatorChange(e.target.value)}
@@ -265,9 +268,58 @@ const QueryIndex = () => {
                 </MenuItem>
               </Select>
             </Col>
+            <Col className="query_col" sm={2}>
+              <Select
+                required
+                value={fieldType || "String"}
+                displayEmpty
+                size="small"
+                sx={{
+                  minWidth: 130,
+                  width: "100%",
+                  fontSize: 15,
+                }}
+                onChange={(e) => handleTypeChange(e.target.value)}
+              >
+                <MenuItem value="String" sx={menuItemStyle}>
+                  String
+                </MenuItem>
+                <MenuItem value="Number" sx={menuItemStyle}>
+                  Number
+                </MenuItem>
+                <MenuItem value="Boolean" sx={menuItemStyle}>
+                  Boolean
+                </MenuItem>
+              </Select>
+            </Col>
+            <Col className="query_col" sm={4}>
+              <TextField
+                required
+                fullWidth
+                type="text"
+                placeholder="Enter field value"
+                label="field value"
+                value={valueInputValue}
+                onChange={(e) => {
+                  handleValueInputChange(e.target.value);
+                }}
+                inputProps={{
+                  style: {
+                    padding: "10px",
+                    fontSize: "15px",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontSize: "15px",
+                    marginTop: "-3px",
+                  },
+                }}
+              />
+            </Col>
           </Row>
 
-          <Row className="query_row">
+          {/* <Row className="query_row">
             <Col md={{ span: 2, offset: 2 }} className="query_col">
               <Select
                 required
@@ -317,7 +369,7 @@ const QueryIndex = () => {
                 }}
               />
             </Col>
-          </Row>
+          </Row> */}
 
           <Row className="query_row">
             <Col className="query_col query_btn_group">

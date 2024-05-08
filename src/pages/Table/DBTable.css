@@ -10,7 +10,7 @@ li {
 /* layout */
 .database_container {
   font-size: 18px;
-  padding-bottom: 50px;
+  margin-bottom: 50px;
   max-width: 1200px;
 }
 
@@ -42,7 +42,7 @@ li {
   bottom: 0;
   left: 0;
   width: 100%;
-  border-bottom: 3px solid #c50000;
+  border-bottom: 3px solid #adb5bd;
 }
 .table__path {
   font-size: 18px;
@@ -96,23 +96,25 @@ li {
 .database__add__item {
   padding: 8px;
   border-bottom: 1px solid #e9ecef;
+  font-weight: 500;
+  color: #c50000;
 }
-.database__submit__btn {
-  background-color: #eb5e28;
-  border: #eb5e28;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin: 0 5px;
+.database__add__item:hover {
+  font-weight: 800;
 }
 
 /* collection */
 .database__collection,
 .database__document {
   width: 100%;
+  font-weight: 300;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .db__collection__selected {
   background-color: #f8f9fa;
+  font-weight: 500;
 }
 
 /* add area */
@@ -126,14 +128,6 @@ li {
   background-color: #fffcf2;
   width: 70%;
   padding: 5px;
-}
-.database__submit__btn {
-  background-color: #eb5e28;
-  border: #eb5e28;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin: 0 5px;
 }
 
 /* field column */
@@ -150,6 +144,7 @@ li {
 }
 .database__field__name {
   padding: 8px;
+  font-weight: 300;
 }
 .database__field__type {
   margin-left: auto;
@@ -175,6 +170,7 @@ li {
   display: flex;
   width: 100%;
   align-items: center;
+  font-weight: 300;
 }
 .field__value__info__type {
   margin-left: auto;
