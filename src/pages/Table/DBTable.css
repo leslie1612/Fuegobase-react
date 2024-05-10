@@ -208,7 +208,7 @@ li {
   z-index: 6;
   display: none;
   max-height: 60vh;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .database__input__popup {
   position: fixed;

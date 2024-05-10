@@ -53,17 +53,6 @@
   margin-left: auto;
 }
 
-/* delete btn */
-.project_delete_btn {
-  border-radius: 50%;
-  position: absolute;
-  z-index: 2;
-  background-color: #eb5e28;
-}
-.project_delete_btn:hover {
-  background-color: #ff6f00;
-}
-
 /* card css */
 .ag-courses_item {
   -ms-flex-preferred-size: calc(33.33333% - 30px);
@@ -118,6 +107,9 @@
   font-size: 25px;
   margin: auto;
   font-weight: bolder;
+}
+.ag-courses-item_link:hover {
+  cursor: pointer;
 }
 .ag-courses-item_date-box {
   font-size: 15px;

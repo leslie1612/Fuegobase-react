@@ -201,7 +201,7 @@ const QueryIndex = () => {
           <Row className="query_row">
             <Col sm={2} className="query_col query_statement ">
               WHERE
-              <Tooltip title="If you want to query the key value of a map, please use ' . '">
+              <Tooltip title="If you want to query the key value of a map, please use ' . ', e.g., address.city">
                 <IconButton>
                   <InfoIcon sx={{ fontSize: 20 }} />
                 </IconButton>

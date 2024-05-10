@@ -369,7 +369,7 @@ const SettingPage = () => {
           <h3 className="project_input_title">Add a new domain</h3>
           <Box
             sx={{
-              width: 800,
+              width: 500,
               maxWidth: "100%",
             }}
           >
@@ -383,24 +383,26 @@ const SettingPage = () => {
                 handleDomainNameChange(e);
               }}
               inputProps={{
-                maxLength: 100,
+                maxLength: 50,
                 style: {
                   padding: "10px",
-                  fontSize: "20px",
+                  fontSize: "15px",
                 },
               }}
             />
           </Box>
           <Button
             onClick={() => closeInput()}
+            size="small"
             variant="contained"
             color="cancel"
-            sx={{ margin: "10px 0 0 570px" }}
+            sx={{ margin: "10px 0 0 300px" }}
           >
             Cancel
           </Button>
           <Button
             onClick={() => addNewDomain()}
+            size="small"
             variant="contained"
             sx={{ margin: "10px 0 0 10px" }}
           >
