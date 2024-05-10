@@ -9,7 +9,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../../utils/api";
 import "./Dashboard.css";
-import { sortingFns } from "@tanstack/react-table";
 
 const Dashboard = () => {
   const { projectId } = useParams();
@@ -19,12 +18,19 @@ const Dashboard = () => {
   const [storage, setStorage] = React.useState("");
   const [collectionCount, setCollectionCount] = React.useState("");
   const [documentCount, setDocumentCount] = React.useState("");
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(7, "day").toDate(),
+    dayjs().subtract(1, "day").toDate(),
+  ]);
   const [startDate, endDate] = dateRange;
 
   React.useEffect(() => {
     async function fetchReadWritwData() {
-      const response = await API.getReadWriteData(projectId);
+      const response = await API.getReadWriteData(
+        projectId,
+        dayjs().subtract(7, "day").format("YYYY-MM-DD"),
+        dayjs().subtract(1, "day").format("YYYY-MM-DD")
+      );
       console.log(response);
       let jsonData = response.data;
       setDate(jsonData.map((i) => i.date));
@@ -60,39 +66,43 @@ const Dashboard = () => {
 
   const data = {
     labels: date,
-    // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
     datasets: [
       {
         label: "Reads",
         data: read,
         borderColor: "#495057",
         backgroundColor: "RGB(73,80,87,0.8)",
-        // borderWidth: 1,
-        // tension: 0.1,
       },
       {
         label: "Writes",
         data: write,
-        // fill: false,
         borderColor: "#fca311",
         backgroundColor: "RGB(252,163,17,0.8)",
-        // borderWidth: 1,
-        // tension: 0.1,
       },
     ],
   };
 
-  const handleDateChange = (update) => {
+  const handleDateChange = async (update) => {
     setDateRange(update);
+    console.log("date tange", dateRange);
     const formattedStartDate = dayjs(update[0]).format("YYYY-MM-DD");
     const formattedEndDate = dayjs(update[1]).format("YYYY-MM-DD");
-    // console.log(formattedStartDate, formattedEndDate);
 
     if (
       formattedStartDate !== "Invalid Date" &&
       formattedEndDate !== "Invalid Date"
     ) {
       console.log(formattedStartDate, formattedEndDate);
+
+      const response = await API.getReadWriteData(
+        projectId,
+        formattedStartDate,
+        formattedEndDate
+      );
+      let jsonData = response.data;
+      setDate(jsonData.map((i) => i.date));
+      setRead(jsonData.map((i) => i.readCount));
+      setWrite(jsonData.map((i) => i.writeCount));
     }
   };
 
@@ -105,9 +115,6 @@ const Dashboard = () => {
             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
               Total Storage
             </h4>
-            {/* <span class="hind-font caption-12 c-dashboardInfo__count">
-              {storage} MB
-            </span> */}
             <span class="hind-font caption-12 c-dashboardInfo__count">
               <CountUp
                 class="hind-font caption-12 c-dashboardInfo__count"
@@ -126,9 +133,6 @@ const Dashboard = () => {
             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
               Total Collections
             </h4>
-            {/* <span class="hind-font caption-12 c-dashboardInfo__count">
-              {collectionCount}
-            </span> */}
             <span class="hind-font caption-12 c-dashboardInfo__count">
               <CountUp
                 class="hind-font caption-12 c-dashboardInfo__count"
@@ -144,9 +148,6 @@ const Dashboard = () => {
             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
               Total Documents
             </h4>
-            {/* <span class="hind-font caption-12 c-dashboardInfo__count">
-              {documentCount}
-            </span> */}
             <span class="hind-font caption-12 c-dashboardInfo__count">
               <CountUp
                 class="hind-font caption-12 c-dashboardInfo__count"
@@ -162,11 +163,7 @@ const Dashboard = () => {
         className="customDatePickerWidth"
         showIcon
         dateFormat="yyyy/MM/dd"
-        // selected={startDate}
         onChange={(update) => handleDateChange(update)}
-        // onChange={(update) => {
-        //   setDateRange(update);
-        // }}
         startDate={startDate}
         endDate={endDate}
         selectsRange={true}
@@ -224,34 +221,6 @@ const Dashboard = () => {
             height={400}
           />
         </div>
-
-        {/* <Plot
-          data={[
-            {
-              x: date,
-              y: read,
-              type: "scatter",
-              name: "Read",
-              marker: { color: "#495057" },
-            },
-            {
-              x: date,
-              y: write,
-              type: "scatter",
-              name: "Write",
-              marker: { color: "#fca311" },
-            },
-          ]}
-          layout={{
-            title: "Read and Write Operations",
-            xaxis: {
-              title: "Operations (per day)",
-            },
-
-            width: 700,
-            height: 400,
-          }}
-        /> */}
       </div>
     </>
   );
