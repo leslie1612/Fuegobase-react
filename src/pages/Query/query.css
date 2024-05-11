@@ -41,10 +41,14 @@
 .query_icon {
   text-align: center;
 }
-
 .query_btn_group {
   display: flex;
   justify-content: end;
+}
+
+.table td {
+  border-top: none;
+  border-bottom: 1px solid #dee2e6;
 }
 
 /* table */

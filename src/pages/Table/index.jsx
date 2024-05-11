@@ -53,7 +53,6 @@ const DBTable = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
-    console.log(token);
     if (projectId) {
       API.getCollections(projectId, token).then((json) => {
         setCollections(json.data);
@@ -176,7 +175,7 @@ const DBTable = () => {
                         },
                       }}
                       onClick={() => {
-                        editFieldValue(field.hashId, info);
+                        editFieldValue(field.id, info);
                       }}
                     >
                       <EditIcon
@@ -195,7 +194,7 @@ const DBTable = () => {
                         },
                       }}
                       onClick={() => {
-                        deleteFieldValue(field.hashId, info);
+                        deleteFieldValue(field.id, info);
                       }}
                     >
                       <DeleteIcon
@@ -230,7 +229,7 @@ const DBTable = () => {
                   },
                 }}
                 onClick={() => {
-                  editFieldValue(field.hashId, info);
+                  editFieldValue(field.id, info);
                 }}
               >
                 <EditIcon
@@ -325,7 +324,7 @@ const DBTable = () => {
     setFieldName(field.name);
     setFieldType(field.type);
     setIsUpdateField(true);
-    setEditingFieldId(field.hashId);
+    setEditingFieldId(field.id);
   };
 
   const addNewField = () => {
@@ -333,7 +332,11 @@ const DBTable = () => {
     setShowOverlay(false);
 
     if (isUpdateField) {
-      if (valueInfoArray[0].value === "" || valueInfoArray[0].value == null) {
+      if (
+        valueInfoArray[0].value === "" ||
+        valueInfoArray[0].value === null ||
+        valueInfoArray[0].value === "none"
+      ) {
         alert("Can't be empty");
         return;
       }
@@ -358,7 +361,13 @@ const DBTable = () => {
         setIsLoading(false);
       });
     } else {
-      if (fieldName === "" || fieldName == null) {
+      if (
+        fieldName === "" ||
+        fieldName == null ||
+        valueInfoArray[0].value === "" ||
+        valueInfoArray[0].value === null ||
+        valueInfoArray[0].value === "none"
+      ) {
         alert("Can't be empty");
         return;
       }
@@ -588,7 +597,7 @@ const DBTable = () => {
         projectId,
         expandedCollectionId,
         expandedDocumentId,
-        field.hashId,
+        field.id,
         token
       ).then((status) => {
         if (status == 204) {
@@ -1071,7 +1080,6 @@ const DBTable = () => {
                       }}
                       onChange={(e) => handleEditingFieldValueChange(e)}
                     >
-                      <MenuItem value="none" disabled></MenuItem>
                       <MenuItem value="TRUE">TRUE</MenuItem>
                       <MenuItem value="FALSE">FALSE</MenuItem>
                     </Select>
@@ -1205,16 +1213,16 @@ const DBTable = () => {
                         <div className="database__table__item">
                           <div
                             className={`database__field ${
-                              selectedFieldId === field.hashId
+                              selectedFieldId === field.id
                                 ? "db__collection__selected"
                                 : ""
                             }`}
-                            key={field.hashId}
+                            key={field.id}
                             onClick={() =>
                               handleFieldClick(
                                 collection.hashId,
                                 document.hashId,
-                                field.hashId,
+                                field.id,
                                 field.type
                               )
                             }
@@ -1227,7 +1235,7 @@ const DBTable = () => {
                                 ({field.type})
                               </div>
 
-                              {selectedFieldId === field.hashId && (
+                              {selectedFieldId === field.id && (
                                 <>
                                   {(field.type === "Array" ||
                                     field.type === "Map") && (

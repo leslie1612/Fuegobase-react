@@ -110,9 +110,7 @@ const FieldInput = ({
               value={valueInfoArray[0].value || "none"}
               onChange={(e) => handleValueInfoChange(e, 0, "value")}
             >
-              <MenuItem value="none" disabled>
-                --select--
-              </MenuItem>
+              <MenuItem value="none" disabled></MenuItem>
               <MenuItem value="TRUE">TRUE</MenuItem>
               <MenuItem value="FALSE">FALSE</MenuItem>
             </Select>

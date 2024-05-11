@@ -101,6 +101,16 @@ h3 {
   flex-shrink: 0;
 }
 
-.customDatePickerWidth {
+.customDatePicker {
   width: 220px;
+}
+.date-picker {
+  width: 220px;
+  padding: 15px;
+}
+/* .react-datepicker__day--selected {
+  background-color: #d0702b;
+}*/
+.react-datepicker__day--in-range {
+  background-color: #adb5bd;
 }

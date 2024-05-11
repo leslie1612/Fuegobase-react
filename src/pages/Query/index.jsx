@@ -101,7 +101,7 @@ const QueryIndex = () => {
         setDocumentData(json.data);
         setOpened(true);
         setQueryPath(
-          `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}`
+          `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}&operator=${operator}`
         );
         console.log("success", queryPath);
       } else {
@@ -201,7 +201,7 @@ const QueryIndex = () => {
           <Row className="query_row">
             <Col sm={2} className="query_col query_statement ">
               WHERE
-              <Tooltip title="If you want to query the key value of a map, please use ' . ', e.g., address.city">
+              <Tooltip title="If you want to query the key value of a map, please use 'fieldKey.mapKey ', e.g., address.city">
                 <IconButton>
                   <InfoIcon sx={{ fontSize: 20 }} />
                 </IconButton>
@@ -432,17 +432,14 @@ const QueryIndex = () => {
                 documentData.map((item, index) => (
                   <tr key={index}>
                     <td style={{ width: "25%" }}>
-                      <div className="query_field_value_data">
-                        {" "}
-                        {item.hashId}
-                      </div>
+                      <div className="query_field_value_data"> {item.id}</div>
                     </td>
                     <td style={{ width: "25%" }}>
                       <div className="query_field_value_data">{item.name}</div>
                     </td>
                     <td style={{ width: "25%" }}>
                       {item.fields.map((field) => (
-                        <div key={field.valueHashId}>
+                        <div key={field.id}>
                           <div className="query_field_value_data">
                             <span>{field.name} : </span>
                             <span>{handleFieldValue(field)}</span>
