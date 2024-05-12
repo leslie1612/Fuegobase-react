@@ -1,6 +1,6 @@
 const API = {
-  // hostname: "https://fuegobase.store/api/v1",
-  hostname: "http://localhost:8080/api/v1",
+  hostname: "https://fuegobase.store/api/v1",
+  // hostname: "http://localhost:8080/api/v1",
   signin(data) {
     return fetch(`${this.hostname}/user/signin`, {
       body: JSON.stringify(data),
@@ -220,10 +220,14 @@ const API = {
       }
     ).then((response) => response.status);
   },
-  getReadWriteData(id, startDate, endDate) {
-    return fetch(
-      `${this.hostname}/dashboard/count/readwrite/${id}?startDate=${startDate}&endDate=${endDate}`
-    ).then((response) => response.json());
+  getReadWriteData(id, data) {
+    return fetch(`${this.hostname}/dashboard/count/readwrite/${id}`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    }).then((response) => response.json());
   },
   getStorgae(id) {
     return fetch(`${this.hostname}/dashboard/storage/${id}`).then((response) =>

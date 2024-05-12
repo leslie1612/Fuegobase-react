@@ -5,6 +5,8 @@ import { Line } from "react-chartjs-2";
 import { Chart, CategoryScale, registerables } from "chart.js";
 import CountUp from "react-countup";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../../utils/api";
@@ -25,17 +27,36 @@ const Dashboard = () => {
   const [startDate, endDate] = dateRange;
 
   React.useEffect(() => {
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+
+    const startUtcTime = dayjs().subtract(7, "day").utc().format();
+    const endUtcTime = dayjs().subtract(1, "day").endOf("day").utc().format();
+    const data = {
+      startDateTime: startUtcTime,
+      endDateTime: endUtcTime,
+    };
+
     async function fetchReadWritwData() {
-      const response = await API.getReadWriteData(
-        projectId,
-        dayjs().subtract(7, "day").format("YYYY-MM-DD"),
-        dayjs().subtract(1, "day").format("YYYY-MM-DD")
-      );
-      console.log(response);
+      const response = await API.getReadWriteData(projectId, data);
       let jsonData = response.data;
-      setDate(jsonData.map((i) => i.date));
-      setRead(jsonData.map((i) => i.readCount));
-      setWrite(jsonData.map((i) => i.writeCount));
+      const dateRange = getDateRangeArr(
+        dayjs().subtract(7, "day"),
+        dayjs().subtract(1, "day")
+      );
+      const localLogs = jsonData.map((log) => {
+        return {
+          id: log.id,
+          readCount: log.readCount,
+          writeCount: log.writeCount,
+          date: convertUtcToLocal(log.date),
+        };
+      });
+      const result = aggregateData(localLogs, dateRange);
+
+      setDate(result.map((i) => i.date));
+      setRead(result.map((i) => i.readCount));
+      setWrite(result.map((i) => i.writeCount));
     }
 
     async function fetchStorageData() {
@@ -87,27 +108,81 @@ const Dashboard = () => {
   };
 
   const handleDateChange = async (update) => {
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+
     setDateRange(update);
-    console.log("date tange", dateRange);
-    const formattedStartDate = dayjs(update[0]).format("YYYY-MM-DD");
-    const formattedEndDate = dayjs(update[1]).format("YYYY-MM-DD");
 
-    if (
-      formattedStartDate !== "Invalid Date" &&
-      formattedEndDate !== "Invalid Date"
-    ) {
-      console.log(formattedStartDate, formattedEndDate);
+    const startUtcTime = dayjs(update[0]).utc().format();
+    const endUtcTime = dayjs(update[1]).endOf("day").utc().format();
+    console.log(`utc start`, startUtcTime);
+    console.log(`utc end `, endUtcTime);
 
-      const response = await API.getReadWriteData(
-        projectId,
-        formattedStartDate,
-        formattedEndDate
-      );
+    const data = {
+      startDateTime: startUtcTime,
+      endDateTime: endUtcTime,
+    };
+
+    if (startUtcTime !== "Invalid Date" && endUtcTime !== "Invalid Date") {
+      const response = await API.getReadWriteData(projectId, data);
       let jsonData = response.data;
-      setDate(jsonData.map((i) => i.date));
-      setRead(jsonData.map((i) => i.readCount));
-      setWrite(jsonData.map((i) => i.writeCount));
+
+      const dateRange = getDateRangeArr(dayjs(update[0]), dayjs(update[1]));
+
+      // convert to local date
+      const localLogs = jsonData.map((log) => {
+        return {
+          id: log.id,
+          readCount: log.readCount,
+          writeCount: log.writeCount,
+          date: convertUtcToLocal(log.date),
+        };
+      });
+
+      const result = aggregateData(localLogs, dateRange);
+
+      setDate(result.map((i) => i.date));
+      setRead(result.map((i) => i.readCount));
+      setWrite(result.map((i) => i.writeCount));
     }
+  };
+
+  const convertUtcToLocal = (utcTimeString) => {
+    const utcTime = dayjs(utcTimeString).utc();
+    const localTime = utcTime.local();
+    return localTime.format("YYYY-MM-DD");
+  };
+
+  const getDateRangeArr = (start, end) => {
+    const dateRange = [];
+    let currentDate = start;
+
+    while (currentDate.isBefore(end.add(1, "day"), "day")) {
+      dateRange.push(currentDate.format("YYYY-MM-DD"));
+      currentDate = currentDate.add(1, "day");
+    }
+    return dateRange;
+  };
+
+  const aggregateData = (data, dateRange) => {
+    const dateMap = {};
+    dateRange.forEach((date) => {
+      if (!dateMap[date]) {
+        dateMap[date] = { readCount: 0, writeCount: 0, date: date };
+      }
+    });
+
+    data.forEach((item) => {
+      const date = item.date;
+      if (!dateMap[date]) {
+        dateMap[date] = { readCount: 0, writeCount: 0, date: date };
+      }
+      dateMap[date].readCount += item.readCount;
+      dateMap[date].writeCount += item.writeCount;
+    });
+
+    const result = Object.values(dateMap);
+    return result;
   };
 
   return (
