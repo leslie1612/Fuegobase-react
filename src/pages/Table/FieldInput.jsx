@@ -33,7 +33,7 @@ const FieldInput = ({
     <>
       <Row className="field__value__item">
         <Form.Group as={Col} md={3} controlId="formGridType">
-          <InputLabel>Key</InputLabel>
+          <InputLabel>Field Key</InputLabel>
           <TextField
             size="small"
             readOnly={isUpdateField ? true : false}
@@ -109,6 +109,7 @@ const FieldInput = ({
               size="small"
               value={valueInfoArray[0].value || "none"}
               onChange={(e) => handleValueInfoChange(e, 0, "value")}
+              sx={{ minWidth: "100px" }}
             >
               <MenuItem value="none" disabled></MenuItem>
               <MenuItem value="TRUE">TRUE</MenuItem>
@@ -158,7 +159,7 @@ const FieldInput = ({
                 visibility: fieldType === "Array" ? "hidden" : "visible",
               }}
             >
-              <InputLabel>Key</InputLabel>
+              <InputLabel>Map Key</InputLabel>
               <TextField
                 size="small"
                 fullWidth

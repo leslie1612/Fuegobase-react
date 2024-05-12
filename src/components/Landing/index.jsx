@@ -26,7 +26,9 @@ const Landing = ({ children, className, action }) => {
           md={7}
           sx={{ marginTop: "4rem" }}
         >
-          <img src="./folder.jpeg" alt="" className="landing_picture" />
+          <div className="landing_picture_cover">
+            <img src="./adobe6.jpeg" alt="" className="landing_picture" />
+          </div>
           <h2 className="landing_subtitle">
             Empowering Data Management Through Visualization.
           </h2>

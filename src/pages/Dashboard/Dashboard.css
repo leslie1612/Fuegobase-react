@@ -43,6 +43,7 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .c-dashboardInfo {
@@ -113,4 +114,12 @@ h3 {
 }*/
 .react-datepicker__day--in-range {
   background-color: #adb5bd;
+}
+
+.dashboard_loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
 }

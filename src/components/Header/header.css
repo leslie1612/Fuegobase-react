@@ -6,7 +6,7 @@
   width: 100%;
   position: fixed;
   z-index: 999;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 1px rgba(33, 37, 41, 0.5);
   display: flex;
 }
 .header_link {
@@ -25,5 +25,5 @@
   justify-content: center;
 }
 .header_logo {
-  margin: 0.5rem 0.9rem;
+  margin: 0.7rem 0.9rem;
 }

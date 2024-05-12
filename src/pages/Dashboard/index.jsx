@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import DatePicker from "react-datepicker";
+import CircularIndeterminate from "../../components/Loading";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../../utils/api";
 import "./Dashboard.css";
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [storage, setStorage] = React.useState("");
   const [collectionCount, setCollectionCount] = React.useState("");
   const [documentCount, setDocumentCount] = React.useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(7, "day").toDate(),
     dayjs().subtract(1, "day").toDate(),
@@ -93,14 +95,14 @@ const Dashboard = () => {
         data: read,
         // borderColor: "#495057",
         // backgroundColor: "RGB(73,80,87,0.8)",
-        borderColor: "RGB(33, 107, 165)",
-        backgroundColor: "rgba(33, 107, 165,0.8)",
+        borderColor: "rgb(99, 173, 242)",
+        backgroundColor: "rgba(99, 173, 242,0.8)",
       },
       {
         label: "Writes",
         data: write,
-        borderColor: "#fca311",
-        backgroundColor: "RGB(252,163,17,0.8)",
+        borderColor: "RGB(84, 94, 117",
+        backgroundColor: "RGB(84, 94, 117,0.8)",
         // borderColor: "RGB(33, 107, 165)",
         // backgroundColor: "rgba(33, 107, 165,0.8)",
       },
@@ -124,6 +126,7 @@ const Dashboard = () => {
     };
 
     if (startUtcTime !== "Invalid Date" && endUtcTime !== "Invalid Date") {
+      setIsLoading(true);
       const response = await API.getReadWriteData(projectId, data);
       let jsonData = response.data;
 
@@ -144,6 +147,7 @@ const Dashboard = () => {
       setDate(result.map((i) => i.date));
       setRead(result.map((i) => i.readCount));
       setWrite(result.map((i) => i.writeCount));
+      setIsLoading(false);
     }
   };
 
@@ -279,6 +283,14 @@ const Dashboard = () => {
       </div>
 
       <div className="plot-container">
+        {isLoading && (
+          <>
+            <div className="dashboard_overlay"></div>
+            <div className="dashboard_loading">
+              <CircularIndeterminate size="60px" color="secondary" />
+            </div>
+          </>
+        )}
         <div>
           <Line
             data={data}
