@@ -101,7 +101,7 @@ const QueryIndex = () => {
         setDocumentData(json.data);
         setOpened(true);
         setQueryPath(
-          `https://api.fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}&operator=${operator}`
+          `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}&operator=${operator}`
         );
         console.log("success", queryPath);
       } else {

@@ -21,6 +21,9 @@ const Dashboard = () => {
   const [storage, setStorage] = React.useState("");
   const [collectionCount, setCollectionCount] = React.useState("");
   const [documentCount, setDocumentCount] = React.useState("");
+  const [maxDate, setmaxDate] = React.useState(
+    dayjs().subtract(1, "day").toDate()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(7, "day").toDate(),
@@ -249,6 +252,7 @@ const Dashboard = () => {
           onChange={(update) => handleDateChange(update)}
           startDate={startDate}
           endDate={endDate}
+          maxDate={maxDate}
           selectsRange={true}
           placeholderText="Click to select a date"
           icon={

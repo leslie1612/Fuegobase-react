@@ -84,7 +84,7 @@ const DBTable = () => {
     expandedDocumentId,
     selectedFieldId
   ) => {
-    let pathValue = `https://api.fuegobase.store/api/v1/databases/projects/${projectId}/collections`;
+    let pathValue = `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections`;
     if (expandedCollectionId) {
       pathValue += `/${expandedCollectionId}/documents`;
       if (expandedDocumentId) {
