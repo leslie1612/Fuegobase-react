@@ -84,7 +84,7 @@ const DBTable = () => {
     expandedDocumentId,
     selectedFieldId
   ) => {
-    let pathValue = `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections`;
+    let pathValue = `https://api.fuegobase.store/api/v1/databases/projects/${projectId}/collections`;
     if (expandedCollectionId) {
       pathValue += `/${expandedCollectionId}/documents`;
       if (expandedDocumentId) {
@@ -372,6 +372,11 @@ const DBTable = () => {
         return;
       }
       setIsLoading(true);
+      if (fieldType === "Number") {
+        valueInfoArray[0].type = "Number";
+      } else if (fieldType === "Boolean") {
+        valueInfoArray[0].type = "Boolean";
+      }
       const data = {
         type: fieldType,
         key: fieldName,

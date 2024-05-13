@@ -101,7 +101,7 @@ const QueryIndex = () => {
         setDocumentData(json.data);
         setOpened(true);
         setQueryPath(
-          `https://fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}&operator=${operator}`
+          `https://api.fuegobase.store/api/v1/databases/projects/${projectId}/collections/${selectedCollection}?filter=${fieldKeyInputValue}&value=${valueInputValue}&type=${fieldType}&operator=${operator}`
         );
         console.log("success", queryPath);
       } else {
@@ -177,7 +177,7 @@ const QueryIndex = () => {
                 sx={{
                   marginLeft: "auto",
                   minWidth: 200,
-                  fontSize: 15,
+                  fontSize: 16,
                 }}
               >
                 <MenuItem value="none" disabled sx={menuItemStyle}>
@@ -222,12 +222,12 @@ const QueryIndex = () => {
                 inputProps={{
                   style: {
                     padding: "10px",
-                    fontSize: "15px",
+                    fontSize: "16px",
                   },
                 }}
                 InputLabelProps={{
                   style: {
-                    fontSize: "15px",
+                    fontSize: "16px",
                     marginTop: "-3px",
                   },
                 }}
@@ -244,7 +244,7 @@ const QueryIndex = () => {
                   marginLeft: "auto",
                   minWidth: 130,
                   width: "100%",
-                  fontSize: 15,
+                  fontSize: 16,
                 }}
                 onChange={(e) => handleOperatorChange(e.target.value)}
               >
@@ -277,7 +277,7 @@ const QueryIndex = () => {
                 sx={{
                   minWidth: 130,
                   width: "100%",
-                  fontSize: 15,
+                  fontSize: 16,
                 }}
                 onChange={(e) => handleTypeChange(e.target.value)}
               >
@@ -306,12 +306,12 @@ const QueryIndex = () => {
                 inputProps={{
                   style: {
                     padding: "10px",
-                    fontSize: "15px",
+                    fontSize: "16px",
                   },
                 }}
                 InputLabelProps={{
                   style: {
-                    fontSize: "15px",
+                    fontSize: "16px",
                     marginTop: "-3px",
                   },
                 }}
@@ -440,7 +440,7 @@ const QueryIndex = () => {
                     <td style={{ width: "25%" }}>
                       {item.fields.map((field) => (
                         <div key={field.id}>
-                          <div className="query_field_value_data">
+                          <div className="query_field_value_data query_value">
                             <span>{field.name} : </span>
                             <span>{handleFieldValue(field)}</span>
                           </div>

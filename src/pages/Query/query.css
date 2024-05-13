@@ -57,11 +57,14 @@
   font-weight: 500;
 }
 .query_field_value_data {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
 }
 .query_no_data {
   font-size: 2rem;
   text-align: center;
   padding: 2rem;
+}
+.query_value {
+  margin: 2px 0 0 0;
 }

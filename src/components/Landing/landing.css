@@ -105,23 +105,25 @@ q {
   width: 80%;
 }
 .landing_subtitle {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: bolder;
   margin: 2rem;
   position: absolute;
-  top: 10rem;
+  top: 20vh;
   color: #212529;
+  text-shadow: 3px 0 rgb(214, 214, 214);
 }
 .landing_description {
   font-size: 1.3rem;
   font-weight: bold;
   margin: 3rem 2rem;
   padding: 0 1rem;
-  color: #343a40;
+  color: #262d34;
   width: 80%;
   border-left: 3px solid #343a40;
   position: absolute;
-  top: 19rem;
+  top: 35vh;
+  text-shadow: 3px 0 rgb(214, 214, 214);
 }
 
 .landing_picture {
@@ -137,5 +139,5 @@ q {
   width: 100%;
   height: 100%;
   background-color: #e2e2e2;
-  opacity: 0.3;
+  opacity: 0.2;
 }
