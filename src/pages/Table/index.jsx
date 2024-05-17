@@ -117,9 +117,9 @@ const DBTable = () => {
       setExpandedCollectionId(collectionId);
       setExpandedDocumentId(null);
       setPathValue(projectId, collectionId, null, null);
-      setIsLoading(true);
+      // setIsLoading(true);
       API.getDocuments(projectId, collectionId, token).then((json) => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setDocuments({ ...documents, [collectionId]: json.data });
       });
     }
@@ -133,9 +133,9 @@ const DBTable = () => {
     } else {
       setExpandedDocumentId(documentId);
       setPathValue(projectId, collectionId, documentId, null);
-      setIsLoading(true);
+      // setIsLoading(true);
       API.getFields(projectId, collectionId, documentId, token).then((json) => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setFields({ ...fields, [documentId]: json.data });
       });
     }
@@ -289,7 +289,7 @@ const DBTable = () => {
     setFieldValueEditing(!fieldValueEditing);
     setShowOverlay(false);
     setInfoType("");
-    setIsLoading(true);
+    // setIsLoading(true);
     const data = {
       value: editingFieldValue,
     };
@@ -307,7 +307,7 @@ const DBTable = () => {
         console.log("update success");
         setReloadField(!reloadField);
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     });
   };
 
@@ -340,7 +340,7 @@ const DBTable = () => {
         alert("Can't be empty");
         return;
       }
-      setIsLoading(true);
+      // setIsLoading(true);
       const data = {
         key: valueInfoArray[0].key,
         value: valueInfoArray[0].value,
@@ -358,7 +358,7 @@ const DBTable = () => {
         if (status == 200) {
           setReloadField(!reloadField);
         }
-        setIsLoading(false);
+        // setIsLoading(false);
       });
     } else {
       if (
@@ -371,7 +371,7 @@ const DBTable = () => {
         alert("Can't be empty");
         return;
       }
-      setIsLoading(true);
+      // setIsLoading(true);
       if (fieldType === "Number") {
         valueInfoArray[0].type = "Number";
       } else if (fieldType === "Boolean") {
@@ -395,7 +395,7 @@ const DBTable = () => {
         } else if (status == 400) {
           alert("name repeat!");
         }
-        setIsLoading(false);
+        // setIsLoading(false);
       });
     }
 
@@ -419,7 +419,7 @@ const DBTable = () => {
     }
     setCollectionEditing(!collectionEditing);
     setShowOverlay(!showOverlay);
-    setIsLoading(true);
+    // setIsLoading(true);
     const data = {
       name: myData.collectionInputValue,
     };
@@ -428,7 +428,7 @@ const DBTable = () => {
         setCollectionInputValue("");
         setReloadCollection(!reloadCollction);
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     });
   };
 
@@ -442,7 +442,7 @@ const DBTable = () => {
       alert("Can't be empty");
       return;
     }
-    setIsLoading(true);
+    // setIsLoading(true);
     setDocumentEditing(!documentEditing);
     setShowOverlay(false);
 
@@ -455,7 +455,7 @@ const DBTable = () => {
           setDocumentInputValue("");
           setReloadDocument(!reloadDocument);
         }
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     );
   };
@@ -490,7 +490,7 @@ const DBTable = () => {
     }
     setRenameCollectionEditing(false);
     setShowOverlay(false);
-    setIsLoading(true);
+    // setIsLoading(true);
     const data = {
       name: renameCollectionInputValue,
     };
@@ -502,7 +502,7 @@ const DBTable = () => {
           setRenameCollectionEditing(false);
           setExpandedCollectionId(null);
         }
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     );
   };
@@ -526,7 +526,7 @@ const DBTable = () => {
     }
     setShowOverlay(false);
     setRenameDocumentEditing(false);
-    setIsLoading(true);
+    // setIsLoading(true);
     const data = {
       name: renameDocumentInputValue,
     };
@@ -542,7 +542,7 @@ const DBTable = () => {
         setRenameDocumentInputValue("");
         setExpandedDocumentId(null);
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     });
   };
 
