@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import FieldInput from "./FieldInput";
@@ -51,15 +51,21 @@ const DBTable = () => {
   const [path, setPath] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (projectId) {
-      API.getCollections(projectId, token).then((json) => {
-        setCollections(json.data);
-      });
-      setPathValue(projectId, null, null, null);
+      async function fetchData() {
+        const response = await API.getCollections(projectId, token);
+        const json = await response.json();
+        if (response.status == 200) {
+          setCollections(json.data);
+          setPathValue(projectId, null, null, null);
+        }
+      }
+      fetchData();
     }
-  }, [reloadCollction, projectId]);
+  }, [reloadCollction, projectId, token]);
 
   React.useEffect(() => {
     API.getDocuments(projectId, expandedCollectionId, token).then((json) => {
@@ -700,24 +706,26 @@ const DBTable = () => {
                     }}
                   />
                 </Box>
-                <Button
-                  variant="contained"
-                  color="cancel"
-                  size="small"
-                  sx={{ margin: "10px 0 0 300px" }}
-                  onClick={() => addCollection()}
-                >
-                  cancel
-                </Button>
+                <div className="database_btn_group">
+                  <Button
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 10px 0 0" }}
+                    onClick={() => addCollection()}
+                  >
+                    cancel
+                  </Button>
 
-                <Button
-                  onClick={() => addNewCollection({ collectionInputValue })}
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 10px" }}
-                >
-                  Submit
-                </Button>
+                  <Button
+                    onClick={() => addNewCollection({ collectionInputValue })}
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 0" }}
+                  >
+                    Submit
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -757,23 +765,25 @@ const DBTable = () => {
                   />
                 </Box>
 
-                <Button
-                  variant="contained"
-                  color="cancel"
-                  size="small"
-                  sx={{ margin: "10px 0 0 300px" }}
-                  onClick={() => cancelRenameCollection()}
-                >
-                  cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 10px" }}
-                  onClick={() => renameCollection()}
-                >
-                  submit
-                </Button>
+                <div className="database_btn_group">
+                  <Button
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 10px 0 0" }}
+                    onClick={() => cancelRenameCollection()}
+                  >
+                    cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 0" }}
+                    onClick={() => renameCollection()}
+                  >
+                    submit
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -886,23 +896,25 @@ const DBTable = () => {
                     }}
                   />
                 </Box>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 300px" }}
-                  color="cancel"
-                  onClick={() => addDocument()}
-                >
-                  cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 10px" }}
-                  onClick={() => addNewDocument({ documentInputValue })}
-                >
-                  submit
-                </Button>
+                <div className="database_btn_group">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 10px 0 0" }}
+                    color="cancel"
+                    onClick={() => addDocument()}
+                  >
+                    cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 0" }}
+                    onClick={() => addNewDocument({ documentInputValue })}
+                  >
+                    submit
+                  </Button>
+                </div>
               </div>
             </div>
             <div className="database__add">
@@ -940,23 +952,25 @@ const DBTable = () => {
                     }}
                   />
                 </Box>
-                <Button
-                  variant="contained"
-                  color="cancel"
-                  size="small"
-                  sx={{ margin: "10px 0 0 300px" }}
-                  onClick={() => cancelRenameDocument()}
-                >
-                  cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 10px" }}
-                  onClick={() => renameDocument()}
-                >
-                  submit
-                </Button>
+                <div className="database_btn_group">
+                  <Button
+                    variant="contained"
+                    color="cancel"
+                    size="small"
+                    sx={{ margin: "10px 10px 0 0" }}
+                    onClick={() => cancelRenameDocument()}
+                  >
+                    cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 0" }}
+                    onClick={() => renameDocument()}
+                  >
+                    submit
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -1121,23 +1135,25 @@ const DBTable = () => {
                   )}
                 </Box>
 
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 300px" }}
-                  color="cancel"
-                  onClick={() => cancelUpdateFieldValue()}
-                >
-                  cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ margin: "10px 0 0 10px" }}
-                  onClick={() => updateFieldValue({ editingFieldValue })}
-                >
-                  submit
-                </Button>
+                <div className="database_btn_group">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 10px 0 0" }}
+                    color="cancel"
+                    onClick={() => cancelUpdateFieldValue()}
+                  >
+                    cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ margin: "10px 0 0 0" }}
+                    onClick={() => updateFieldValue({ editingFieldValue })}
+                  >
+                    submit
+                  </Button>
+                </div>
               </div>
 
               <div

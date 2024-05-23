@@ -1,6 +1,6 @@
 const API = {
-  hostname: "https://fuegobase.store/api/v1",
-  // hostname: "http://localhost:8080/api/v1",
+  // hostname: "https://fuegobase.store/api/v1",
+  hostname: "http://localhost:8080/api/v1",
   signin(data) {
     return fetch(`${this.hostname}/user/signin`, {
       body: JSON.stringify(data),
@@ -33,7 +33,7 @@ const API = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken}`,
       }),
-    }).then((response) => response.json());
+    });
   },
   getDocuments(projectId, collectionId, jwtToken) {
     return fetch(

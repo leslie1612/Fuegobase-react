@@ -86,7 +86,7 @@ const Dashboard = () => {
       fetchCollectionData();
       fetchDocumentData();
     }
-  }, []);
+  }, [projectId]);
 
   Chart.register(...registerables);
 

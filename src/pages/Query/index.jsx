@@ -35,11 +35,16 @@ const QueryIndex = () => {
 
   React.useEffect(() => {
     if (projectId) {
-      API.getCollections(projectId, token).then((json) => {
-        setCollections(json.data);
-      });
+      async function fetchData() {
+        const response = await API.getCollections(projectId, token);
+        const json = await response.json();
+        if (response.status == 200) {
+          setCollections(json.data);
+        }
+      }
+      fetchData();
     }
-  }, [projectId]);
+  }, [projectId, token]);
 
   const menuItemStyle = { fontSize: 15 };
 
@@ -318,58 +323,6 @@ const QueryIndex = () => {
               />
             </Col>
           </Row>
-
-          {/* <Row className="query_row">
-            <Col md={{ span: 2, offset: 2 }} className="query_col">
-              <Select
-                required
-                value={fieldType || "String"}
-                displayEmpty
-                size="small"
-                sx={{
-                  minWidth: 130,
-                  fontSize: 15,
-                }}
-                onChange={(e) => handleTypeChange(e.target.value)}
-              >
-                <MenuItem value="String" sx={menuItemStyle}>
-                  String
-                </MenuItem>
-                <MenuItem value="Number" sx={menuItemStyle}>
-                  Number
-                </MenuItem>
-                <MenuItem value="Boolean" sx={menuItemStyle}>
-                  Boolean
-                </MenuItem>
-              </Select>
-            </Col>
-
-            <Col className="query_col">
-              <TextField
-                required
-                fullWidth
-                type="text"
-                placeholder="Enter field value"
-                label="field value"
-                value={valueInputValue}
-                onChange={(e) => {
-                  handleValueInputChange(e.target.value);
-                }}
-                inputProps={{
-                  style: {
-                    padding: "10px",
-                    fontSize: "15px",
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: "15px",
-                    marginTop: "-3px",
-                  },
-                }}
-              />
-            </Col>
-          </Row> */}
 
           <Row className="query_row">
             <Col className="query_col query_btn_group">

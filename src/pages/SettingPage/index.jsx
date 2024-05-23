@@ -35,16 +35,7 @@ const SettingPage = () => {
         setDomainName(json.data.domain);
       });
     }
-  }, [projectId, reloadPage]);
-
-  useEffect(() => {
-    if (projectId) {
-      API.getDomainList(projectId, token).then((json) => {
-        setProjectName(json.data.projectName);
-        setDomainName(json.data.domain);
-      });
-    }
-  }, []);
+  }, [projectId, reloadPage, token]);
 
   useEffect(() => {
     if (projectId) {
@@ -391,23 +382,25 @@ const SettingPage = () => {
               }}
             />
           </Box>
-          <Button
-            onClick={() => closeInput()}
-            size="small"
-            variant="contained"
-            color="cancel"
-            sx={{ margin: "10px 0 0 300px" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => addNewDomain()}
-            size="small"
-            variant="contained"
-            sx={{ margin: "10px 0 0 10px" }}
-          >
-            Submit
-          </Button>
+          <div className="database_btn_group">
+            <Button
+              onClick={() => closeInput()}
+              size="small"
+              variant="contained"
+              color="cancel"
+              sx={{ margin: "10px 10px 0 0" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => addNewDomain()}
+              size="small"
+              variant="contained"
+              sx={{ margin: "10px 0 0 0" }}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </div>
       {/* </Layout> */}

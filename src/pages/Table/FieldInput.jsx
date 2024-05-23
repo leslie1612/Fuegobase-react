@@ -36,7 +36,7 @@ const FieldInput = ({
           <InputLabel>Field Key</InputLabel>
           <TextField
             size="small"
-            readOnly={isUpdateField ? true : false}
+            disabled={isUpdateField}
             value={fieldName || ""}
             onChange={(e) => handleFieldNameChange(e)}
             inputProps={{

@@ -19,7 +19,7 @@ li {
   border: 1px solid #dee2e6;
   padding: 0;
   max-height: 65vh;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .database_col {
   height: 65vh;
@@ -103,6 +103,11 @@ li {
 }
 .database__add__item:hover {
   font-weight: 800;
+}
+
+.database_btn_group {
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* collection */

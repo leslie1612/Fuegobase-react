@@ -39,13 +39,6 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      {/* <Link to="/projects">
-        <img
-          className="sidebar_logo"
-          src="/database256.png"
-          alt="database-logo"
-        />
-      </Link> */}
       <div className="sidebar__project__title">Projects</div>
       <div className="sidebar__projects">
         <FormControl
@@ -102,7 +95,7 @@ const Sidebar = () => {
           </Select>
         </FormControl>
 
-        <hr class="sidebar_divider" />
+        <hr className="sidebar_divider" />
 
         <Nav.Item
           className={`header__item ${

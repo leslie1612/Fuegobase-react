@@ -49,21 +49,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Registration />} />
-
             <Route path="/projects" element={<Projects />} />
+
             <Route path="/projects/*" element={<Layout />}>
               <Route path="database/:projectId" element={<DBTable />} />
               <Route path="usage/:projectId" element={<Dashboard />} />
               <Route path="details/:projectId" element={<SettingPage />} />
               <Route path="query/:projectId" element={<QueryIndex />} />
             </Route>
-
-            {/* <Layout>
-              <Route path="/database/:projectId" element={<DBTable />} />
-              <Route path="/usage/:projectId" element={<Dashboard />} />
-              <Route path="/details/:projectId" element={<SettingPage />} />
-              <Route path="/query/:projectId" element={<QueryIndex />} />
-            </Layout> */}
           </Routes>
         </BrowserRouter>
       </AuthProvider>
@@ -72,3 +65,55 @@ function App() {
 }
 
 export default App;
+{
+  /* <Route
+path="/projects"
+element={
+  <PrivateRoute>
+    <Projects />
+  </PrivateRoute>
+}
+/>
+
+<Route
+path="/projects/*"
+element={
+  <PrivateRoute>
+    <Layout />
+  </PrivateRoute>
+}
+>
+<Route
+  path="database/:projectId"
+  element={
+    <PrivateRoute>
+      <DBTable />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="usage/:projectId"
+  element={
+    <PrivateRoute>
+      <Dashboard />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="details/:projectId"
+  element={
+    <PrivateRoute>
+      <SettingPage />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="query/:projectId"
+  element={
+    <PrivateRoute>
+      <QueryIndex />
+    </PrivateRoute>
+  }
+/>
+</Route> */
+}

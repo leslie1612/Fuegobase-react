@@ -17,15 +17,12 @@ const Projects = () => {
   const [showOverlay, setShowOverlay] = useState(false);
 
   React.useEffect(() => {
-    API.getProjects(token).then((json) => {
-      setProjects(json.data);
-    });
-  }, [reloadProjects]);
-  React.useEffect(() => {
-    API.getProjects(token).then((json) => {
-      setProjects(json.data);
-    });
-  }, []);
+    if (token) {
+      API.getProjects(token).then((json) => {
+        setProjects(json.data);
+      });
+    }
+  }, [reloadProjects, token]);
 
   const openInput = () => {
     setIsInputOpen(true);
@@ -103,21 +100,23 @@ const Projects = () => {
                 }}
               />
             </Box>
-            <Button
-              onClick={() => closeInput()}
-              variant="contained"
-              color="cancel"
-              sx={{ margin: "10px 0 0 570px" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => addNewProject()}
-              variant="contained"
-              sx={{ margin: "10px 0 0 10px" }}
-            >
-              Submit
-            </Button>
+            <div className="database_btn_group">
+              <Button
+                onClick={() => closeInput()}
+                variant="contained"
+                color="cancel"
+                sx={{ margin: "10px 10px 0 0" }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => addNewProject()}
+                variant="contained"
+                sx={{ margin: "10px 0 0 0" }}
+              >
+                Submit
+              </Button>
+            </div>
           </div>
 
           <div className="project_component_container">

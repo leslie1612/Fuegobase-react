@@ -2,10 +2,14 @@ import React, { useState, useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
-  if (!token) return <Navigate to="/" />;
-  return <Outlet />;
+
+  if (!token) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

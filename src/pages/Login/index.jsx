@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -10,8 +9,8 @@ import Landing from "../../components/Landing";
 import API from "../../utils/api";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("fuegobaseadmin@gmail.com");
+  const [password, setPassword] = useState("fuegobaseadmin");
   const { setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -31,8 +30,7 @@ const Login = () => {
       localStorage.setItem("token", json.data.accessToken);
       navigate("/projects");
     } else {
-      alert(`An unexpected error occurred. Please try again.`);
-      console.error(`Authentication failed: ${json.error}`);
+      alert(`Sign In failed, please confirm your email and password`);
       setToken(null);
       localStorage.removeItem("token");
     }
@@ -89,24 +87,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-  /* <div>
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-            />
-            <button type="submit">Login</button>
-          </form>
-        </div>
-        <Link to="/signup">Sign up</Link> */
-}
