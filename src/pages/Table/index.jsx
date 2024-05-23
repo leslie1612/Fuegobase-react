@@ -399,7 +399,7 @@ const DBTable = () => {
         if (status == 201) {
           setReloadField(!reloadField);
         } else if (status == 400) {
-          alert("name repeat!");
+          alert("Name can not be repeated.");
         }
         // setIsLoading(false);
       });
@@ -433,6 +433,9 @@ const DBTable = () => {
       if (status == 201) {
         setCollectionInputValue("");
         setReloadCollection(!reloadCollction);
+      } else if (status == 400) {
+        setCollectionInputValue("");
+        alert("Name can not be repeated.");
       }
       // setIsLoading(false);
     });
@@ -460,6 +463,9 @@ const DBTable = () => {
         if (status == 201) {
           setDocumentInputValue("");
           setReloadDocument(!reloadDocument);
+        } else if (status == 400) {
+          setDocumentInputValue("");
+          alert("Name can not be repeated.");
         }
         // setIsLoading(false);
       }
@@ -564,6 +570,7 @@ const DBTable = () => {
         (status) => {
           if (status == 204) {
             setReloadCollection(!reloadCollction);
+            setExpandedCollectionId(null);
           }
         }
       );
@@ -579,6 +586,7 @@ const DBTable = () => {
       ).then((status) => {
         if (status == 204) {
           setReloadDocument(!reloadDocument);
+          setExpandedDocumentId(null);
         }
       });
     }

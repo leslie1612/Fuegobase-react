@@ -23,6 +23,14 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    const pwdRe = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!pwdRe.test(password)) {
+      alert(
+        "Password must be at least eight characters long and contain at least one letter and one number."
+      );
+      return;
+    }
+
     e.preventDefault();
 
     const signupForm = {
@@ -65,6 +73,7 @@ const Registration = () => {
           autoFocus
         />
         <TextField
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           margin="normal"
