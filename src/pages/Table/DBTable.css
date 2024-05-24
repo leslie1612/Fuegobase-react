@@ -230,7 +230,6 @@ li {
   z-index: 6;
   display: none;
   max-height: 60vh;
-  overflow: scroll;
 }
 
 .overlay {
